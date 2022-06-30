@@ -121,7 +121,7 @@ layers:
     attributes:
     - key: highway
     - key: tunnel
-
+    - key: tracktype
 
 - name: railway
   features:
@@ -131,10 +131,10 @@ layers:
     min_zoom: 8
     include_when:
       railway:
+      - rail
     attributes:
     - key: railway
     - key: tunnel
-
 
 - name: landuse
   features:
@@ -145,7 +145,6 @@ layers:
     max_zoom: 10
     include_when:
       landuse:
-      - farmland
       - forest
     attributes:
     - key: landuse
@@ -153,25 +152,15 @@ layers:
     - osm
     geometry: polygon
     min_zoom: 10
-    max_zoom: 12
     include_when:
       landuse:
-      - farmland
       - forest
-      - meadow
+      - farmyard
       - residential
+      - commercial
+      - industrial
     attributes:
     - key: landuse
-  - sources:
-    - osm
-    geometry: polygon
-    min_zoom: 12
-    include_when:
-      landuse:
-    attributes:
-    - key: landuse
-
-
 
 
 - name: building

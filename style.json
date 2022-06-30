@@ -1,297 +1,62 @@
 {
   "version": 8,
-  "name": "OpenStreetMapVecto",
+  "name": "SwissMap",
   "sources": {
     "baremaps": {
       "type": "vector",
       "url": "http://[::]:8080/data/output.json"
+    },
+    "relief_shading": {
+      "type": "raster",
+      "tiles": [
+        "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.leichte-basiskarte_reliefschattierung/default/current/3857/{z}/{x}/{y}.png"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 22
     }
   },
-  "sprite": "https://tiles.baremaps.com/sprites/osm/sprite",
-  "glyphs": "https://tiles.baremaps.com/fonts/{fontstack}/{range}.pbf",
+  "glyphs": "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",
-      "type": "background",
-      "source": "baremaps",
-      "layout": {
-        "visibility": "visible"
-      },
-      "minzoom": 0,
-      "maxzoom": 24,
-      "paint": {
-        "background-color": "rgb(242, 239, 233)"
-      }
+      "type": "raster",
+      "source": "relief_shading"
     },
     {
-      "id": "landuse",
+      "id": "landuse_forest",
       "type": "fill",
       "source": "baremaps",
       "source-layer": "landuse",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": [
-          "match",
-          [
-            "get",
-            "landuse"
-          ],
-          "village_green",
-          "rgb(205, 235, 176)",
-          "salt_pond",
-          "rgb(170, 211, 223)",
-          "religious",
-          "rgb(205, 204, 201)",
-          "recreation_ground",
-          "rgb(223, 252, 226)",
-          "railway",
-          "rgb(236, 218, 233)",
-          "quarry",
-          "rgb(195, 194, 194)",
-          "plant_nursery",
-          "rgb(174, 223, 162)",
-          "military",
-          "rgb(242, 228, 221)",
-          "landfill",
-          "rgb(182, 182, 144)",
-          "greenfield",
-          "rgb(242, 238, 232)",
-          "garages",
-          "rgb(222, 221, 204)",
-          "cemetery",
-          "rgb(170, 203, 175)",
-          "brownfield",
-          "rgb(182, 182, 144)",
-          "basin",
-          "rgb(170, 211, 223)",
-          "vineyard",
-          "rgb(172, 225, 161)",
-          "meadow",
-          "rgb(205, 235, 176)",
-          "farmyard",
-          "rgb(238, 213, 179)",
-          "farmland",
-          "rgb(237, 240, 214)",
-          "allotments",
-          "rgb(202, 224, 191)",
-          "retail",
-          "rgb(254, 213, 208)",
-          "industrial",
-          "rgb(235, 219, 232)",
-          "residential",
-          "rgb(225, 225, 225)",
-          "construction",
-          "rgb(199, 199, 180)",
-          "commercial",
-          "rgb(242, 216, 217)",
-          "pedestrian",
-          "rgb(221, 221, 233)",
-          "rgba(0, 0, 0, 0)"
-        ],
-        "fill-antialias": true
-      }
-    },
-    {
-      "id": "power_station",
-      "type": "fill",
-      "filter": [
-        "any",
-        [
-          "==",
-          "power",
-          "plant"
-        ],
-        [
-          "==",
-          "power",
-          "substation"
-        ]
-      ],
-      "source": "baremaps",
-      "source-layer": "power",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": "rgb(226, 203, 222)",
-        "fill-antialias": true,
-        "fill-outline-color": "rgb(171, 171, 171)"
-      }
-    },
-    {
-      "id": "leisure_park",
-      "type": "fill",
       "filter": [
         "all",
         [
           "==",
-          "leisure",
-          "park"
-        ],
-        [
-          "==",
-          "$type",
-          "Polygon"
+          "landuse",
+          "forest"
         ]
       ],
-      "source": "baremaps",
-      "source-layer": "leisure",
-      "layout": {
-        "visibility": "visible"
-      },
       "paint": {
-        "fill-color": "rgb(200, 250, 204)",
+        "fill-color": "rgba(195, 222, 179, 0.5)",
         "fill-antialias": true
       }
     },
     {
-      "id": "amenity_education",
+      "id": "landuse_not_forest",
       "type": "fill",
-      "filter": [
-        "any",
-        [
-          "==",
-          "amenity",
-          "kindergarten"
-        ],
-        [
-          "==",
-          "amenity",
-          "school"
-        ],
-        [
-          "==",
-          "amenity",
-          "college"
-        ],
-        [
-          "==",
-          "amenity",
-          "university"
-        ]
-      ],
       "source": "baremaps",
-      "source-layer": "amenity",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": "rgb(255, 255, 228)",
-        "fill-antialias": true
-      }
-    },
-    {
-      "id": "amenity_hospital",
-      "type": "fill",
-      "filter": [
-        "any",
-        [
-          "==",
-          "amenity",
-          "hospital"
-        ]
-      ],
-      "source": "baremaps",
-      "source-layer": "amenity",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": "rgb(255, 255, 228)",
-        "fill-antialias": true
-      }
-    },
-    {
-      "id": "amenity_grave_yard",
-      "type": "fill",
-      "filter": [
-        "any",
-        [
-          "==",
-          "amenity",
-          "grave_yard"
-        ]
-      ],
-      "source": "baremaps",
-      "source-layer": "amenity",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": "rgb(170, 203, 175)",
-        "fill-antialias": true
-      }
-    },
-    {
-      "id": "amenity_parking",
-      "type": "fill",
-      "filter": [
-        "any",
-        [
-          "==",
-          "amenity",
-          "parking"
-        ],
-        [
-          "==",
-          "amenity",
-          "motorcycle_parking"
-        ]
-      ],
-      "source": "baremaps",
-      "source-layer": "amenity",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": "rgb(238, 238, 238)",
-        "fill-antialias": true,
-        "fill-outline-color": "rgb(222, 214, 214)"
-      }
-    },
-    {
-      "id": "natural",
-      "type": "fill",
+      "source-layer": "landuse",
       "filter": [
         "all",
         [
-          "==",
-          "$type",
-          "Polygon"
+          "!=",
+          "landuse",
+          "forest"
         ]
       ],
-      "source": "baremaps",
-      "source-layer": "natural",
-      "layout": {
-        "visibility": "visible"
-      },
       "paint": {
-        "fill-color": [
-          "match",
-          [
-            "get",
-            "natural"
-          ],
-          "glacier",
-          "rgb(221, 236, 236)",
-          "wood",
-          "rgb(157, 202, 138)",
-          "heath",
-          "rgb(214, 217, 159)",
-          "grassland",
-          "rgb(207, 236, 177)",
-          "bare_rock",
-          "rgb(217, 212, 206)",
-          "scree",
-          "rgb(232, 223, 216)",
-          "shingle",
-          "rgb(232, 223, 216)",
-          "sand",
-          "rgb(240, 229, 196)",
-          "rgba(0, 0, 0, 0)"
-        ],
+        "fill-color": "hsl(47, 13%, 86%)",
+        "fill-opacity": 0.7,
         "fill-antialias": true
       }
     },
@@ -300,443 +65,35 @@
       "type": "fill",
       "source": "baremaps",
       "source-layer": "water",
-      "layout": {
-        "visibility": "visible"
-      },
       "paint": {
-        "fill-color": "rgb(170, 211, 223)",
+        "fill-color": "hsl(205, 56%, 73%)",
         "fill-antialias": true,
-        "fill-outline-color": "rgb(170, 211, 223)"
-      }
-    },
-    {
-      "id": "leisure",
-      "type": "fill",
-      "filter": [
-        "==",
-        "$type",
-        "Polygon"
-      ],
-      "source": "baremaps",
-      "source-layer": "leisure",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": [
-          "match",
-          [
-            "get",
-            "leisure"
-          ],
-          "swimming_pool",
-          "rgb(170, 211, 223)",
-          "sports_centre",
-          "rgb(223, 252, 226)",
-          "miniature_golf",
-          "rgb(181, 226, 181)",
-          "marina",
-          "rgb(181, 208, 208)",
-          "ice_rink",
-          "rgb(221, 236, 236)",
-          "golf_course",
-          "rgb(181, 226, 181)",
-          "garden",
-          "rgb(205, 235, 176)",
-          "dog_park",
-          "rgb(224, 252, 227)",
-          "playground",
-          "rgb(223, 252, 226)",
-          "track",
-          "rgb(196, 224, 203)",
-          "stadium",
-          "rgb(223, 252, 226)",
-          "rgba(0, 0, 0, 0)"
-        ],
-        "fill-outline-color": [
-          "match",
-          [
-            "get",
-            "leisure"
-          ],
-          "swimming_pool",
-          "rgb(120, 183, 202)",
-          "marina",
-          "rgb(164, 187, 212)",
-          "ice_rink",
-          "rgb(140, 220, 189)",
-          "playground",
-          "rgb(164, 221, 169)",
-          "rgba(0, 0, 0, 0)"
-        ],
-        "fill-antialias": true
-      }
-    },
-    {
-      "id": "landuse_overlay",
-      "type": "fill",
-      "source": "baremaps",
-      "source-layer": "landuse",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": [
-          "match",
-          [
-            "get",
-            "landuse"
-          ],
-          "grass",
-          "rgb(205, 235, 176)",
-          "forest",
-          "rgb(171, 210, 156)",
-          "greenhouse_horticulture",
-          "rgb(237, 240, 214)",
-          "orchard",
-          "rgb(172, 225, 161)",
-          "rgba(0, 0, 0, 0)"
-        ],
-        "fill-antialias": true
-      }
-    },
-    {
-      "id": "leisure_overlay",
-      "type": "fill",
-      "filter": [
-        "all"
-      ],
-      "source": "baremaps",
-      "source-layer": "leisure",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": [
-          "match",
-          [
-            "get",
-            "leisure"
-          ],
-          "pitch",
-          "rgb(170, 224, 203)",
-          "swimming_pool",
-          "rgb(170, 211, 223)",
-          "rgba(0, 0, 0, 0)"
-        ],
-        "fill-outline-color": [
-          "match",
-          [
-            "get",
-            "leisure"
-          ],
-          "pitch",
-          "rgb(151, 212, 186)",
-          "swimming_pool",
-          "rgb(120, 183, 202)",
-          "rgba(0, 0, 0, 0)"
-        ],
-        "fill-antialias": true
-      }
-    },
-    {
-      "id": "leisure_nature_reserve",
-      "type": "line",
-      "filter": [
-        "all",
-        [
-          "==",
-          "leisure",
-          "nature_reserve"
-        ]
-      ],
-      "source": "baremaps",
-      "source-layer": "leisure",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-width": 5,
-        "line-color": "rgba(230, 233, 222, 0.5)"
-      }
-    },
-    {
-      "id": "natural_overlay",
-      "type": "fill",
-      "filter": [
-        "all",
-        [
-          "==",
-          "$type",
-          "Polygon"
-        ]
-      ],
-      "source": "baremaps",
-      "source-layer": "natural",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": [
-          "match",
-          [
-            "get",
-            "natural"
-          ],
-          "beach",
-          "rgb(255, 241, 186)",
-          "water",
-          "rgb(170, 211, 223)",
-          "wetland",
-          "rgba(184, 224,189, .5)",
-          "scrub",
-          "rgb(201, 216, 173)",
-          "rgba(0, 0, 0, 0)"
-        ],
-        "fill-antialias": true
-      }
-    },
-    {
-      "id": "waterway_tunnel_casing",
-      "type": "line",
-      "filter": [
-        "any",
-        [
-          "==",
-          "tunnel",
-          "yes"
-        ],
-        [
-          "==",
-          "tunnel",
-          "culvert"
-        ]
-      ],
-      "source": "baremaps",
-      "source-layer": "waterway",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.2
-          ],
-          [
-            "zoom"
-          ],
-          4,
-          0,
-          20,
-          12
-        ],
-        "line-color": "rgb(170, 211, 223)",
-        "line-dasharray": [
-          0.3,
-          0.15
-        ]
-      }
-    },
-    {
-      "id": "waterway_tunnel",
-      "type": "line",
-      "filter": [
-        "any",
-        [
-          "==",
-          "tunnel",
-          "yes"
-        ],
-        [
-          "==",
-          "tunnel",
-          "culvert"
-        ]
-      ],
-      "source": "baremaps",
-      "source-layer": "waterway",
-      "layout": {
-        "line-cap": "round",
-        "line-join": "round",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.2
-          ],
-          [
-            "zoom"
-          ],
-          4,
-          0,
-          20,
-          8
-        ],
-        "line-color": "rgb(243, 247, 247)"
+        "fill-outline-color": "hsl(205, 56%, 80%)"
       }
     },
     {
       "id": "waterway",
       "type": "line",
-      "filter": [
-        "all",
-        [
-          "!=",
-          "tunnel",
-          "yes"
-        ],
-        [
-          "!=",
-          "tunnel",
-          "culvert"
-        ]
-      ],
       "source": "baremaps",
       "source-layer": "waterway",
-      "layout": {
-        "line-cap": "round",
-        "line-join": "round",
-        "visibility": "visible"
-      },
       "paint": {
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.2
-          ],
-          [
-            "zoom"
-          ],
-          4,
-          0,
-          20,
-          12
-        ],
-        "line-color": "rgb(170, 211, 223)"
+        "line-width": 1,
+        "line-color": "hsl(205, 56%, 73%)"
       }
     },
     {
-      "id": "amenity_overlay",
-      "type": "fill",
-      "filter": [
-        "all",
-        [
-          "==",
-          "amenity",
-          "fountain"
-        ]
-      ],
-      "source": "baremaps",
-      "source-layer": "amenity",
-      "layout": {
-        "visibility": "visible"
-      },
-      "minzoom": 13,
-      "paint": {
-        "fill-color": "rgb(170, 211, 223)",
-        "fill-antialias": true,
-        "fill-outline-color": "rgb(170, 211, 223)"
-      }
-    },
-    {
-      "id": "barrier_guard_rail",
+      "id": "railway_background",
       "type": "line",
-      "filter": [
-        "all",
+      "filter": 
         [
-          "==",
-          "barrier",
-          "guard_rail"
-        ]
-      ],
-      "source": "baremaps",
-      "source-layer": "barrier",
-      "paint": {
-        "line-color": "rgba(139, 177, 162, 1)"
-      }
-    },
-    {
-      "id": "railway_bridge",
-      "type": "line",
-      "filter": [
-        "any",
-        [
-          "==",
-          "bridge",
+          "!=",
+          "tunnel",
           "yes"
         ]
-      ],
+      ,
       "source": "baremaps",
       "source-layer": "railway",
       "layout": {
-        "visibility": "visible",
-        "line-cap": "round",
-        "line-join": "round"
-      },
-      "paint": {
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.2
-          ],
-          [
-            "zoom"
-          ],
-          4,
-          0,
-          20,
-          24
-        ],
-        "line-color": "rgb(197, 197, 196)"
-      }
-    },
-    {
-      "id": "railway_rail_offset",
-      "type": "line",
-      "filter": [
-        "any",
-        [
-          "==",
-          "railway",
-          "rail"
-        ],
-        [
-          "==",
-          "railway",
-          "funicular"
-        ],
-        [
-          "==",
-          "railway",
-          "light_rail"
-        ],
-        [
-          "==",
-          "railway",
-          "monorail"
-        ],
-        [
-          "==",
-          "railway",
-          "tram"
-        ],
-        [
-          "==",
-          "railway",
-          "subway"
-        ]
-      ],
-      "source": "baremaps",
-      "source-layer": "railway",
-      "layout": {
-        "visibility": "visible",
         "line-cap": "round",
         "line-join": "round"
       },
@@ -755,39 +112,22 @@
           20,
           8
         ],
-        "line-color": "rgb(112, 112, 112)",
-        "line-opacity": [
-          "match",
-          [
-            "get",
-            "service"
-          ],
-          "spur",
-          0.4,
-          1
-        ]
+        "line-color": "rgb(112, 112, 112)"
       }
     },
     {
-      "id": "railway_rail",
+      "id": "railway_dashes",
       "type": "line",
-      "filter": [
-        "any",
+      "filter": 
         [
-          "==",
-          "railway",
-          "rail"
-        ],
-        [
-          "==",
-          "railway",
-          "funicular"
+          "!=",
+          "tunnel",
+          "yes"
         ]
-      ],
+      ,
       "source": "baremaps",
       "source-layer": "railway",
       "layout": {
-        "visibility": "visible",
         "line-cap": "round",
         "line-join": "round"
       },
@@ -810,49 +150,22 @@
         "line-dasharray": [
           2,
           4
-        ],
-        "line-opacity": [
-          "match",
-          [
-            "get",
-            "service"
-          ],
-          "spur",
-          0.7,
-          1
         ]
       }
     },
     {
-      "id": "railway_light_rail",
+      "id": "railway_tunnel",
       "type": "line",
-      "filter": [
-        "any",
+      "filter": 
         [
           "==",
-          "railway",
-          "miniature"
-        ],
-        [
-          "==",
-          "railway",
-          "narrow_gauge"
-        ],
-        [
-          "==",
-          "railway",
-          "preserved"
-        ],
-        [
-          "==",
-          "railway",
-          "turntable"
+          "tunnel",
+          "yes"
         ]
-      ],
+      ,
       "source": "baremaps",
       "source-layer": "railway",
       "layout": {
-        "visibility": "visible",
         "line-cap": "round",
         "line-join": "round"
       },
@@ -869,9 +182,13 @@
           4,
           0,
           20,
-          4
+          6
         ],
-        "line-color": "rgb(102, 102, 102)"
+        "line-color": "rgb(200, 200, 200)",
+        "line-dasharray": [
+          2,
+          4
+        ]
       }
     },
     {
@@ -3185,7 +2502,7 @@
           "name"
         ],
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-size": [
           "interpolate",
@@ -3322,9 +2639,9 @@
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": "rgb(216, 208, 201)",
+        "fill-color": "rgba(0, 0, 0, 0.1)",
         "fill-antialias": true,
-        "fill-outline-color": "rgb(199, 185, 174)",
+        "fill-outline-color": "rgba(0, 0, 0, 0.1)",
         "fill-opacity": 0.8
       }
     },
@@ -3440,7 +2757,7 @@
         "text-anchor": "center",
         "text-field": "{addr:housenumber}",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-offset": [
           0,
@@ -3480,7 +2797,7 @@
         "text-anchor": "center",
         "text-field": "{addr:housenumber}",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-offset": [
           0,
@@ -3647,7 +2964,7 @@
           "name"
         ],
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "symbol-placement": "line-center",
         "text-size": [
@@ -3920,7 +3237,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -3976,7 +3293,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4032,7 +3349,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4113,7 +3430,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4176,7 +3493,7 @@
         "icon-anchor": "bottom",
         "icon-allow-overlap": true,
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4222,7 +3539,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4283,7 +3600,7 @@
         "icon-anchor": "bottom",
         "icon-allow-overlap": true,
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4336,7 +3653,7 @@
         "icon-anchor": "bottom",
         "icon-allow-overlap": true,
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4382,7 +3699,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4436,7 +3753,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4490,7 +3807,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4551,7 +3868,7 @@
         "icon-anchor": "bottom",
         "icon-allow-overlap": true,
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4603,7 +3920,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4662,7 +3979,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -4972,13 +4289,13 @@
           [
             "literal",
             [
-              "Noto Sans Italic"
+              "Open Sans Regular,Arial Unicode MS Regular"
             ]
           ],
           [
             "literal",
             [
-              "Noto Sans Regular"
+              "Open Sans Regular,Arial Unicode MS Regular"
             ]
           ]
         ],
@@ -5767,7 +5084,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-size": 11,
         "text-field": [
@@ -5818,7 +5135,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-size": 11,
         "text-field": [
@@ -5878,7 +5195,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-size": 11,
         "text-field": [
@@ -5960,7 +5277,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-size": 11,
         "text-field": [
@@ -6022,7 +5339,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-size": 11,
         "text-field": [
@@ -6173,7 +5490,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-size": 11,
         "text-field": [
@@ -6410,7 +5727,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-size": 11,
         "text-field": [
@@ -6461,7 +5778,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-size": 11,
         "text-field": [
@@ -6522,7 +5839,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-size": 11,
         "text-field": [
@@ -6573,7 +5890,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-size": 11,
         "text-field": [
@@ -6612,7 +5929,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Bold"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -6674,7 +5991,7 @@
         "icon-anchor": "bottom",
         "icon-allow-overlap": true,
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -6720,7 +6037,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -6774,7 +6091,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -6828,7 +6145,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -6882,7 +6199,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -6942,7 +6259,7 @@
         "icon-size": 1,
         "icon-anchor": "bottom",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "step",
@@ -6988,7 +6305,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -7034,7 +6351,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "format",
@@ -7105,7 +6422,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -7164,7 +6481,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -7244,7 +6561,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -7303,7 +6620,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -7364,7 +6681,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -7423,7 +6740,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -7482,7 +6799,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -7550,7 +6867,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Italic"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -7599,7 +6916,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -7656,7 +6973,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
@@ -7798,7 +7115,7 @@
       "layout": {
         "visibility": "visible",
         "text-font": [
-          "Noto Sans Regular"
+          "Open Sans Regular,Arial Unicode MS Regular"
         ],
         "text-field": [
           "get",
