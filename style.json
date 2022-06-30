@@ -2,7 +2,7 @@
   "version": 8,
   "name": "SwissMap",
   "sources": {
-    "baremaps": {
+    "swissmap": {
       "type": "vector",
       "url": "http://[::]:8080/data/output.json"
     },
@@ -26,7 +26,7 @@
     {
       "id": "landuse_forest",
       "type": "fill",
-      "source": "baremaps",
+      "source": "swissmap",
       "source-layer": "landuse",
       "filter": [
         "all",
@@ -44,7 +44,7 @@
     {
       "id": "landuse_not_forest",
       "type": "fill",
-      "source": "baremaps",
+      "source": "swissmap",
       "source-layer": "landuse",
       "filter": [
         "all",
@@ -63,7 +63,7 @@
     {
       "id": "water",
       "type": "fill",
-      "source": "baremaps",
+      "source": "swissmap",
       "source-layer": "water",
       "paint": {
         "fill-color": "hsl(205, 56%, 73%)",
@@ -74,7 +74,7 @@
     {
       "id": "waterway",
       "type": "line",
-      "source": "baremaps",
+      "source": "swissmap",
       "source-layer": "waterway",
       "paint": {
         "line-width": 1,
@@ -84,14 +84,12 @@
     {
       "id": "railway_background",
       "type": "line",
-      "filter": 
-        [
-          "!=",
-          "tunnel",
-          "yes"
-        ]
-      ,
-      "source": "baremaps",
+      "filter": [
+        "!=",
+        "tunnel",
+        "yes"
+      ],
+      "source": "swissmap",
       "source-layer": "railway",
       "layout": {
         "line-cap": "round",
@@ -118,14 +116,12 @@
     {
       "id": "railway_dashes",
       "type": "line",
-      "filter": 
-        [
-          "!=",
-          "tunnel",
-          "yes"
-        ]
-      ,
-      "source": "baremaps",
+      "filter": [
+        "!=",
+        "tunnel",
+        "yes"
+      ],
+      "source": "swissmap",
       "source-layer": "railway",
       "layout": {
         "line-cap": "round",
@@ -156,14 +152,12 @@
     {
       "id": "railway_tunnel",
       "type": "line",
-      "filter": 
-        [
-          "==",
-          "tunnel",
-          "yes"
-        ]
-      ,
-      "source": "baremaps",
+      "filter": [
+        "==",
+        "tunnel",
+        "yes"
+      ],
+      "source": "swissmap",
       "source-layer": "railway",
       "layout": {
         "line-cap": "round",
@@ -190,14 +184,1213 @@
           4
         ]
       }
+    },
+    {
+      "id": "highway_tunnel",
+      "type": "line",
+      "filter": [
+        "==",
+        "tunnel",
+        "yes"
+      ],
+      "source": "swissmap",
+      "source-layer": "highway",
+      "paint": {
+        "line-dasharray": [
+          2,
+          2
+        ],
+        "line-color": "rgba(192, 192, 192, 1)",
+        "line-gap-width": 3.5
+      }
+    },
+    {
+      "id": "highway_casing",
+      "type": "line",
+      "filter": [
+        "!=",
+        "tunnel",
+        "yes"
+      ],
+      "source": "swissmap",
+      "source-layer": "highway",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.2
+          ],
+          [
+            "zoom"
+          ],
+          4,
+          0,
+          20,
+          [
+            "case",
+            [
+              "in",
+              [
+                "get",
+                "construction"
+              ],
+              [
+                "literal",
+                [
+                  "path",
+                  "footway",
+                  "steps"
+                ]
+              ]
+            ],
+            4,
+            [
+              "all",
+              [
+                "==",
+                [
+                  "get",
+                  "highway"
+                ],
+                "pedestrian"
+              ],
+              [
+                "in",
+                [
+                  "get",
+                  "geometry"
+                ],
+                [
+                  "literal",
+                  [
+                    "polygon",
+                    "multipolygon"
+                  ]
+                ]
+              ]
+            ],
+            6,
+            [
+              "any",
+              [
+                "in",
+                [
+                  "get",
+                  "highway"
+                ],
+                [
+                  "literal",
+                  [
+                    "pedestrian",
+                    "living_street"
+                  ]
+                ]
+              ],
+              [
+                "all",
+                [
+                  "==",
+                  [
+                    "get",
+                    "highway"
+                  ],
+                  "service"
+                ],
+                [
+                  "==",
+                  [
+                    "get",
+                    "service"
+                  ],
+                  "driveway"
+                ]
+              ],
+              [
+                "all",
+                [
+                  "==",
+                  [
+                    "get",
+                    "highway"
+                  ],
+                  "construction"
+                ],
+                [
+                  "!",
+                  [
+                    "in",
+                    [
+                      "get",
+                      "construction"
+                    ],
+                    [
+                      "literal",
+                      [
+                        "path",
+                        "footway",
+                        "steps"
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "all",
+                [
+                  "==",
+                  ["get", "highway"],
+                  "track"
+                ],
+                [
+                  "==",
+                  ["get", "tracktype"],
+                  "grade1"
+                ]
+              ]
+            ],
+            10,
+            [
+              "any",
+              [
+                "in",
+                [
+                  "get",
+                  "highway"
+                ],
+                [
+                  "literal",
+                  [
+                    "unclassified",
+                    "residential",
+                    "tertiary",
+                    "tertiary_link",
+                    "secondary",
+                    "secondary_link"
+                  ]
+                ]
+              ],
+              [
+                "all",
+                [
+                  "==",
+                  [
+                    "get",
+                    "highway"
+                  ],
+                  "service"
+                ],
+                [
+                  "!=",
+                  [
+                    "get",
+                    "service"
+                  ],
+                  "driveway"
+                ]
+              ]
+            ],
+            12,
+            [
+              "in",
+              [
+                "get",
+                "highway"
+              ],
+              [
+                "literal",
+                [
+                  "primary",
+                  "primary_link",
+                  "trunk",
+                  "trunk_link",
+                  "motorway",
+                  "motorway_link"
+                ]
+              ]
+            ],
+            16,
+            0
+          ]
+        ],
+        "line-color": [
+          "case",
+          [
+            "==",
+            [
+              "get",
+              "highway"
+            ],
+            "pedestrian"
+          ],
+          "rgb(184, 183, 182)",
+          [
+            "==",
+            [
+              "get",
+              "highway"
+            ],
+            "service"
+          ],
+          "rgb(213, 211, 211)",
+          [
+            "==",
+            [
+              "get",
+              "highway"
+            ],
+            "living_street"
+          ],
+          "rgb(207, 207, 207)",
+          [
+            "in",
+            [
+              "get",
+              "highway"
+            ],
+            [
+              "literal",
+              [
+                "residential",
+                "unclassified",
+                "track"
+              ]
+            ]
+          ],
+          "rgb(211, 207, 206)",
+          [
+            "in",
+            [
+              "get",
+              "highway"
+            ],
+            [
+              "literal",
+              [
+                "tertiary",
+                "tertiary_link"
+              ]
+            ]
+          ],
+          "rgb(190, 189, 188)",
+          [
+            "in",
+            [
+              "get",
+              "highway"
+            ],
+            [
+              "literal",
+              [
+                "secondary",
+                "secondary_link"
+              ]
+            ]
+          ],
+          "rgb(154, 166, 67)",
+          [
+            "in",
+            [
+              "get",
+              "highway"
+            ],
+            [
+              "literal",
+              [
+                "primary",
+                "primary_link"
+              ]
+            ]
+          ],
+          "rgba(149,108,102,255)",
+          [
+            "in",
+            [
+              "get",
+              "highway"
+            ],
+            [
+              "literal",
+              [
+                "trunk",
+                "trunk_link"
+              ]
+            ]
+          ],
+          "rgb(217, 111, 78)",
+          [
+            "in",
+            [
+              "get",
+              "highway"
+            ],
+            [
+              "literal",
+              [
+                "motorway",
+                "motorway_link"
+              ]
+            ]
+          ],
+          "rgba(166,114,30,255)",
+          [
+            "in",
+            [
+              "get",
+              "construction"
+            ],
+            [
+              "literal",
+              [
+                "primary",
+                "primary_link"
+              ]
+            ]
+          ],
+          "rgba(252, 213, 164, 1)",
+          [
+            "in",
+            [
+              "get",
+              "construction"
+            ],
+            [
+              "literal",
+              [
+                "motorway",
+                "motorway_link"
+              ]
+            ]
+          ],
+          "rgba(166,114,30,255)",
+          [
+            "any",
+            [
+              "in",
+              [
+                "get",
+                "construction"
+              ],
+              [
+                "literal",
+                [
+                  "tertiary",
+                  "tertiary_link",
+                  "residential",
+                  "unclassified",
+                  "service",
+                  "raceway",
+                  "living_street",
+                  "pedestrian",
+                  "track"
+                ]
+              ]
+            ],
+            [
+              "!",
+              [
+                "has",
+                "construction"
+              ]
+            ]
+          ],
+          "rgba(170, 170, 170, 1)",
+          [
+            "in",
+            [
+              "get",
+              "construction"
+            ],
+            [
+              "literal",
+              [
+                "trunk",
+                "trunk_link"
+              ]
+            ]
+          ],
+          "rgba(248, 178, 156, 1)",
+          [
+            "in",
+            [
+              "get",
+              "construction"
+            ],
+            [
+              "literal",
+              [
+                "secondary",
+                "secondary_link"
+              ]
+            ]
+          ],
+          "rgba(250,248,149,255)",
+          [
+            "in",
+            [
+              "get",
+              "construction"
+            ],
+            [
+              "literal",
+              [
+                "path",
+                "footway",
+                "steps"
+              ]
+            ]
+          ],
+          "rgba(255, 255, 255, 0.4)",
+          "rgba(0, 0, 0, 0)"
+        ]
+      }
+    },
+    {
+      "id": "highway_path",
+      "type": "line",
+      "filter": [
+        "!=",
+        "tunnel",
+        "yes"
+      ],
+      "source": "swissmap",
+      "source-layer": "highway",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.2
+          ],
+          [
+            "zoom"
+          ],
+          4,
+          0,
+          20,
+          [
+            "case",
+            [
+              "any",
+              [
+                "in",
+                [
+                  "get",
+                  "highway"
+                ],
+                [
+                  "literal",
+                  [
+                    "pedestrian",
+                    "living_street"
+                  ]
+                ]
+              ],
+              [
+                "all",
+                [
+                  "==",
+                  [
+                    "get",
+                    "highway"
+                  ],
+                  "service"
+                ],
+                [
+                  "==",
+                  [
+                    "get",
+                    "service"
+                  ],
+                  "driveway"
+                ]
+              ],
+              [
+                "all",
+                [
+                  "==",
+                  ["get", "highway"],
+                  "track"
+                ],
+                [
+                  "==",
+                  ["get", "tracktype"],
+                  "grade1"
+                ]
+              ]
+            ],
+            6,
+            [
+              "any",
+              [
+                "in",
+                [
+                  "get",
+                  "highway"
+                ],
+                [
+                  "literal",
+                  [
+                    "unclassified",
+                    "residential",
+                    "tertiary",
+                    "tertiary_link",
+                    "secondary",
+                    "secondary_link"
+                  ]
+                ]
+              ],
+              [
+                "all",
+                [
+                  "==",
+                  [
+                    "get",
+                    "highway"
+                  ],
+                  "service"
+                ],
+                [
+                  "!=",
+                  [
+                    "get",
+                    "service"
+                  ],
+                  "driveway"
+                ]
+              ]
+            ],
+            8,
+            [
+              "in",
+              [
+                "get",
+                "highway"
+              ],
+              [
+                "literal",
+                [
+                  "primary",
+                  "primary_link",
+                  "trunk",
+                  "trunk_link",
+                  "motorway",
+                  "motorway_link",
+                  "raceway"
+                ]
+              ]
+            ],
+            12,
+            0
+          ]
+        ],
+        "line-color": [
+          "case",
+          [
+            "==",
+            [
+              "get",
+              "highway"
+            ],
+            "pedestrian"
+          ],
+          "rgb(221, 221, 231)",
+          [
+            "in",
+            [
+              "get",
+              "highway"
+            ],
+            [
+              "literal",
+              [
+                "service",
+                "residential",
+                "unclassified",
+                "tertiary",
+                "tertiary_link",
+                "track"
+              ]
+            ]
+          ],
+          "rgb(254, 254, 254)",
+          [
+            "==",
+            [
+              "get",
+              "highway"
+            ],
+            "living_street"
+          ],
+          "rgb(237, 237, 237)",
+          [
+            "in",
+            [
+              "get",
+              "highway"
+            ],
+            [
+              "literal",
+              [
+                "secondary",
+                "secondary_link"
+              ]
+            ]
+          ],
+          "rgb(248, 250, 202)",
+          [
+            "in",
+            [
+              "get",
+              "highway"
+            ],
+            [
+              "literal",
+              [
+                "primary",
+                "primary_link"
+              ]
+            ]
+          ],
+          "rgba(240,175,150,255)",
+          [
+            "in",
+            [
+              "get",
+              "highway"
+            ],
+            [
+              "literal",
+              [
+                "trunk",
+                "trunk_link"
+              ]
+            ]
+          ],
+          "rgb(250, 193, 172)",
+          [
+            "in",
+            [
+              "get",
+              "highway"
+            ],
+            [
+              "literal",
+              [
+                "motorway",
+                "motorway_link"
+              ]
+            ]
+          ],
+          "rgba(235,183,72,255)",
+          [
+            "==",
+            [
+              "get",
+              "highway"
+            ],
+            "track"
+          ],
+          "rgb(177, 140, 63)",
+          [
+            "==",
+            [
+              "get",
+              "highway"
+            ],
+            "raceway"
+          ],
+          "rgba(255, 192, 203, 1)",
+          "rgba(0, 0, 0, 0)"
+        ]
+      }
+    },
+    {
+      "id": "highway_track_grade_2_3",
+      "type": "line",
+      "filter": [
+        "all",
+        [
+          "==",
+          "highway",
+          "track"
+        ],
+        [
+          "any",
+          [
+            "==",
+            "tracktype",
+            "grade2"
+          ],
+          [
+            "==",
+            "tracktype",
+            "grade3"
+          ]
+        ]
+      ],
+      "source": "swissmap",
+      "source-layer": "highway",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgb(150, 150, 150)"
+      }
+    },
+    {
+      "id": "highway_track_grade_5",
+      "type": "line",
+      "filter": [
+        "all",
+        [
+          "==",
+          "highway",
+          "track"
+        ],
+        [
+          "==",
+          "tracktype",
+          "grade5"
+        ]
+      ],
+      "source": "swissmap",
+      "source-layer": "highway",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgb(150, 150, 150)",
+        "line-dasharray": [
+          10,
+          2
+        ]
+      }
+    },
+    {
+      "id": "highway_track_grade_none",
+      "type": "line",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "highway"
+          ],
+          "track"
+        ],
+        [
+          "!",
+          [
+            "has",
+            "tracktype"
+          ]
+        ]
+      ],
+      "source": "swissmap",
+      "source-layer": "highway",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgb(150, 150, 150)",
+        "line-dasharray": [
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "id": "building",
+      "type": "fill",
+      "source": "swissmap",
+      "source-layer": "building",
+      "paint": {
+        "fill-color": "rgba(0, 0, 0, 0.1)",
+        "fill-antialias": true,
+        "fill-outline-color": "rgba(0, 0, 0, 0.1)",
+        "fill-opacity": 0.8
+      }
+    },
+    {
+      "id": "power",
+      "type": "line",
+      "filter": [
+        "==",
+        "power",
+        "line"
+      ],
+      "source": "swissmap",
+      "source-layer": "power",
+      "paint": {
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.2
+          ],
+          [
+            "zoom"
+          ],
+          4,
+          0,
+          20,
+          5
+        ],
+        "line-color": "#0383b9",
+        "line-dasharray": [10, 2, 1, 2]
+      }
+    },
+    {
+      "id": "power_minor",
+      "type": "line",
+      "filter": [
+        "==",
+        "power",
+        "minor_line"
+      ],
+      "source": "swissmap",
+      "source-layer": "power",
+      "paint": {
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.2
+          ],
+          [
+            "zoom"
+          ],
+          4,
+          0,
+          20,
+          4
+        ],
+        "line-color": "#0383b9",
+        "line-dasharray": [1, 1]
+      }
+    },
+    {
+      "id": "aerialway",
+      "type": "line",
+      "filter": [
+        "all"
+      ],
+      "source": "swissmap",
+      "source-layer": "aerialway",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgb(177, 177, 175)"
+      }
+    },
+    {
+      "id": "islet_label",
+      "type": "symbol",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "place"
+          ],
+          "islet"
+        ]
+      ],
+      "source": "swissmap",
+      "source-layer": "points",
+      "layout": {
+        "visibility": "visible",
+        "text-font": [
+          "Open Sans Regular,Arial Unicode MS Regular"
+        ],
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-size": 14
+      },
+      "paint": {
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-halo-width": 1.2
+      }
+    },
+    {
+      "id": "isolated_dwelling_label",
+      "type": "symbol",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "place"
+          ],
+          "isolated_dwelling"
+        ]
+      ],
+      "source": "swissmap",
+      "source-layer": "points",
+      "layout": {
+        "visibility": "visible",
+        "text-font": [
+          "Open Sans Regular,Arial Unicode MS Regular"
+        ],
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-size": 14
+      },
+      "paint": {
+        "text-color": "rgba(0, 0, 0, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "neighbourhood_label",
+      "type": "symbol",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "place"
+          ],
+          "neighbourhood"
+        ]
+      ],
+      "source": "swissmap",
+      "source-layer": "points",
+      "layout": {
+        "visibility": "visible",
+        "text-font": [
+          "Open Sans Regular,Arial Unicode MS Regular"
+        ],
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-size": 14
+      },
+      "paint": {
+        "text-color": "rgba(0, 0, 0, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "quarter_label",
+      "type": "symbol",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "place"
+          ],
+          "quarter"
+        ]
+      ],
+      "source": "swissmap",
+      "source-layer": "points",
+      "layout": {
+        "visibility": "visible",
+        "text-font": [
+          "Open Sans Regular,Arial Unicode MS Regular"
+        ],
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-size": 14
+      },
+      "paint": {
+        "text-color": "rgba(0, 0, 0, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "hamlet_label",
+      "type": "symbol",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "place"
+          ],
+          "hamlet"
+        ]
+      ],
+      "source": "swissmap",
+      "source-layer": "points",
+      "layout": {
+        "visibility": "visible",
+        "text-font": [
+          "Open Sans Regular,Arial Unicode MS Regular"
+        ],
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-size": 14
+      },
+      "paint": {
+        "text-color": "rgba(0, 0, 0, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "village_label",
+      "type": "symbol",
+      "filter": [
+        "==",
+        "place",
+        "village"
+      ],
+      "source": "swissmap",
+      "source-layer": "points",
+      "minzoom": 11,
+      "layout": {
+        "visibility": "visible",
+        "text-font": [
+          "Open Sans Regular,Arial Unicode MS Regular"
+        ],
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-size": 14
+      },
+      "paint": {
+        "text-color": "rgba(0, 0, 0, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-halo-width": 1.2
+      }
+    },
+    {
+      "id": "river_label",
+      "type": "symbol",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "waterway"
+          ],
+          "river"
+        ]
+      ],
+      "source": "swissmap",
+      "source-layer": "waterway",
+      "layout": {
+        "visibility": "visible",
+        "text-font": [
+          "Open Sans Regular,Arial Unicode MS Regular"
+        ],
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-size": 14,
+        "symbol-placement": "line"
+      },
+      "paint": {
+        "text-color": "rgba(26, 109, 187, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-halo-width": 1.2
+      }
+    },
+    {
+      "id": "town_label",
+      "type": "symbol",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "place"
+          ],
+          "town"
+        ]
+      ],
+      "source": "swissmap",
+      "source-layer": "points",
+      "layout": {
+        "visibility": "visible",
+        "text-font": [
+          "Open Sans Regular,Arial Unicode MS Regular"
+        ],
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-size": 14
+      },
+      "paint": {
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-halo-width": 1.2
+      }
+    },
+    {
+      "id": "city_label",
+      "type": "symbol",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "place"
+          ],
+          "city"
+        ]
+      ],
+      "source": "swissmap",
+      "source-layer": "points",
+      "layout": {
+        "visibility": "visible",
+        "text-font": [
+          "Open Sans Regular,Arial Unicode MS Regular"
+        ],
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-size": 16
+      },
+      "paint": {
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-halo-width": 1.2
+      }
     }
   ],
   "center": [
     6.6323,
     46.5197
   ],
-  "metadata": {
-    "maputnik:renderer": "mbgljs"
-  },
   "zoom": 14
 }

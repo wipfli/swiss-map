@@ -1,5 +1,5 @@
-schema_name: Power
-schema_description: An example overlay showing powerlines
+schema_name: SwissMap
+schema_description: A map of Switzerland
 attribution: <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy;
   OpenStreetMap contributors</a>
 sources:
@@ -7,6 +7,7 @@ sources:
     type: osm
     url: geofabrik:switzerland
 layers:
+
 - name: power
   features:
   - sources:
@@ -42,7 +43,6 @@ layers:
     attributes:
     - key: power
 
-
 - name: aerialway
   features:
   - sources:
@@ -53,7 +53,6 @@ layers:
       aerialway:
     attributes:
     - key: aerialway
-
 
 - name: highway
   features:
@@ -162,7 +161,6 @@ layers:
     attributes:
     - key: landuse
 
-
 - name: building
   features:
   - sources:
@@ -173,10 +171,6 @@ layers:
       building:
     attributes:
     - key: building
-
-
-
-
 
 - name: water
   features:
@@ -207,7 +201,6 @@ layers:
     attributes:
     - key: natural
       constant_value: water
-
 
 - name: waterway
   features:
@@ -243,8 +236,6 @@ layers:
     attributes:
     - key: waterway
     - key: name
-
-
 
 - name: points
   features:
