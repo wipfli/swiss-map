@@ -1,0 +1,363 @@
+schema_name: Power
+schema_description: An example overlay showing powerlines
+attribution: <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy;
+  OpenStreetMap contributors</a>
+sources:
+  osm:
+    type: osm
+    url: geofabrik:switzerland
+layers:
+- name: power
+  features:
+  - sources:
+    - osm
+    geometry: line
+    min_zoom: 8
+    max_zoom: 10
+    include_when:
+      power:
+      - cable
+      - line
+    attributes:
+    - key: power
+  - sources:
+    - osm
+    geometry: line
+    min_zoom: 10
+    include_when:
+      power:
+      - cable
+      - line
+      - minor_line
+    attributes:
+    - key: power
+  - sources:
+    - osm
+    geometry: polygon
+    min_zoom: 12
+    include_when:
+      power:
+      - plant
+      - substation
+    attributes:
+    - key: power
+
+
+- name: aerialway
+  features:
+  - sources:
+    - osm
+    geometry: line
+    min_zoom: 12
+    include_when:
+      aerialway:
+    attributes:
+    - key: aerialway
+
+
+- name: highway
+  features:
+  - sources:
+    - osm
+    geometry: line
+    min_zoom: 8
+    max_zoom: 10
+    include_when:
+      highway:
+      - motorway
+      - motorway_link
+      - trunk
+      - trunk_link
+      - primary
+      - secondary
+    attributes:
+    - key: highway
+    - key: tunnel
+  - sources:
+    - osm
+    geometry: line
+    min_zoom: 10
+    max_zoom: 12
+    include_when:
+      highway:
+      - motorway
+      - motorway_link
+      - trunk
+      - trunk_link
+      - primary
+      - secondary
+      - tertiary
+    attributes:
+    - key: highway
+    - key: tunnel
+  - sources:
+    - osm
+    geometry: line
+    min_zoom: 12
+    max_zoom: 13
+    include_when:
+      highway:
+      - motorway
+      - motorway_link
+      - trunk
+      - trunk_link
+      - primary
+      - primary_link
+      - secondary
+      - secondary_link
+      - tertiary
+      - tertiary_link
+      - unclassified
+      - residential
+    attributes:
+    - key: highway
+    - key: tunnel
+  - sources:
+    - osm
+    geometry: line
+    min_zoom: 13
+    include_when:
+      highway:
+    attributes:
+    - key: highway
+    - key: tunnel
+
+
+- name: railway
+  features:
+  - sources:
+    - osm
+    geometry: line
+    min_zoom: 8
+    include_when:
+      railway:
+    attributes:
+    - key: railway
+    - key: tunnel
+
+
+- name: landuse
+  features:
+  - sources:
+    - osm
+    geometry: polygon
+    min_zoom: 8
+    max_zoom: 10
+    include_when:
+      landuse:
+      - farmland
+      - forest
+    attributes:
+    - key: landuse
+  - sources:
+    - osm
+    geometry: polygon
+    min_zoom: 10
+    max_zoom: 12
+    include_when:
+      landuse:
+      - farmland
+      - forest
+      - meadow
+      - residential
+    attributes:
+    - key: landuse
+  - sources:
+    - osm
+    geometry: polygon
+    min_zoom: 12
+    include_when:
+      landuse:
+    attributes:
+    - key: landuse
+
+
+
+
+- name: building
+  features:
+  - sources:
+    - osm
+    geometry: polygon
+    min_zoom: 14
+    include_when:
+      building:
+    attributes:
+    - key: building
+
+
+
+
+
+- name: water
+  features:
+  - sources:
+    - osm
+    geometry: polygon
+    include_when:
+      natural: water
+    attributes:
+    - key: natural
+    - key: intermittent
+      include_when:
+        intermittent: true
+    - key: name
+      min_tile_cover_size: 0.01
+      include_when:
+      exclude_when:
+        tag:
+          key: water
+          value:
+          - river
+          - canal
+          - stream
+  - sources:
+    - water_polygons
+    geometry: polygon
+    include_when:
+    attributes:
+    - key: natural
+      constant_value: water
+
+
+- name: waterway
+  features:
+  - sources:
+    - osm
+    min_zoom: 8
+    max_zoom: 10
+    geometry: line
+    include_when:
+      waterway:
+      - river
+    attributes:
+    - key: waterway
+    - key: name
+  - sources:
+    - osm
+    min_zoom: 10
+    max_zoom: 12
+    geometry: line
+    include_when:
+      waterway:
+      - river
+      - stream
+    attributes:
+    - key: waterway
+    - key: name
+  - sources:
+    - osm
+    min_zoom: 12
+    geometry: line
+    include_when:
+      waterway:
+    attributes:
+    - key: waterway
+    - key: name
+
+
+
+- name: points
+  features:
+  - sources:
+    - osm
+    geometry: point
+    min_zoom: 2
+    max_zoom: 3
+    include_when:
+      place:
+      - country
+    attributes:
+    - key: place
+    - key: name
+  - sources:
+    - osm
+    geometry: point
+    min_zoom: 3
+    max_zoom: 4
+    include_when:
+      place:
+      - country
+      - city
+      - sea
+    attributes:
+    - key: place
+    - key: name
+  - sources:
+    - osm
+    geometry: point
+    min_zoom: 4
+    max_zoom: 8
+    include_when:
+      place:
+      - country
+      - city
+      - sea
+      - state
+      - county
+    attributes:
+    - key: place
+    - key: name
+  - sources:
+    - osm
+    geometry: point
+    min_zoom: 8
+    max_zoom: 10
+    include_when:
+      place:
+      - country
+      - state
+      - region
+      - province
+      - district
+      - county
+      - municipality
+      - city
+      - town
+    attributes:
+    - key: place
+    - key: name
+  - sources:
+    - osm
+    geometry: point
+    min_zoom: 10
+    max_zoom: 12
+    include_when:
+      place:
+      - country
+      - state
+      - region
+      - province
+      - district
+      - county
+      - municipality
+      - city
+      - town
+      - village
+    attributes:
+    - key: place
+    - key: name
+  - sources:
+    - osm
+    geometry: point
+    min_zoom: 12
+    include_when:
+      place:
+      - country
+      - state
+      - region
+      - province
+      - district
+      - county
+      - municipality
+      - city
+      - town
+      - village
+      - quarter
+      - hamlet
+      - neighborhood
+      - isolated_dwelling
+      - islet
+    attributes:
+    - key: place
+    - key: name
