@@ -4,25 +4,12 @@
   "sources": {
     "swissmap": {
       "type": "vector",
-      "url": "http://[::]:8080/data/output.json"
-    },
-    "relief_shading": {
-      "type": "raster",
-      "tiles": [
-        "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.leichte-basiskarte_reliefschattierung/default/current/3857/{z}/{x}/{y}.png"
-      ],
-      "tileSize": 256,
-      "minzoom": 0,
-      "maxzoom": 22
+      "tiles": ["pmtiles://output.pmtiles/{z}/{x}/{y}"],
+      "maxzoom": 12
     }
   },
   "glyphs": "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
   "layers": [
-    {
-      "id": "background",
-      "type": "raster",
-      "source": "relief_shading"
-    },
     {
       "id": "landuse_forest",
       "type": "fill",

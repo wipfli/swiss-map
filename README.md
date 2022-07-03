@@ -11,15 +11,16 @@ Clone this repo, then build the tiles with:
 docker run -v "$(pwd)/data":/data ghcr.io/onthegomap/planetiler:latest generate-custom --schema=/data/tileset.yml --download
 ```
 
-Serve the tiles with:
+Convert the mbtiles to pmtiles
 
 ```
-docker run --rm -it -v "$(pwd)/data":/data -p 8080:8080 maptiler/tileserver-gl -p 8080
+pip3 install pmtiles
+pmtiles-convert data/output.mbtiles output.pmtiles
 ```
 
 And serve the website with:
 
 ```
-python3 -m http.server
+npm install -g serve
+serve .
 ```
-
