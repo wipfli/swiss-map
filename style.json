@@ -4,7 +4,7 @@
   "sources": {
     "swissmap": {
       "type": "vector",
-      "tiles": ["pmtiles://output.pmtiles/{z}/{x}/{y}"],
+      "tiles": ["pmtiles://https://swiss-map.s3.eu-central-1.amazonaws.com/output.pmtiles/{z}/{x}/{y}"],
       "maxzoom": 12
     }
   },
