@@ -5,6 +5,9 @@ The map style and tile set was adapted from Baremaps:
 * [data/tileset.yml](data/tileset.yml) mostly follows https://github.com/baremaps/openstreetmap-vecto/blob/main/tileset.json
 * [style.json](style.json) mostly follows https://github.com/baremaps/openstreetmap-vecto/blob/main/style.json
 
+## demo
+
+https://wipfli.github.io/swiss-map/
 
 ## develop
 
