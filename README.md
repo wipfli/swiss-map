@@ -1,7 +1,10 @@
 # swiss-map
 A simple map of Switzerland. The vector tiles are generated with [Planetiler](https://github.com/onthegomap/planetiler) and the maps is rendered in the browser with [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js).
 
-The map style and tile set was adapted from https://github.com/baremaps/openstreetmap-vecto/.
+The map style and tile set was adapted from Baremaps:
+* [data/tileset.yml](data/tileset.yml) mostly follows https://github.com/baremaps/openstreetmap-vecto/blob/main/tileset.json
+* [style.json](style.json) mostly follows https://github.com/baremaps/openstreetmap-vecto/blob/main/style.json
+
 
 ## develop
 
