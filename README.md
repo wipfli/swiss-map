@@ -39,7 +39,7 @@ To use local tiles, change the source in `style.json` to something like:
        "type": "vector",
 -      "tiles": ["pmtiles://https://swiss-map.s3.eu-central-1.amazonaws.com/output.pmtiles/{z}/{x}/{y}"],
 +      "tiles": ["pmtiles://output.pmtiles/{z}/{x}/{y}"],
-       "maxzoom": 12
+       "maxzoom": 14
      }
    },
 ```

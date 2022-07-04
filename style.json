@@ -5,7 +5,7 @@
     "swissmap": {
       "type": "vector",
       "tiles": ["pmtiles://https://swiss-map.s3.eu-central-1.amazonaws.com/output.pmtiles/{z}/{x}/{y}"],
-      "maxzoom": 12
+      "maxzoom": 14
     }
   },
   "glyphs": "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
