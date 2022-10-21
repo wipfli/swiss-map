@@ -776,17 +776,18 @@
       "id": "highway-secondary-tertiary",
       "type": "line",
       "metadata": {"mapbox:group": "1444849345966.4436"},
-      "source": "openmaptiles",
-      "source-layer": "transportation",
+      "source": "shortbread",
+      "source-layer": "streets",
       "filter": [
         "all",
-        ["!in", "brunnel", "bridge", "tunnel"],
-        ["in", "class", "secondary", "tertiary"]
+        ["!=", "bridge", true],
+        ["!=", "tunnel", true],
+        ["in", "kind", "secondary", "tertiary"]
       ],
       "layout": {
         "line-cap": "round",
         "line-join": "round",
-        "visibility": "none"
+        "visibility": "visible"
       },
       "paint": {
         "line-color": "#fea",
@@ -797,21 +798,22 @@
       "id": "highway-primary",
       "type": "line",
       "metadata": {"mapbox:group": "1444849345966.4436"},
-      "source": "openmaptiles",
-      "source-layer": "transportation",
+      "source": "shortbread",
+      "source-layer": "streets",
       "filter": [
         "all",
         ["==", "$type", "LineString"],
         [
           "all",
-          ["!in", "brunnel", "bridge", "tunnel"],
-          ["in", "class", "primary"]
+          ["!=", "bridge", true],
+          ["!=", "tunnel", true],
+          ["in", "kind", "primary"]
         ]
       ],
       "layout": {
         "line-cap": "round",
         "line-join": "round",
-        "visibility": "none"
+        "visibility": "visible"
       },
       "paint": {
         "line-color": "#fea",
@@ -822,21 +824,22 @@
       "id": "highway-trunk",
       "type": "line",
       "metadata": {"mapbox:group": "1444849345966.4436"},
-      "source": "openmaptiles",
-      "source-layer": "transportation",
+      "source": "shortbread",
+      "source-layer": "streets",
       "filter": [
         "all",
         ["==", "$type", "LineString"],
         [
           "all",
-          ["!in", "brunnel", "bridge", "tunnel"],
-          ["in", "class", "trunk"]
+          ["!=", "bridge", true],
+          ["!=", "tunnel", true],
+          ["in", "kind", "trunk"]
         ]
       ],
       "layout": {
         "line-cap": "round",
         "line-join": "round",
-        "visibility": "none"
+        "visibility": "visible"
       },
       "paint": {
         "line-color": "#fea",
@@ -847,22 +850,23 @@
       "id": "highway-motorway",
       "type": "line",
       "metadata": {"mapbox:group": "1444849345966.4436"},
-      "source": "openmaptiles",
-      "source-layer": "transportation",
+      "source": "shortbread",
+      "source-layer": "streets",
       "minzoom": 5,
       "filter": [
         "all",
         ["==", "$type", "LineString"],
         [
           "all",
-          ["!in", "brunnel", "bridge", "tunnel"],
-          ["==", "class", "motorway"]
+          ["!=", "bridge", true],
+          ["!=", "tunnel", true],
+          ["==", "kind", "motorway"]
         ]
       ],
       "layout": {
         "line-cap": "round",
         "line-join": "round",
-        "visibility": "none"
+        "visibility": "visible"
       },
       "paint": {
         "line-color": "#fc8",
