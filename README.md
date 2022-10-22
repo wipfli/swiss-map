@@ -92,8 +92,6 @@ Generate shortbread mbtiles with planetiler:
 docker run -v "$(pwd)/data":/data ghcr.io/onthegomap/planetiler:latest generate-custom --schema=/data/shortbread.yml --download
 ```
 
-```
-
 Serve shortbread mbtiles with tileserver-gl:
 ```
 docker run --rm -it -v "$(pwd)/data":/data -p 8080:8080 maptiler/tileserver-gl -p 8080
@@ -104,4 +102,4 @@ Serve `index-shortbread.html` and style with:
 npx serve .
 ```
 
-Credits: Map style derived from OpenMapTiles.
+Credits: Map style derived from OpenMapTiles Basic Preview style.
