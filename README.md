@@ -84,12 +84,19 @@ And the CORS settings are:
 
 ## Shortbread
 
-I would like to put an OpenMapTiles style onto shortbread tiles.
+Put an OpenMapTiles style onto shortbread tiles.
+
+### Demo
+
+* OpenMapTiles: https://wipfli.github.io/swiss-map/openmaptiles#11.63/47.2779/8.2231
+* Shortbread: https://wipfli.github.io/swiss-map/shortbread#11.63/47.2779/8.2231
+
+### Steps
 
 Generate shortbread mbtiles with planetiler:
 
 ```
-docker run -v "$(pwd)/data":/data ghcr.io/onthegomap/planetiler:latest generate-custom --schema=/data/shortbread.yml --download
+docker run -v "$(pwd)/data":/data ghcr.io/onthegomap/planetiler:latest generate-custom --schema=/data/shortbread.yml --download --bounds "8,47,8.5,85"
 ```
 
 Serve shortbread mbtiles with tileserver-gl:
@@ -97,7 +104,7 @@ Serve shortbread mbtiles with tileserver-gl:
 docker run --rm -it -v "$(pwd)/data":/data -p 8080:8080 maptiler/tileserver-gl -p 8080
 ```
 
-Serve `index-shortbread.html` and style with:
+Serve `shortbread.html` and style with:
 ```
 npx serve .
 ```
