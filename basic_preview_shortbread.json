@@ -23,7 +23,7 @@
       "filter": [
         "all",
         ["==", "$type", "Polygon"],
-        ["in", "kind", "residential", "industrial", "cemetery", "park"]
+        ["in", "kind", "residential", "industrial", "cemetery", "park", "farmyard"]
       ],
       "layout": {"visibility": "visible"},
       "paint": {"fill-color": "hsl(47, 13%, 86%)", "fill-opacity": 0.7}
