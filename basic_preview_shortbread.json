@@ -1075,6 +1075,56 @@
       "paint": {"fill-color": "rgba(0, 0, 0, 0.1)", "fill-antialias": true}
     },
     {
+      "id": "powerline-minor",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "power_lines",
+      "minzoom": 12,
+      "filter": [
+          "all",
+          [
+              "==",
+              "power",
+              "minor_line"
+          ]
+      ],
+      "paint": {
+          "line-dasharray": [
+              1,
+              1
+          ],
+          "line-width": 2,
+          "line-color": "#0383b9",
+          "line-opacity": 0.7
+      }
+    },
+    {
+        "id": "powerline",
+        "type": "line",
+        "source": "shortbread",
+        "source-layer": "power_lines",
+        "minzoom": 11,
+        "filter": [
+            "all",
+            [
+                "==",
+                "power",
+                "line"
+            ]
+        ],
+        "paint": {
+            "line-dasharray": [
+                10,
+                2,
+                1,
+                2
+            ],
+            "line-width": 2,
+            "line-color": "#0383b9",
+            "line-opacity": 0.7
+        }
+    },
+    {
       "id": "place_label_other",
       "type": "symbol",
       "source": "shortbread",
