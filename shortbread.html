@@ -23,7 +23,9 @@ style: 'basic_preview_shortbread.json', // style URL
 center: [8.5822, 47.3842], // starting position [lng, lat]
 zoom: 10, // starting zoom
 hash: true,
-});
+}).addControl(new maplibregl.AttributionControl({
+customAttribution: "OpenMapTiles Basic Preview style on Shortbread schema | OpenStreetMap contributors"
+}));
 </script>
 
 </body>
