@@ -96,7 +96,7 @@ Put an OpenMapTiles style onto shortbread tiles.
 Generate shortbread mbtiles with planetiler:
 
 ```
-docker run -v "$(pwd)/data":/data ghcr.io/onthegomap/planetiler:latest generate-custom --schema=/data/shortbread.yml --download --bounds "8,47,8.5,85"
+docker run -v "$(pwd)/data":/data ghcr.io/onthegomap/planetiler:latest generate-custom --schema=/data/shortbread.yml --download --bounds "8,47,8.5,48"
 ```
 
 Serve shortbread mbtiles with tileserver-gl:

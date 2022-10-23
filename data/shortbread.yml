@@ -100,6 +100,23 @@ layers:
     attributes:
     - key: kind
       type: match_value
+  
+- id: power_lines
+  features:
+  - source: osm
+    geometry: line
+    min_zoom:
+      default_value: 10
+      overrides:
+        12:
+          power: [ minor_line ]
+    include_when:
+      power:
+      - line
+      - minor_line
+    attributes:
+    - key: power
+      type: match_value
 
 - id: water_line_labels
   features:
