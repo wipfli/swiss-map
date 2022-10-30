@@ -599,6 +599,7 @@
       "type": "line",
       "source": "shortbread",
       "source-layer": "streets",
+      "minzoom": 14,
       "filter": [
         "all",
         ["==", "$type", "LineString"],
@@ -606,7 +607,7 @@
           "all",
           ["!=", "tunnel", "true"],
           ["in", "kind", "track"],
-          ["in", "tracktype", "grade3", "grade4", "grade5"]
+          ["any", ["in", "tracktype", "grade3", "grade4", "grade5"], ["!has", "tracktype"]]
         ]
       ],
       "layout": {
@@ -1125,6 +1126,37 @@
         }
     },
     {
+      "id": "ele",
+      "type": "symbol",
+      "source": "shortbread",
+      "source-layer": "ele",
+      "minzoom": 12,
+      "layout": {
+        "text-field": "{ele}",
+        "text-font": ["Noto Sans Regular"],
+        "text-size": 14,
+        "text-padding": 50
+      },
+      "paint": {
+        "text-color": "grey"
+      }
+    },
+    {
+      "id": "mountain_peak",
+      "type": "symbol",
+      "source": "shortbread",
+      "source-layer": "mountain_peaks",
+      "minzoom": 12,
+      "layout": {
+        "text-field": "{name}\n{ele}",
+        "text-font": ["Noto Sans Regular"],
+        "text-size": 14
+      },
+      "paint": {
+        "text-color": "gray"
+      }
+    },
+    {
       "id": "place_label_other",
       "type": "symbol",
       "source": "shortbread",
@@ -1182,7 +1214,14 @@
       "minzoom": 11.5,
       "filter": ["all", ["==", "$type", "Point"], ["==", "kind", "village"], ["<=", "population", 3000]],
       "layout": {
-        "text-field": "{name}",
+        "text-field": [
+          "format",
+          ["get", "name"],
+          {"font-scale": 1.0},
+          "\n",
+          ["get", "ele"],
+          {"font-scale": 0.8}
+        ],
         "text-font": ["Noto Sans Regular"],
         "text-anchor": "bottom",
         "text-offset": [0, 0],
@@ -1205,7 +1244,14 @@
       "maxzoom": 16,
       "filter": ["all", ["==", "$type", "Point"], ["==", "kind", "village"], [">", "population", 3000]],
       "layout": {
-        "text-field": "{name}",
+        "text-field": [
+          "format",
+          ["get", "name"],
+          {"font-scale": 1.0},
+          "\n",
+          ["get", "ele"],
+          {"font-scale": 0.8}
+        ],
         "text-font": ["Noto Sans Regular"],
         "text-anchor": "bottom",
         "text-offset": [0, 0],
@@ -1228,7 +1274,14 @@
       "maxzoom": 16,
       "filter": ["all", ["==", "$type", "Point"], ["==", "kind", "town"]],
       "layout": {
-        "text-field": "{name}",
+        "text-field": [
+          "format",
+          ["get", "name"],
+          {"font-scale": 1.0},
+          "\n",
+          ["get", "ele"],
+          {"font-scale": 0.8}
+        ],
         "text-font": ["Noto Sans Regular"],
         "text-anchor": "bottom",
         "text-offset": [0, 0],
@@ -1251,7 +1304,14 @@
       "maxzoom": 16,
       "filter": ["all", ["==", "$type", "Point"], ["in", "kind", "city","state_capital"]],
       "layout": {
-        "text-field": "{name}",
+        "text-field": [
+          "format",
+          ["get", "name"],
+          {"font-scale": 1.0},
+          "\n",
+          ["get", "ele"],
+          {"font-scale": 0.8}
+        ],
         "text-font": ["Noto Sans Regular"],
         "text-anchor": "bottom",
         "text-offset": [0, 0],

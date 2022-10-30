@@ -260,6 +260,8 @@ layers:
         - value: 5
           if: { place: [ isolated_dwelling, farm ] }
         - else: 0
+    - key: ele
+      tag_value: ele
 
 #  Land Use, Land Cover, Buildings
 - id: land
@@ -501,68 +503,6 @@ layers:
     - key: horse
       min_zoom: 14
 
-- id: street_labels
-  features:
-  - source: osm
-    geometry: line
-    min_zoom:
-      default_value: 14
-      overrides:
-        10:
-          highway: motorway
-        12:
-          highway: [ trunk, primary ]
-        13:
-          highway:
-          - motorway_link
-          - trunk_link
-          - primary_link
-          - secondary
-          - secondary_link
-          - tertiary
-    include_when:
-      highway:
-      - motorway
-      - motorway_link
-      - trunk
-      - trunk_link
-      - primary
-      - primary_link
-      - secondary
-      - secondary_link
-      - tertiary
-      - tertiary_link
-      - unclassified
-      - residential
-      - living_street
-      - service
-      - pedestrian
-      - track
-      - footway
-      - steps
-      - path
-      - cycleway
-    exclude_when:
-      __all__:
-        name: ''
-        ref: ''
-    attributes:
-    - key: kind
-      value: '${ match_value.replace("_link", "") }'
-    - *name
-    - *name_en
-    - *name_de
-    # TODO use ref var to avoid duplicating logic
-    - key: ref
-      exclude_when: &missing_ref
-        ref: ''
-      value: '${ feature.tags["ref"].replace(";", "\n") }'
-    - key: ref_cols
-      value: '${ max(feature.tags["ref"].split(";").map(r, size(r))) }'
-      exclude_when: *missing_ref
-    - key: ref_rows
-      value: '${ size(feature.tags["ref"].split(";")) }'
-      exclude_when: *missing_ref
 
 - id: street_polygons
   features:
@@ -653,3 +593,28 @@ layers:
     min_zoom: *public_transport_zoom
     include_when: *public_transport_filter
     attributes: *public_transport_attrs
+
+- id: mountain_peaks
+  features:
+  - source: osm
+    geometry: point
+    min_zoom: 12
+    include_when:
+      natural: peak
+    attributes:
+    - key: name
+      tag_value: name
+    - key: ele
+      tag_value: ele
+
+- id: ele
+  features:
+  - source: osm
+    geometry: point
+    min_zoom: 12
+    include_when:
+      ele: __any__
+    attributes:
+    - key: ele
+      tag_value: ele
+      type: integer
