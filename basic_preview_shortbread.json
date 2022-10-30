@@ -26,7 +26,7 @@
         ["in", "kind", "residential", "industrial", "cemetery", "park", "farmyard"]
       ],
       "layout": {"visibility": "visible"},
-      "paint": {"fill-color": "hsl(47, 13%, 86%)", "fill-opacity": 0.7}
+      "paint": {"fill-color": "#f8f9fa"}
     },
     {
       "id": "landcover_grass",
@@ -44,7 +44,7 @@
       "source-layer": "land",
       "filter": ["==", "kind", "wood"],
       "layout": {"visibility": "visible"},
-      "paint": {"fill-color": "rgba(195, 222, 179, 1)", "fill-opacity": 0.5}
+      "paint": {"fill-color": "#ceead6"}
     },
     {
       "id": "water",
@@ -1073,7 +1073,15 @@
       "source": "shortbread",
       "source-layer": "buildings",
       "layout": {"visibility": "visible"},
-      "paint": {"fill-color": "rgba(0, 0, 0, 0.1)", "fill-antialias": true}
+      "paint": {"fill-color": "#f1f3f4", "fill-antialias": true}
+    },
+    {
+      "id": "building-outline",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "buildings",
+      "layout": {"visibility": "visible"},
+      "paint": {"line-color": "#dee0e4"}
     },
     {
       "id": "powerline-minor",
