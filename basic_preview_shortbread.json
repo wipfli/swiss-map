@@ -321,7 +321,7 @@
       "type": "line",
       "source": "shortbread",
       "source-layer": "streets",
-      "minzoom": 13.5,
+      "minzoom": 14,
       "filter": [
         "all",
         ["==", "$type", "LineString"],
@@ -347,7 +347,7 @@
     {
       "id": "highway-track-casing",
       "type": "line",
-      "minzoom": 13.5,
+      "minzoom": 14,
       "source": "shortbread",
       "source-layer": "streets",
       "filter": [
@@ -563,7 +563,7 @@
       "type": "line",
       "source": "shortbread",
       "source-layer": "streets",
-      "minzoom": 13.5,
+      "minzoom": 14,
       "filter": [
         "all",
         ["==", "$type", "LineString"],
@@ -636,7 +636,7 @@
       "id": "highway-track-grade1",
       "type": "line",
       "source": "shortbread",
-      "minzoom": 13.5,
+      "minzoom": 14,
       "source-layer": "streets",
       "filter": [
         "all",
