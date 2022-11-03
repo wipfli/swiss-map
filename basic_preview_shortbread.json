@@ -13,20 +13,21 @@
       "id": "background",
       "type": "background",
       "layout": {"visibility": "visible"},
-      "paint": {"background-color": "rgba(240, 244, 247, 1)"}
+      "paint": {"background-color": "#f8f9fa"}
     },
     {
       "id": "landuse-residential",
       "type": "fill",
       "source": "shortbread",
       "source-layer": "land",
+      "maxzoom": 14,
       "filter": [
         "all",
         ["==", "$type", "Polygon"],
         ["in", "kind", "residential", "industrial", "cemetery", "park", "farmyard"]
       ],
       "layout": {"visibility": "visible"},
-      "paint": {"fill-color": "#f8f9fa"}
+      "paint": {"fill-color": "#dee0e4"}
     },
     {
       "id": "landcover_grass",
@@ -35,7 +36,7 @@
       "source-layer": "land",
       "filter": ["==", "kind", "meadow"],
       "layout": {"visibility": "visible"},
-      "paint": {"fill-color": "rgba(240, 244, 247, 1)", "fill-opacity": 0.45}
+      "paint": {"fill-color": "#f8f9fa"}
     },
     {
       "id": "landcover_wood",
@@ -321,7 +322,7 @@
       "type": "line",
       "source": "shortbread",
       "source-layer": "streets",
-      "minzoom": 14,
+      "minzoom": 13,
       "filter": [
         "all",
         ["==", "$type", "LineString"],
@@ -347,7 +348,7 @@
     {
       "id": "highway-track-casing",
       "type": "line",
-      "minzoom": 14,
+      "minzoom": 13,
       "source": "shortbread",
       "source-layer": "streets",
       "filter": [
@@ -563,7 +564,7 @@
       "type": "line",
       "source": "shortbread",
       "source-layer": "streets",
-      "minzoom": 14,
+      "minzoom": 13,
       "filter": [
         "all",
         ["==", "$type", "LineString"],
@@ -636,7 +637,7 @@
       "id": "highway-track-grade1",
       "type": "line",
       "source": "shortbread",
-      "minzoom": 14,
+      "minzoom": 13,
       "source-layer": "streets",
       "filter": [
         "all",
