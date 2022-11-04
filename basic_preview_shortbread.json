@@ -24,7 +24,7 @@
       "filter": [
         "all",
         ["==", "$type", "Polygon"],
-        ["in", "kind", "residential", "industrial", "cemetery", "park", "farmyard"]
+        ["in", "kind", "residential", "industrial", "cemetery", "park", "farmyard", "commercial"]
       ],
       "layout": {"visibility": "visible"},
       "paint": {"fill-color": "#dee0e4"}
@@ -43,7 +43,7 @@
       "type": "fill",
       "source": "shortbread",
       "source-layer": "land",
-      "filter": ["==", "kind", "wood"],
+      "filter": ["in", "kind", "wood", "orchard"],
       "layout": {"visibility": "visible"},
       "paint": {"fill-color": "#ceead6"}
     },
