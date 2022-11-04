@@ -618,3 +618,12 @@ layers:
     - key: ele
       tag_value: ele
       type: integer
+
+- id: towers
+  features:
+  - source: osm
+    geometry: polygon_centroid
+    min_zoom: 10
+    include_when:
+      man_made:
+      - tower
