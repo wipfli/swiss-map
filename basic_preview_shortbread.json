@@ -162,7 +162,7 @@
         ["==", "$type", "LineString"],
         ["all", ["==", "tunnel", true], ["==", "kind", "path"]]
       ],
-      "layout": {"visibility": "visible"},
+      "layout": {"visibility": "none"},
       "paint": {
         "line-color": "#cba",
         "line-dasharray": [1.5, 0.75],
@@ -497,7 +497,7 @@
         ["==", "$type", "LineString"],
         ["all", ["!=", "bridge", true], ["!=", "tunnel", true], ["in", "kind", "path", "footway", "steps"]]
       ],
-      "layout": {"visibility": "visible"},
+      "layout": {"visibility": "none"},
       "paint": {
         "line-color": "#a4a8a3",
         "line-dasharray": [1.5, 0.75],
@@ -957,7 +957,7 @@
         ["==", "$type", "LineString"],
         ["all", ["==", "bridge", true], ["==", "kind", "path"]]
       ],
-      "layout": {"visibility": "visible"},
+      "layout": {"visibility": "none"},
       "paint": {
         "line-color": "#f8f4f0",
         "line-width": {"base": 1.2, "stops": [[15, 1.2], [20, 18]]}
@@ -973,7 +973,7 @@
         ["==", "$type", "LineString"],
         ["all", ["==", "bridge", true], ["==", "kind", "path"]]
       ],
-      "layout": {"visibility": "visible"},
+      "layout": {"visibility": "none"},
       "paint": {
         "line-color": "#cba",
         "line-width": {"base": 1.2, "stops": [[15, 1.2], [20, 4]]},
