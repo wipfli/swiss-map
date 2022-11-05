@@ -1171,7 +1171,9 @@
       "source-layer": "towers",
       "minzoom": 11,
       "paint": {
-          "circle-radius": 6,
+          "circle-radius": {
+              "stops": [[11, 2], [14, 6]]
+          },
           "circle-color": "#0383b9"
       }
     },
