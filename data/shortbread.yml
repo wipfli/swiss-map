@@ -631,6 +631,7 @@ layers:
       - antenna
       - communications_tower
       - windmill
+      - chimney
   - source: osm
     geometry: point
     min_zoom: 10
@@ -641,3 +642,4 @@ layers:
       - antenna
       - communications_tower
       - windmill
+      - chimney
