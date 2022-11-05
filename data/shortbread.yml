@@ -558,7 +558,7 @@ layers:
   features:
   - source: osm
     geometry: line
-    min_zoom: 12
+    min_zoom: 10
     include_when:
       aerialway: __any__
     attributes:

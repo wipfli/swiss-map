@@ -1165,6 +1165,18 @@
         }
     },
     {
+      "id": "aerialway",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "aerialways",
+      "minzoom": 12,
+      "paint": {
+          "line-width": 2,
+          "line-color": "red",
+          "line-opacity": 0.7
+      }
+    },
+    {
       "id": "towers",
       "type": "circle",
       "source": "shortbread",
