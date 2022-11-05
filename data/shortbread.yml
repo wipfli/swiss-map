@@ -627,3 +627,17 @@ layers:
     include_when:
       man_made:
       - tower
+      - mast
+      - antenna
+      - communications_tower
+      - windmill
+  - source: osm
+    geometry: point
+    min_zoom: 10
+    include_when:
+      man_made:
+      - tower
+      - mast
+      - antenna
+      - communications_tower
+      - windmill

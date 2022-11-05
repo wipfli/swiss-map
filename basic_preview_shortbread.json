@@ -1165,6 +1165,17 @@
         }
     },
     {
+      "id": "towers",
+      "type": "circle",
+      "source": "shortbread",
+      "source-layer": "towers",
+      "minzoom": 11,
+      "paint": {
+          "circle-radius": 6,
+          "circle-color": "#0383b9"
+      }
+    },
+    {
       "id": "ele",
       "type": "symbol",
       "source": "shortbread",
