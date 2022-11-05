@@ -1134,8 +1134,7 @@
               1
           ],
           "line-width": 2,
-          "line-color": "#0383b9",
-          "line-opacity": 0.7
+          "line-color": "#4596b8"
       }
     },
     {
@@ -1160,8 +1159,7 @@
                 2
             ],
             "line-width": 2,
-            "line-color": "#0383b9",
-            "line-opacity": 0.7
+            "line-color": "#4596b8"
         }
     },
     {
@@ -1172,8 +1170,7 @@
       "minzoom": 12,
       "paint": {
           "line-width": 2,
-          "line-color": "red",
-          "line-opacity": 0.7
+          "line-color": "#4596b8"
       }
     },
     {
@@ -1186,7 +1183,7 @@
           "circle-radius": {
               "stops": [[11, 2], [14, 6]]
           },
-          "circle-color": "#0383b9"
+          "circle-color": "#4596b8"
       }
     },
     {
