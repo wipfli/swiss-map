@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>QATiles</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <script src="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/pmtiles@2.2.0/dist/index.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #switcher {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+    }
+
+    @media only screen and (max-width: 600px) {
+      #map {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 40vh;
+      }
+
+      #text {
+        position: absolute;
+        right: 0;
+        top: 40vh;
+        left: 0;
+        bottom: 0;
+      }
+
+      .text-output {
+        overflow-y: scroll;
+        height: 15vh;
+      }
+    }
+
+    @media only screen and (min-width: 600px) {
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 75%;
+      }
+
+      #text {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 25%;
+      }
+
+      .text-output {
+        overflow-y: scroll;
+        height: 25vh;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <div id="switcher">
+    <div>
+      <input type="checkbox" id="checkbox-qa" name="checkbx-qa" checked="true" onchange="updateQa();" />
+      <label for="checkbox-qa">Show QA Layer</label>
+    </div>
+  </div>
+  <div id="text">
+    Points:
+    <pre id="text-points" class="text-output">
+    </pre>
+
+    Lines:
+    <pre id="text-lines" class="text-output">
+    </pre>
+
+    Polygons:
+    <pre id="text-polygons" class="text-output">
+    </pre>
+  </div>
+  <script>
+    let protocol = new pmtiles.Protocol();
+    maplibregl.addProtocol("pmtiles", protocol.tile);
+
+    var map = new maplibregl.Map({
+      container: 'map', // container id
+      style: 'osm.json', // style URL
+      center: [8.10959, 47.17378], // starting position [lng, lat]
+      zoom: 12.7, // starting zoom
+      hash: true,
+    });
+
+    map.on('load', function () {
+      map.addSource("qa", {
+        "type": "vector",
+        "url": "pmtiles://https://wipfli.github.io/swiss-map/qa/qa.pmtiles"
+      });
+
+      map.addLayer({
+        "id": "polygons",
+        "type": "fill",
+        "source": "qa",
+        "source-layer": "osm",
+        "filter": [
+          "all",
+          [
+            "==",
+            "$type",
+            "Polygon"
+          ],
+          [
+            "!has",
+            "boundary"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "fill-color": "white",
+          "fill-opacity": 0.0
+        }
+      });
+
+      map.addLayer({
+        "id": "polygon-outlines",
+        "type": "line",
+        "source": "qa",
+        "source-layer": "osm",
+        "filter": [
+          "all",
+          [
+            "==",
+            "$type",
+            "Polygon"
+          ],
+          [
+            "!has",
+            "boundary"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#f368e0"
+        }
+      });
+
+      map.addLayer({
+        "id": "lines-cursor",
+        "type": "line",
+        "source": "qa",
+        "source-layer": "osm",
+        "filter": [
+          "all",
+          [
+            "==",
+            "$type",
+            "LineString"
+          ],
+          [
+            "!has",
+            "boundary"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-width": 8,
+          "line-color": "white",
+          "line-opacity": 0.0
+        }
+      });
+
+      map.addLayer({
+        "id": "lines",
+        "type": "line",
+        "source": "qa",
+        "source-layer": "osm",
+        "filter": [
+          "all",
+          [
+            "==",
+            "$type",
+            "LineString"
+          ],
+          [
+            "!has",
+            "boundary"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-width": 1,
+          "line-color": "#f368e0"
+        }
+      });
+
+      map.addLayer({
+        "id": "points",
+        "type": "circle",
+        "source": "qa",
+        "source-layer": "osm",
+        "minzoom": 14,
+        "filter": [
+          "all",
+          [
+            "==",
+            "$type",
+            "Point"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-radius": 6,
+          "circle-color": "#f368e0"
+        }
+      });
+    });
+
+    map.on('click', 'polygons', function (e) {
+      const properties = [];
+      for (feature of e.features) {
+        const ordered = Object.keys(feature.properties).sort().reduce(
+          (obj, key) => {
+            obj[key] = feature.properties[key];
+            return obj;
+          },
+          {}
+        );
+        properties.push(ordered);
+      }
+      document.getElementById("text-polygons").innerHTML = JSON.stringify(properties, null, 2);
+    });
+
+
+
+
+
+    map.on('click', 'lines-cursor', function (e) {
+      const properties = [];
+      for (feature of e.features) {
+        const ordered = Object.keys(feature.properties).sort().reduce(
+          (obj, key) => {
+            obj[key] = feature.properties[key];
+            return obj;
+          },
+          {}
+        );
+        properties.push(ordered);
+      }
+      document.getElementById("text-lines").innerHTML = JSON.stringify(properties, null, 2);
+    });
+
+
+
+
+    map.on('click', 'points', function (e) {
+      const properties = [];
+      for (feature of e.features) {
+        const ordered = Object.keys(feature.properties).sort().reduce(
+          (obj, key) => {
+            obj[key] = feature.properties[key];
+            return obj;
+          },
+          {}
+        );
+        properties.push(ordered);
+      }
+      document.getElementById("text-points").innerHTML = JSON.stringify(properties, null, 2);
+    });
+
+
+
+
+    function updateQa() {
+      for (layer of ['polygon-outlines', 'polygons', 'lines', 'lines-cursor', 'points']) {
+        map.setLayoutProperty(layer, 'visibility', document.getElementById("checkbox-qa").checked ? 'visible' : 'none');
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>
