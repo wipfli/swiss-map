@@ -96,8 +96,8 @@
     var map = new maplibregl.Map({
       container: 'map', // container id
       style: 'osm.json', // style URL
-      center: [8.10959, 47.17378], // starting position [lng, lat]
-      zoom: 12.7, // starting zoom
+      center: [8.109551, 47.172648], // starting position [lng, lat]
+      zoom: 17, // starting zoom
       hash: true,
     });
 
@@ -358,6 +358,30 @@
       });
 
       map.addLayer({
+        "id": "points-cursor",
+        "type": "circle",
+        "source": "qa",
+        "source-layer": "osm",
+        "minzoom": 14,
+        "filter": [
+          "all",
+          [
+            "==",
+            "$type",
+            "Point"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-radius": 12,
+          "circle-color": "#0383b9",
+          "circle-opacity": 0.0
+        }
+      });
+
+      map.addLayer({
         "id": "points",
         "type": "circle",
         "source": "qa",
@@ -552,7 +576,7 @@
 
 
 
-    map.on('click', 'points', function (e) {
+    map.on('click', 'points-cursor', function (e) {
       if (latestTimeStamp !== e.originalEvent.timeStamp) {
         latestTimeStamp = e.originalEvent.timeStamp;
         clear();
@@ -589,7 +613,7 @@
 
 
     function updateQa() {
-      for (layer of ['polygon-outlines', 'polygon-outlines-selected', 'polygons', 'lines', 'lines-selected', 'lines-cursor', 'points', 'points-selected']) {
+      for (layer of ['polygon-outlines', 'polygon-outlines-selected', 'polygons', 'lines', 'lines-selected', 'lines-cursor', 'points',, 'points-cursor', 'points-selected']) {
         map.setLayoutProperty(layer, 'visibility', document.getElementById("checkbox-qa").checked ? 'visible' : 'none');
       }
     }
