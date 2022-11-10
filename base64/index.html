@@ -30,10 +30,67 @@
 	<script>
 		let protocol = new pmtiles.Protocol();
 		maplibregl.addProtocol("pmtiles", protocol.tile);
-		
+
 		var map = new maplibregl.Map({
 			container: 'map', // container id
-			style: 'style.json', // style URL
+			style: {
+				"version": 8,
+				"name": "Basic preview",
+				"metadata": {
+					"openmaptiles:version": "3.x"
+				},
+				"sources": {
+					"openmaptiles": {
+						"type": "vector",
+						"url": "pmtiles://http://localhost:3000/data/output.pmtiles"
+					}
+				},
+				"layers": [
+					{
+						"id": "background",
+						"paint": {
+							"background-color": "hsl(47, 26%, 88%)"
+						},
+						"type": "background"
+					},
+					{
+						"id": "building",
+						"paint": {
+							"fill-antialias": true,
+							"fill-color": "rgba(222, 211, 190, 1)",
+							"fill-opacity": {
+								"base": 1,
+								"stops": [
+									[
+										13,
+										0
+									],
+									[
+										15,
+										1
+									]
+								]
+							},
+							"fill-outline-color": {
+								"stops": [
+									[
+										15,
+										"rgba(212, 177, 146, 0)"
+									],
+									[
+										16,
+										"rgba(212, 177, 146, 0.5)"
+									]
+								]
+							}
+						},
+						"source": "openmaptiles",
+						"source-layer": "building",
+						"type": "fill"
+					}
+				],
+				"id": "basic-preview"
+			}, // style URL
 			center: [7.419744, 43.733407], // starting position [lng, lat]
 			zoom: 18, // starting zoom
 			hash: true,
