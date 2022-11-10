@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>convert</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+
+
+</head>
+
+<body>
+    <div>
+        <div>
+            <input type="file" id="myfile">
+            <button onclick="convert()">convert</button>
+        </div>
+    </div>
+
+    <script>
+        function getBase64(file) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                console.log(reader.result);
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+        }
+
+        function convert() {
+            const file = document.querySelector('#myfile').files[0];
+            getBase64(file);
+        }
+
+    </script>
+</body>
+
+</html>
