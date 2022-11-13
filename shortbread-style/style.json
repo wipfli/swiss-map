@@ -128,6 +128,36 @@
       "paint": {
         "line-color": "#dee0e4"
       }
+    },
+    {
+      "id": "place_labels",
+      "type": "symbol",
+      "source": "shortbread",
+      "source-layer": "place_labels",
+      "filter": [
+        "all",
+        [
+          "in",
+          "kind",
+          "city",
+          "state_capital",
+          "town",
+          "village"
+        ]
+      ],
+      "layout": {
+        "text-field": "{name}",
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "visibility": "visible"
+      },
+      "paint": {
+        "text-color": "black",
+        "text-halo-blur": 0,
+        "text-halo-color": "white",
+        "text-halo-width": 2
+      }
     }
   ],
   "id": "shortbread-style"
