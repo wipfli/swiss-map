@@ -20,23 +20,6 @@
       }
     },
     {
-      "id": "landcover_wood",
-      "type": "fill",
-      "source": "shortbread",
-      "source-layer": "land",
-      "filter": [
-        "in",
-        "kind",
-        "wood"
-      ],
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": "#ceead6"
-      }
-    },
-    {
       "id": "ocean",
       "type": "fill",
       "source": "shortbread",
@@ -66,6 +49,23 @@
       },
       "paint": {
         "fill-color": "hsl(205, 56%, 73%)"
+      }
+    },
+    {
+      "id": "landcover_wood",
+      "type": "fill",
+      "source": "shortbread",
+      "source-layer": "land",
+      "filter": [
+        "in",
+        "kind",
+        "wood"
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#ceead6"
       }
     }
   ],
