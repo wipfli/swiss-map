@@ -67,6 +67,30 @@
       "paint": {
         "fill-color": "#ceead6"
       }
+    },
+    {
+      "id": "buildings",
+      "type": "fill",
+      "source": "shortbread",
+      "source-layer": "buildings",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#f1f3f4"
+      }
+    },
+    {
+      "id": "buildings_outline",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "buildings",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#dee0e4"
+      }
     }
   ],
   "id": "shortbread-style"
