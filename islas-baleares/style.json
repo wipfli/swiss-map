@@ -506,7 +506,7 @@
         ["==", "$type", "LineString"],
         ["all", ["!=", "bridge", true], ["!=", "tunnel", true], ["in", "kind", "path", "footway", "steps"]]
       ],
-      "layout": {"visibility": "none"},
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#a4a8a3",
         "line-dasharray": [1.5, 0.75],
