@@ -49,6 +49,14 @@
       "paint": {"fill-color": "#ceead6"}
     },
     {
+      "id": "ocean",
+      "type": "fill",
+      "source": "shortbread",
+      "source-layer": "ocean",
+      "layout": {"visibility": "visible"},
+      "paint": {"fill-color": "hsl(205, 56%, 73%)"}
+    },
+    {
       "id": "water",
       "type": "fill",
       "source": "shortbread",
