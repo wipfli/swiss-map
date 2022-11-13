@@ -106,6 +106,18 @@
       }
     },
     {
+      "id": "streets",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "black"
+      }
+    },
+    {
       "id": "buildings",
       "type": "fill",
       "source": "shortbread",
