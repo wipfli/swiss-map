@@ -21,14 +21,18 @@
       "type": "fill",
       "source": "shortbread",
       "source-layer": "land",
-      "maxzoom": 14,
       "filter": [
         "all",
         ["==", "$type", "Polygon"],
         ["in", "kind", "residential", "industrial", "cemetery", "park", "farmyard", "commercial"]
       ],
       "layout": {"visibility": "visible"},
-      "paint": {"fill-color": "#dee0e4"}
+      "paint": {
+        "fill-color": "#dee0e4",
+        "fill-opacity": {
+          "stops": [[13.5, 1.0], [14.5, 0.0]]
+        }
+      }
     },
     {
       "id": "landcover_grass",
