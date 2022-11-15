@@ -79,7 +79,17 @@
                     return "#000";
                 }
             },
-            showInspectMapPopupOnHover: false
+            showInspectMapPopupOnHover: false,
+            renderPopup: function (features) {
+                var result = '';
+                for (const feature of features) {
+                    result += `<h3>${feature.source}: ${feature.sourceLayer}</h3>`
+                    for (const [key, value] of Object.entries(feature.properties)) {
+                        result += `<p>${key}: <i>${value}</i></p>`;
+                    }
+                }
+                return result;
+            }
         }));
         map.addControl(new maplibregl.GeolocateControl({
             positionOptions: {
