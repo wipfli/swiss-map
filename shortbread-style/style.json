@@ -111,7 +111,7 @@
       "source": "shortbread",
       "source-layer": "streets",
       "layout": {
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "line-color": "black"
