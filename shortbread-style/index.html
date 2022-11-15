@@ -48,7 +48,7 @@
                     "boundary_labels": "#fdcb6e",
                     "buildings": "#2d3436",
                     "land": "#00b894",
-                    "place_labels": "#b2bec3",
+                    "place_labels": "#333333",
                     "public_transport": "#00b894",
                     "sites": "#55efc4",
                     "street_labels_points": "#e17055",
@@ -78,7 +78,8 @@
                 else {
                     return "#000";
                 }
-            }
+            },
+            showInspectMapPopupOnHover: false
         }));
         map.addControl(new maplibregl.GeolocateControl({
             positionOptions: {
