@@ -246,6 +246,117 @@
       }
     },
     {
+      "id": "streets_tracktype_grade2",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          "true"
+        ],
+        [
+          "!=",
+          "bridge",
+          "true"
+        ],
+        [
+          "in",
+          "kind",
+          "track"
+        ],
+        [
+          "==",
+          "tracktype",
+          "grade2"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#a4a8a3",
+        "line-width": {
+          "stops": [
+            [
+              12,
+              0
+            ],
+            [
+              14,
+              1.5
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_tracktype_grade3to5",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          "true"
+        ],
+        [
+          "!=",
+          "bridge",
+          "true"
+        ],
+        [
+          "in",
+          "kind",
+          "track"
+        ],
+        [
+          "any",
+          [
+            "in",
+            "tracktype",
+            "grade3",
+            "grade4",
+            "grade5"
+          ],
+          [
+            "!has",
+            "tracktype"
+          ]
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#a4a8a3",
+        "line-dasharray": [
+          10.0,
+          2.0
+        ],
+        "line-width": {
+          "stops": [
+            [
+              12,
+              0
+            ],
+            [
+              14,
+              1.5
+            ],
+            [
+              20,
+              3
+            ]
+          ]
+        }
+      }
+    },
+    {
       "id": "streets_minor",
       "type": "line",
       "source": "shortbread",
