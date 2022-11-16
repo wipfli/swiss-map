@@ -118,6 +118,124 @@
       }
     },
     {
+      "id": "streets_minor_casing",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          "true"
+        ],
+        [
+          "!=",
+          "bridge",
+          "true"
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "minor",
+            "service",
+            "residential",
+            "unclassified"
+          ],
+          [
+            "==",
+            "tracktype",
+            "grade1"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#7f8c8d",
+        "line-width": {
+          "stops": [
+            [
+              12,
+              0
+            ],
+            [
+              14,
+              4
+            ],
+            [
+              20,
+              12
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_minor",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          "true"
+        ],
+        [
+          "!=",
+          "bridge",
+          "true"
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "minor",
+            "service",
+            "residential",
+            "unclassified"
+          ],
+          [
+            "==",
+            "tracktype",
+            "grade1"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "white",
+        "line-width": {
+          "stops": [
+            [
+              12,
+              0
+            ],
+            [
+              14,
+              3.5
+            ],
+            [
+              20,
+              10
+            ]
+          ]
+        }
+      }
+    },
+    {
       "id": "buildings",
       "type": "fill",
       "source": "shortbread",
