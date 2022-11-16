@@ -177,6 +177,55 @@
       }
     },
     {
+      "id": "streets_path",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "tunnel",
+          true
+        ],
+        [
+          "in",
+          "kind",
+          "path",
+          "footway",
+          "steps",
+          "pedestrian"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#7f8c8d",
+        "line-dasharray": [
+          0.5,
+          1.5
+        ],
+        "line-width": {
+          "stops": [
+            [
+              12,
+              0
+            ],
+            [
+              14,
+              2
+            ]
+          ]
+        }
+      }
+    },
+    {
       "id": "streets_minor",
       "type": "line",
       "source": "shortbread",
