@@ -223,13 +223,15 @@
         ]
       ],
       "layout": {
+        "line-cap": "round",
+        "line-join": "round",
         "visibility": "visible"
       },
       "paint": {
         "line-color": "#7f8c8d",
         "line-dasharray": [
-          0.5,
-          1.5
+          0.0,
+          2.0
         ],
         "line-width": {
           "stops": [
