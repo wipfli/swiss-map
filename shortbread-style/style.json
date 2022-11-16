@@ -106,6 +106,26 @@
       }
     },
     {
+      "id": "land_beach",
+      "type": "fill",
+      "source": "shortbread",
+      "source-layer": "land",
+      "filter": [
+        "all",
+        [
+          "in",
+          "kind",
+          "beach"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#feefc3"
+      }
+    },
+    {
       "id": "streets",
       "type": "line",
       "source": "shortbread",
