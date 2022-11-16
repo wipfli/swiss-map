@@ -423,6 +423,7 @@
       "id": "buildings",
       "type": "fill",
       "source": "shortbread",
+      "minzoom": 17,
       "source-layer": "buildings",
       "layout": {
         "visibility": "visible"
@@ -436,6 +437,7 @@
       "type": "line",
       "source": "shortbread",
       "source-layer": "buildings",
+      "minzoom": 17,
       "layout": {
         "visibility": "visible"
       },
