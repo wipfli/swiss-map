@@ -69,7 +69,7 @@
       }
     },
     {
-      "id": "landuse_residential",
+      "id": "land_residential_etc",
       "type": "fill",
       "source": "shortbread",
       "source-layer": "land",
