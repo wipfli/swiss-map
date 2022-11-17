@@ -393,7 +393,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#7f8c8d",
+        "line-color": "#bdc3c7",
         "line-dasharray": [
           0.0,
           2.0
@@ -448,7 +448,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#a4a8a3",
+        "line-color": "#bdc3c7",
         "line-width": {
           "stops": [
             [
@@ -504,7 +504,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#a4a8a3",
+        "line-color": "#bdc3c7",
         "line-dasharray": [
           10.0,
           2.0
