@@ -362,6 +362,62 @@
       }
     },
     {
+      "id": "streets_motorway_casing",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          "true"
+        ],
+        [
+          "!=",
+          "bridge",
+          "true"
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "motorway",
+            "trunk"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#f9b011",
+        "line-width": {
+          "stops": [
+            [
+              6,
+              0
+            ],
+            [
+              8.5,
+              3.5
+            ],
+            [
+              12,
+              6.5
+            ],
+            [
+              20,
+              16.5
+            ]
+          ]
+        }
+      }
+    },
+    {
       "id": "streets_path",
       "type": "line",
       "source": "shortbread",
@@ -741,6 +797,62 @@
             ],
             [
               14,
+              5
+            ],
+            [
+              20,
+              14
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_motorway",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          "true"
+        ],
+        [
+          "!=",
+          "bridge",
+          "true"
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "motorway",
+            "trunk"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#fde293",
+        "line-width": {
+          "stops": [
+            [
+              6,
+              0
+            ],
+            [
+              8.5,
+              3.5
+            ],
+            [
+              12,
               5
             ],
             [
