@@ -138,6 +138,366 @@
       }
     },
     {
+      "id": "streets_tertiary_tunnel_casing",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "==",
+          "tunnel",
+          true
+        ],
+        [
+          "!=",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "tertiary"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#7f8c8d",
+        "line-width": {
+          "stops": [
+            [
+              10,
+              0
+            ],
+            [
+              12,
+              4
+            ],
+            [
+              14,
+              6
+            ],
+            [
+              20,
+              16
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_secondary_tunnel_casing",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "==",
+          "tunnel",
+          true
+        ],
+        [
+          "!=",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "secondary"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#F9BD11",
+        "line-width": {
+          "stops": [
+            [
+              9,
+              0
+            ],
+            [
+              12,
+              4
+            ],
+            [
+              14,
+              6
+            ],
+            [
+              20,
+              16
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_primary_tunnel_casing",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "==",
+          "tunnel",
+          true
+        ],
+        [
+          "!=",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "primary"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#f9b011",
+        "line-width": {
+          "stops": [
+            [
+              8,
+              0
+            ],
+            [
+              12,
+              4.5
+            ],
+            [
+              14,
+              6.5
+            ],
+            [
+              20,
+              16.5
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_tertiary_tunnel",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "==",
+          "tunnel",
+          true
+        ],
+        [
+          "!=",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "tertiary"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#E5E5E5",
+        "line-width": {
+          "stops": [
+            [
+              10,
+              0
+            ],
+            [
+              12,
+              3.5
+            ],
+            [
+              14,
+              5
+            ],
+            [
+              20,
+              14
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_secondary_tunnel",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "==",
+          "tunnel",
+          true
+        ],
+        [
+          "!=",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "secondary"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#FFFBE0",
+        "line-width": {
+          "stops": [
+            [
+              9,
+              0
+            ],
+            [
+              12,
+              3.5
+            ],
+            [
+              14,
+              5
+            ],
+            [
+              20,
+              14
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_primary_tunnel",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "==",
+          "tunnel",
+          true
+        ],
+        [
+          "!=",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "primary"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#FFF4D3",
+        "line-width": {
+          "stops": [
+            [
+              8,
+              0
+            ],
+            [
+              12,
+              3.5
+            ],
+            [
+              14,
+              5
+            ],
+            [
+              20,
+              14
+            ]
+          ]
+        }
+      }
+    },
+    {
       "id": "streets_minor_casing",
       "type": "line",
       "source": "shortbread",
@@ -688,7 +1048,7 @@
       }
     },
     {
-      "id": "streets_tretiary",
+      "id": "streets_tertiary",
       "type": "line",
       "source": "shortbread",
       "source-layer": "streets",
