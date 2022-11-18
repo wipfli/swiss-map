@@ -147,12 +147,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "any",
@@ -206,12 +211,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "any",
@@ -261,12 +271,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "any",
@@ -316,12 +331,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "any",
@@ -371,12 +391,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "any",
@@ -426,12 +451,17 @@
         "all",
         [
           "!=",
+          "tunnel",
+          true
+        ],
+        [
+          "!=",
           "bridge",
           true
         ],
         [
           "!=",
-          "tunnel",
+          "link",
           true
         ],
         [
@@ -482,12 +512,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "in",
@@ -529,12 +564,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "in",
@@ -593,12 +633,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "any",
@@ -652,12 +697,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "any",
@@ -707,12 +757,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "any",
@@ -762,12 +817,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "any",
@@ -817,12 +877,17 @@
         [
           "!=",
           "tunnel",
-          "true"
+          true
         ],
         [
           "!=",
           "bridge",
-          "true"
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
         ],
         [
           "any",
