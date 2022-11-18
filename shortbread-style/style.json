@@ -283,7 +283,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#7f8c8d",
+        "line-color": "#F9BD11",
         "line-width": {
           "stops": [
             [
@@ -673,7 +673,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#fdf782",
+        "line-color": "#FDEE93",
         "line-width": {
           "stops": [
             [
