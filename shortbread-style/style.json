@@ -318,6 +318,67 @@
       }
     },
     {
+      "id": "streets_motorway_tunnel_casing",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "==",
+          "tunnel",
+          true
+        ],
+        [
+          "!=",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "motorway",
+            "trunk"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#f9b011",
+        "line-width": {
+          "stops": [
+            [
+              6,
+              0
+            ],
+            [
+              8.5,
+              3.5
+            ],
+            [
+              12,
+              6.5
+            ],
+            [
+              20,
+              16.5
+            ]
+          ]
+        }
+      }
+    },
+    {
       "id": "streets_tertiary_tunnel",
       "type": "line",
       "source": "shortbread",
@@ -487,6 +548,68 @@
             ],
             [
               14,
+              5
+            ],
+            [
+              20,
+              14
+            ]
+          ]
+        }
+      }
+    },
+
+    {
+      "id": "streets_motorway_tunnel",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "==",
+          "tunnel",
+          true
+        ],
+        [
+          "!=",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "motorway",
+            "trunk"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#FFF4D3",
+        "line-width": {
+          "stops": [
+            [
+              6,
+              0
+            ],
+            [
+              8.5,
+              3.5
+            ],
+            [
+              12,
               5
             ],
             [
@@ -1262,6 +1385,473 @@
       "layout": {
         "line-cap": "round",
         "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#fde293",
+        "line-width": {
+          "stops": [
+            [
+              6,
+              0
+            ],
+            [
+              8.5,
+              3.5
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              20,
+              14
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_tertiary_bridge_casing",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          true
+        ],
+        [
+          "==",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "tertiary"
+          ]
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#7f8c8d",
+        "line-width": {
+          "stops": [
+            [
+              10,
+              0
+            ],
+            [
+              12,
+              4
+            ],
+            [
+              14,
+              6
+            ],
+            [
+              20,
+              16
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_secondary_bridge_casing",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          true
+        ],
+        [
+          "==",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "secondary"
+          ]
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#F9BD11",
+        "line-width": {
+          "stops": [
+            [
+              9,
+              0
+            ],
+            [
+              12,
+              4
+            ],
+            [
+              14,
+              6
+            ],
+            [
+              20,
+              16
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_primary_bridge_casing",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          true
+        ],
+        [
+          "==",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "primary"
+          ]
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#f9b011",
+        "line-width": {
+          "stops": [
+            [
+              8,
+              0
+            ],
+            [
+              12,
+              4.5
+            ],
+            [
+              14,
+              6.5
+            ],
+            [
+              20,
+              16.5
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_motorway_bridge_casing",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          true
+        ],
+        [
+          "==",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "motorway",
+            "trunk"
+          ]
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#f9b011",
+        "line-width": {
+          "stops": [
+            [
+              6,
+              0
+            ],
+            [
+              8.5,
+              3.5
+            ],
+            [
+              12,
+              6.5
+            ],
+            [
+              20,
+              16.5
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_tertiary_bridge",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          true
+        ],
+        [
+          "==",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "tertiary"
+          ]
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "white",
+        "line-width": {
+          "stops": [
+            [
+              10,
+              0
+            ],
+            [
+              12,
+              3.5
+            ],
+            [
+              14,
+              5
+            ],
+            [
+              20,
+              14
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_secondary_bridge",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          true
+        ],
+        [
+          "==",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "secondary"
+          ]
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#FDEE93",
+        "line-width": {
+          "stops": [
+            [
+              9,
+              0
+            ],
+            [
+              12,
+              3.5
+            ],
+            [
+              14,
+              5
+            ],
+            [
+              20,
+              14
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_primary_bridge",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          true
+        ],
+        [
+          "==",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "primary"
+          ]
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#fde293",
+        "line-width": {
+          "stops": [
+            [
+              8,
+              0
+            ],
+            [
+              12,
+              3.5
+            ],
+            [
+              14,
+              5
+            ],
+            [
+              20,
+              14
+            ]
+          ]
+        }
+      }
+    },
+
+    {
+      "id": "streets_motorway_bridge",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          true
+        ],
+        [
+          "==",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "any",
+          [
+            "in",
+            "kind",
+            "motorway",
+            "trunk"
+          ]
+        ]
+      ],
+      "layout": {
         "visibility": "visible"
       },
       "paint": {
