@@ -4,7 +4,8 @@
   "sources": {
     "shortbread": {
       "type": "vector",
-      "url": "tilejson.json"
+      "tiles": ["https://tiles.swiss-map.cc/{z}/{x}/{y}.pbf"],
+      "maxzoom": 14
     }
   },
   "glyphs": "https://tiles.ballometer.io/fonts/{fontstack}/{range}.pbf",
