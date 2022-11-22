@@ -7,7 +7,7 @@
     "basename": "output.mbtiles",
     "id": "output",
     "description": "A basic, lean, general-purpose vector tile schema for OpenStreetMap data. See https://shortbread.geofabrik.de/",
-    "attribution": "<a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+    "attribution": "<a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a> | Edit on <a href=\"https://github.com/wipfli/swiss-map/\">GitHub</a>",
     "type": "baselayer",
     "bounds": [
         -180,
