@@ -1,6 +1,6 @@
 {
     "tiles": [
-        "https://43ddvxqvhahtjymh7e7qa25yma0omasp.lambda-url.eu-west-1.on.aws/shortbread-islas-baleares/{z}/{x}/{y}.pbf"
+        "https://tiles.swiss-map.cc/shortbread-planet/{z}/{x}/{y}.pbf"
     ],
     "name": "Shortbread",
     "format": "pbf",
@@ -10,15 +10,15 @@
     "attribution": "<a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
     "type": "baselayer",
     "bounds": [
-        0.61523,
-        38.05675,
-        4.93835,
-        40.7098
+        -180,
+        -85.05113,
+        180,
+        85.05113
     ],
     "center": [
-        2.77679,
-        39.38327,
-        7
+        0,
+        0,
+        0
     ],
     "minzoom": 0,
     "maxzoom": 14,
@@ -37,7 +37,7 @@
             "fields": {
                 "kind": "String"
             },
-            "minzoom": 10,
+            "minzoom": 12,
             "maxzoom": 14
         },
         {
@@ -57,7 +57,7 @@
                 "name": "String",
                 "name_en": "String"
             },
-            "minzoom": 5,
+            "minzoom": 3,
             "maxzoom": 14
         },
         {
@@ -67,28 +67,11 @@
             "maxzoom": 14
         },
         {
-            "id": "ele",
-            "fields": {
-                "ele": "Number"
-            },
-            "minzoom": 12,
-            "maxzoom": 14
-        },
-        {
             "id": "land",
             "fields": {
                 "kind": "String"
             },
             "minzoom": 7,
-            "maxzoom": 14
-        },
-        {
-            "id": "mountain_peaks",
-            "fields": {
-                "name": "String",
-                "ele": "String"
-            },
-            "minzoom": 12,
             "maxzoom": 14
         },
         {
@@ -104,18 +87,9 @@
                 "name_de": "String",
                 "name": "String",
                 "name_en": "String",
-                "population": "Number",
-                "ele": "String"
+                "population": "Number"
             },
             "minzoom": 4,
-            "maxzoom": 14
-        },
-        {
-            "id": "power_lines",
-            "fields": {
-                "power": "String"
-            },
-            "minzoom": 10,
             "maxzoom": 14
         },
         {
@@ -139,11 +113,27 @@
             "maxzoom": 14
         },
         {
+            "id": "street_labels",
+            "fields": {
+                "ref": "String",
+                "kind": "String",
+                "name_de": "String",
+                "name": "String",
+                "ref_rows": "Number",
+                "ref_cols": "Number",
+                "name_en": "String"
+            },
+            "minzoom": 10,
+            "maxzoom": 14
+        },
+        {
             "id": "street_labels_points",
             "fields": {
                 "ref": "String",
                 "kind": "String",
-                "name": "String"
+                "name_de": "String",
+                "name": "String",
+                "name_en": "String"
             },
             "minzoom": 12,
             "maxzoom": 14
@@ -164,7 +154,9 @@
             "id": "street_polygons_labels",
             "fields": {
                 "kind": "String",
-                "name": "String"
+                "name_de": "String",
+                "name": "String",
+                "name_en": "String"
             },
             "minzoom": 14,
             "maxzoom": 14
@@ -183,20 +175,16 @@
                 "bridge": "Boolean",
                 "tunnel": "Boolean"
             },
-            "minzoom": 6,
-            "maxzoom": 14
-        },
-        {
-            "id": "towers",
-            "fields": {},
-            "minzoom": 10,
+            "minzoom": 5,
             "maxzoom": 14
         },
         {
             "id": "water_line_labels",
             "fields": {
                 "kind": "String",
-                "name": "String"
+                "name_de": "String",
+                "name": "String",
+                "name_en": "String"
             },
             "minzoom": 12,
             "maxzoom": 14
@@ -214,16 +202,18 @@
             "fields": {
                 "kind": "String"
             },
-            "minzoom": 7,
+            "minzoom": 4,
             "maxzoom": 14
         },
         {
             "id": "water_polygons_labels",
             "fields": {
                 "kind": "String",
-                "name": "String"
+                "name_de": "String",
+                "name": "String",
+                "name_en": "String"
             },
-            "minzoom": 14,
+            "minzoom": 10,
             "maxzoom": 14
         }
     ],

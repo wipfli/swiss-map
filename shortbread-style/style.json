@@ -4,8 +4,7 @@
   "sources": {
     "shortbread": {
       "type": "vector",
-      "tiles": ["https://tiles.swiss-map.cc/shortbread-planet/{z}/{x}/{y}.pbf"],
-      "maxzoom": 14
+      "url": "tilejson.json"
     }
   },
   "glyphs": "https://tiles.ballometer.io/fonts/{fontstack}/{range}.pbf",
