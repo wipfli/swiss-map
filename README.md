@@ -7,6 +7,10 @@ Uses:
 * [PMTiles](https://github.com/protomaps/PMTiles) for hosting and serving tiles on Cloudflare.
 * [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js) for rendering in the web browser.
 
+## tile hosting
+
+The tiles are hosted on the Cloudflare R2 storage service. A Cloudflare Worker extracts the data from a `shortbread-planet.pmtiles` file stored on R2 and serves tiles at a `{z}/{x}/{y}.pbf` endpoint. For instructions how to host PMTiles on Cloudflare, see https://protomaps.com/docs/cdn/cloudflare.
+
 ## demo
 
 https://wipfli.github.io/swiss-map/
