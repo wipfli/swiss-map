@@ -650,7 +650,8 @@
             "minor",
             "service",
             "residential",
-            "unclassified"
+            "unclassified",
+            "living_street"
           ],
           [
             "==",
@@ -1189,7 +1190,8 @@
             "minor",
             "service",
             "residential",
-            "unclassified"
+            "unclassified",
+            "living_street"
           ],
           [
             "==",
