@@ -950,10 +950,7 @@
         [
           "in",
           "kind",
-          "path",
-          "footway",
-          "steps",
-          "pedestrian"
+          "path"
         ]
       ],
       "layout": {
@@ -973,6 +970,62 @@
               12,
               0
             ],
+            [
+              14,
+              2
+            ],
+            [
+              20,
+              3
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "streets_footway_etc",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "streets",
+      "filter": [
+        "all",
+        [
+          "!=",
+          "tunnel",
+          true
+        ],
+        [
+          "!=",
+          "bridge",
+          true
+        ],
+        [
+          "!=",
+          "link",
+          true
+        ],
+        [
+          "in",
+          "kind",
+          "footway",
+          "steps",
+          "pedestrian"
+        ]
+      ],
+      "minzoom": 15,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#bdc3c7",
+        "line-dasharray": [
+          0.0,
+          2.0
+        ],
+        "line-width": {
+          "stops": [
             [
               14,
               2
