@@ -8,8 +8,8 @@
     <script src="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css" rel="stylesheet" />
     <script
-        src='https://github.com/acalcutt/maplibre-gl-inspect/releases/download/v1.4.3/maplibre-gl-inspect.min.js'></script>
-    <link href='https://github.com/acalcutt/maplibre-gl-inspect/releases/download/v1.4.3/maplibre-gl-inspect.css'
+        src='https://github.com/acalcutt/maplibre-gl-inspect/releases/download/v1.4.5/maplibre-gl-inspect.min.js'></script>
+    <link href='https://github.com/acalcutt/maplibre-gl-inspect/releases/download/v1.4.5/maplibre-gl-inspect.css'
         rel='stylesheet' />
     <style>
         body {
@@ -34,10 +34,11 @@
             style: 'style.json', // style URL
             center: [3.1993, 39.4690], // starting position [lng, lat]
             zoom: 8, // starting zoom
-            hash: true,
+            hash: "map",
         });
         var nav = new maplibregl.NavigationControl();
         map.addControl(nav, 'top-right');
+        const inspectUrlTag = '&inspect';
         map.addControl(new MaplibreInspect({
             backgroundColor: '#fff',
             assignLayerColor: function (layerId, alpha) {
@@ -89,6 +90,15 @@
                     }
                 }
                 return result;
+            },
+            showInspectMap: window.location.hash.includes(inspectUrlTag),
+            toggleCallback: function (showInspectMap) {
+                if (showInspectMap) {
+                    window.location.hash += inspectUrlTag;
+                }
+                else {
+                    window.location.hash = window.location.hash.replace(inspectUrlTag, '');
+                }
             }
         }));
         map.addControl(new maplibregl.GeolocateControl({
