@@ -5,6 +5,11 @@
     "shortbread": {
       "type": "vector",
       "url": "tilejson.json"
+    },
+    "qrank": {
+      "type": "vector",
+      "tiles": ["https://tiles.swiss-map.cc/qrank/{z}/{x}/{y}.pbf"],
+      "maxzoom": 10
     }
   },
   "glyphs": "https://tiles.ballometer.io/fonts/{fontstack}/{range}.pbf",
@@ -2219,25 +2224,15 @@
     {
       "id": "place_labels",
       "type": "symbol",
-      "source": "shortbread",
-      "source-layer": "place_labels",
-      "filter": [
-        "all",
-        [
-          "in",
-          "kind",
-          "city",
-          "state_capital",
-          "town",
-          "village"
-        ]
-      ],
+      "source": "qrank",
+      "source-layer": "osm",
       "layout": {
-        "text-field": "{name}",
+        "text-field": "{name}\n{@qrank}",
         "text-font": [
           "Noto Sans Regular"
         ],
-        "visibility": "visible"
+        "visibility": "visible",
+        "symbol-sort-key": ["-", ["to-number", ["get", "@qrank"]]]
       },
       "paint": {
         "text-color": "black",
