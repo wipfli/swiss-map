@@ -4,6 +4,8 @@ Swiss Map is experimenting with [QRank](https://qrank.wmcloud.org, which measure
 
 ## Usage
 
+Steps on Ubuntu are the following:
+
 Get the QRank file:
 
 ```
@@ -12,7 +14,7 @@ wget https://qrank.wmcloud.org/download/qrank.csv.gz
 gzip -d qrank.csv.gz
 ```
 
-Build Planetiler:
+Build Planetiler (Requires Java, see [Planetiler->Contributing](https://github.com/onthegomap/planetiler/blob/main/CONTRIBUTING.md):
 
 ```
 ./mvnw clean package --file standalone.pom.xml
