@@ -22,6 +22,4 @@ The name of this map style is "Swiss Map" because it takes some inspiration from
 
 ## qrank
 
-[QRank](https://qrank.wmcloud.org) is a system which tells you how important a wikimedia entry is by counting how oftem the associated wikipedia pages were accessed in the last year. Many OpenStreetMap entries have a `wikimedia=Q*` tag. We use the wikimedia tag when a point has `place=*` and look up the qrank of the place. This is then used to figure out which place labels to display.
-
-Uses the `QRank.java` profile in planetiler at https://github.com/wipfli/planetiler/blob/qrank-all/planetiler-examples/src/main/java/com/onthegomap/planetiler/examples/QRank.java
+See [Planetiler](./Planetiler).
