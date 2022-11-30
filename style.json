@@ -8,8 +8,7 @@
     },
     "qrank": {
       "type": "vector",
-      "tiles": ["https://tiles.swiss-map.cc/qrank/{z}/{x}/{y}.pbf"],
-      "maxzoom": 10
+      "url": "https://wipfli.github.io/swiss-map/tilejson-qrank.json"
     }
   },
   "glyphs": "https://tiles.ballometer.io/fonts/{fontstack}/{range}.pbf",
@@ -2227,7 +2226,7 @@
       "source": "qrank",
       "source-layer": "osm",
       "layout": {
-        "text-field": "{name}\n{@qrank}",
+        "text-field": "{name}",
         "text-font": [
           "Noto Sans Regular"
         ],
