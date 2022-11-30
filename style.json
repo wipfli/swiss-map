@@ -4,7 +4,7 @@
   "sources": {
     "shortbread": {
       "type": "vector",
-      "url": "tilejson.json"
+      "url": "https://wipfli.github.io/swiss-map/tilejson.json"
     },
     "qrank": {
       "type": "vector",
