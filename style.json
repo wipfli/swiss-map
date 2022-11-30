@@ -36,6 +36,23 @@
       }
     },
     {
+      "id": "boundaries_admin_level_2",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "boundaries",
+      "filter": [
+        "all",
+        ["in", "admin_level", 2],
+        ["!=", "maritime", true]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#7f8c8d"
+      }
+    },
+    {
       "id": "water",
       "type": "fill",
       "source": "shortbread",
