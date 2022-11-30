@@ -65,7 +65,7 @@ public class QRank implements Profile {
       var feature = features.point("qrank");
       feature
         .setZoomRange(0, 14)
-        .setSortKey(-getQRank(sourceFeature.getTag("wikidata")) / 10)
+        .setSortKey(-getQRank(sourceFeature.getTag("wikidata")) / 100)
         .setPointLabelGridSizeAndLimit(
           12, // only limit at z_ and below
           128, // break the tile up into _x_ px squares
