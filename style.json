@@ -2221,12 +2221,14 @@
       }
     },
     {
-      "id": "place_labels",
+      "id": "labels",
       "type": "symbol",
       "source": "qrank",
-      "source-layer": "osm",
+      "source-layer": "qrank",
       "layout": {
         "text-field": "{name}",
+        "text-size": ["case", ["all", ["has", "place"], [">", ["to-number", ["get", "@qrank"]], 100000]], 18, 16],
+        "text-transform": ["case", ["all", ["has", "place"], [">", ["to-number", ["get", "@qrank"]], 100000]], "uppercase", "none"],
         "text-font": [
           "Noto Sans Regular"
         ],
@@ -2234,7 +2236,7 @@
         "symbol-sort-key": ["-", ["to-number", ["get", "@qrank"]]]
       },
       "paint": {
-        "text-color": "black",
+        "text-color": ["case", ["has", "place"], "black", "darkgreen"],
         "text-halo-blur": 0,
         "text-halo-color": "white",
         "text-halo-width": 2
