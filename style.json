@@ -11,7 +11,7 @@
       "url": "https://wipfli.github.io/swiss-map/tilejson-qrank.json"
     }
   },
-  "glyphs": "https://tiles.ballometer.io/fonts/{fontstack}/{range}.pbf",
+  "glyphs": "https://wipfli.github.io/swiss-map/font/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",
@@ -2269,7 +2269,7 @@
 
         ],
         "text-font": [
-          "Noto Sans Regular"
+          "Fira Sans Regular"
         ],
         "visibility": "visible",
         "symbol-sort-key": ["-", ["to-number", ["get", "@qrank"]]]
@@ -2278,7 +2278,7 @@
         "text-color": ["case", ["has", "place"], "black", "darkgreen"],
         "text-halo-blur": 0,
         "text-halo-color": "white",
-        "text-halo-width": 2
+        "text-halo-width": 1.5
       }
     }
   ],
