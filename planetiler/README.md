@@ -37,3 +37,12 @@ Look at the tiles:
 ```
 docker run --rm -it -v "$(pwd)/data":/data -p 8080:8080 maptiler/tileserver-gl -p 8080
 ```
+
+### Update an existing planet.osm.pbf
+
+```
+pip install osmium
+pyosmium-up-to-date --size 20000 -v planet.osm.pbf
+```
+
+Takes roughly 30 min.
