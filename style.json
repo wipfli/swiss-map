@@ -873,7 +873,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#7f8c8d",
+        "line-color": "#C5C5C5",
         "line-width": {
           "stops": [
             [
@@ -882,15 +882,15 @@
             ],
             [
               12,
-              4
+              5
             ],
             [
               14,
-              6
+              7
             ],
             [
               20,
-              16
+              17
             ]
           ]
         }
