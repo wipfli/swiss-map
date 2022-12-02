@@ -2249,17 +2249,23 @@
           ["linear"],
           ["zoom"],
           7, [
-            "case", 
-            [">", ["to-number", ["get", "@qrank"]], 1000000], 16,
-            [">", ["to-number", ["get", "@qrank"]], 100000], 14,
-            [">", ["to-number", ["get", "@qrank"]], 10000], 12,
-            11
+            "*",
+            1.1,
+            [
+              "case",
+              [">", ["to-number", ["get", "@qrank"]], 10000000], 17,
+              [">", ["to-number", ["get", "@qrank"]], 1000000], 16,
+              [">", ["to-number", ["get", "@qrank"]], 100000], 14,
+              [">", ["to-number", ["get", "@qrank"]], 10000], 12,
+              11
+            ]
           ],
           12, [
             "*",
             1.5,
             [
-              "case", 
+              "case",
+              [">", ["to-number", ["get", "@qrank"]], 10000000], 17,
               [">", ["to-number", ["get", "@qrank"]], 1000000], 16,
               [">", ["to-number", ["get", "@qrank"]], 100000], 14,
               [">", ["to-number", ["get", "@qrank"]], 10000], 12,
