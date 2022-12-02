@@ -2248,6 +2248,10 @@
       "type": "symbol",
       "source": "qrank",
       "source-layer": "qrank",
+      "filter": [
+        "all",
+        ["!in", "place", "state"]
+      ],
       "layout": {
         "text-field": "{name}",
         "text-size": [
