@@ -111,7 +111,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": "#dee0e4",
+        "fill-color": "#EAEAEA",
         "fill-opacity": {
           "stops": [
             [
