@@ -189,7 +189,8 @@
             "service",
             "residential",
             "unclassified",
-            "living_street"
+            "living_street",
+            "pedestrian"
           ],
           [
             "==",
@@ -495,7 +496,8 @@
             "service",
             "residential",
             "unclassified",
-            "living_street"
+            "living_street",
+            "pedestrian"
           ],
           [
             "==",
@@ -802,7 +804,8 @@
             "service",
             "residential",
             "unclassified",
-            "living_street"
+            "living_street",
+            "pedestrian"
           ],
           [
             "==",
@@ -1342,7 +1345,8 @@
             "service",
             "residential",
             "unclassified",
-            "living_street"
+            "living_street",
+            "pedestrian"
           ],
           [
             "==",
@@ -1649,7 +1653,8 @@
             "service",
             "residential",
             "unclassified",
-            "living_street"
+            "living_street",
+            "pedestrian"
           ],
           [
             "==",
@@ -1945,7 +1950,8 @@
             "service",
             "residential",
             "unclassified",
-            "living_street"
+            "living_street",
+            "pedestrian"
           ],
           [
             "==",
