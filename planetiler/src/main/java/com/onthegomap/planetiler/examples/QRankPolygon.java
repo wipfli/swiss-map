@@ -60,9 +60,9 @@ public class QRankPolygon implements Profile {
 
   @Override
   public void processFeature(SourceFeature sourceFeature, FeatureCollector features) {
-    if (sourceFeature.canBePolygon() && sourceFeature.hasTag("wikidata"))
+    if ((sourceFeature.isPoint() || sourceFeature.canBePolygon()) && sourceFeature.hasTag("wikidata"))
     {
-      var feature = features.centroidIfConvex("qrank");
+      var feature = sourceFeature.isPoint() ? features.point("qrank") : features.centroidIfConvex("qrank");
       feature
         .setZoomRange(0, 14)
         .setSortKey(-getQRank(sourceFeature.getTag("wikidata")) / 100)
