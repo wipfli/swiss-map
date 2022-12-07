@@ -32,7 +32,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": "hsl(205, 56%, 73%)"
+        "fill-color": "#B9DCF4"
       }
     },
     {
@@ -52,7 +52,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": "hsl(205, 56%, 73%)"
+        "fill-color": "#B9DCF4"
       }
     },
     {
@@ -2292,10 +2292,10 @@
         "symbol-sort-key": ["-", ["to-number", ["get", "@qrank"]]]
       },
       "paint": {
-        "text-color": ["case", ["has", "place"], "black", "darkgreen"],
+        "text-color": ["case", ["==", ["get", "natural"], "water"], "#0c7ac3", ["has", "place"], "black", "darkgreen"],
         "text-halo-blur": 0,
         "text-halo-color": "white",
-        "text-halo-width": 1.5
+        "text-halo-width": ["case", ["==", ["get", "natural"], "water"], 0.0, 1.5]
       }
     }
   ],
