@@ -60,9 +60,9 @@ public class QRank implements Profile {
 
   @Override
   public void processFeature(SourceFeature sourceFeature, FeatureCollector features) {
-    if (sourceFeature.isPoint() && sourceFeature.hasTag("wikidata") && sourceFeature.hasTag("name") && (sourceFeature.hasTag("place") || sourceFeature.hasTag("natural") || sourceFeature.hasTag("waterway", "waterfall")))
+    if ((sourceFeature.isPoint() || sourceFeature.canBePolygon()) && sourceFeature.hasTag("wikidata") && sourceFeature.hasTag("name") && (sourceFeature.hasTag("place") || sourceFeature.hasTag("natural") || sourceFeature.hasTag("waterway", "waterfall")))
     {
-      var feature = features.point("qrank");
+      var feature = sourceFeature.isPoint() ? features.point("qrank") : features.centroidIfConvex("qrank");
       feature
         .setZoomRange(0, 14)
         .setSortKey(-getQRank(sourceFeature.getTag("wikidata")) / 100)
