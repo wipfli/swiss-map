@@ -150,6 +150,24 @@
       }
     },
     {
+      "id": "water_lines",
+      "type": "line",
+      "source": "shortbread",
+      "source-layer": "water_lines",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#ABCDFB",
+        "line-width": {
+          "stops": [
+            [9, 1],
+            [11, 2]
+          ]
+        }
+      }
+    },
+    {
       "id": "streets",
       "type": "line",
       "source": "shortbread",
