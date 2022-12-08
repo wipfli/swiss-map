@@ -56,6 +56,26 @@
       }
     },
     {
+      "id": "glacier",
+      "type": "fill",
+      "source": "shortbread",
+      "source-layer": "water_polygons",
+      "filter": [
+        "all",
+        [
+          "==",
+          "kind",
+          "glacier"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#E7F6FF"
+      }
+    },
+    {
       "id": "landcover_wood",
       "type": "fill",
       "source": "shortbread",
