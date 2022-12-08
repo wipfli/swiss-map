@@ -1,6 +1,7 @@
 package com.onthegomap.planetiler.examples;
 
 import com.onthegomap.planetiler.FeatureCollector;
+import com.onthegomap.planetiler.FeatureCollector.Feature;
 import com.onthegomap.planetiler.Planetiler;
 import com.onthegomap.planetiler.Profile;
 import com.onthegomap.planetiler.config.Arguments;
@@ -60,21 +61,28 @@ public class QRank implements Profile {
 
   @Override
   public void processFeature(SourceFeature sourceFeature, FeatureCollector features) {
-    if ((sourceFeature.isPoint() || sourceFeature.canBePolygon()) && sourceFeature.hasTag("wikidata") && sourceFeature.hasTag("name") && (sourceFeature.hasTag("place") || sourceFeature.hasTag("natural") || sourceFeature.hasTag("waterway", "waterfall")))
-    {
-      var feature = sourceFeature.isPoint() ? features.point("qrank") : features.centroidIfConvex("qrank");
-      feature
-        .setZoomRange(0, 14)
-        .setSortKey(-getQRank(sourceFeature.getTag("wikidata")) / 100)
-        .setPointLabelGridSizeAndLimit(
-          12, // only limit at z_ and below
-          128, // break the tile up into _x_ px squares
-          5 // any only keep the _ nodes with lowest sort-key in each _px square
-        )
-        .setBufferPixelOverrides(ZoomFunction.maxZoom(12, 128))
-        .setAttr("@qrank", getQRank(sourceFeature.getTag("wikidata")));
-      for (var entry : sourceFeature.tags().entrySet()) {
-        feature.setAttr(entry.getKey(), entry.getValue());
+    if (sourceFeature.hasTag("wikidata") && sourceFeature.hasTag("name")) {
+      Feature feature = null;
+      if (sourceFeature.isPoint() && (sourceFeature.hasTag("place") || sourceFeature.hasTag("natural") || sourceFeature.hasTag("waterway", "waterfall"))) {
+        feature = features.point("qrank");
+      }
+      if (sourceFeature.canBePolygon() && (sourceFeature.hasTag("natural") || sourceFeature.hasTag("place", "island"))) {
+        feature = features.centroidIfConvex("qrank");
+      }
+      if (feature != null) {
+        feature
+          .setZoomRange(0, 14)
+          .setSortKey(-getQRank(sourceFeature.getTag("wikidata")) / 100)
+          .setPointLabelGridSizeAndLimit(
+            12, // only limit at z_ and below
+            128, // break the tile up into _x_ px squares
+            5 // any only keep the _ nodes with lowest sort-key in each _px square
+          )
+          .setBufferPixelOverrides(ZoomFunction.maxZoom(12, 128))
+          .setAttr("@qrank", getQRank(sourceFeature.getTag("wikidata")));
+        for (var entry : sourceFeature.tags().entrySet()) {
+          feature.setAttr(entry.getKey(), entry.getValue());
+        }
       }
     }
   }
