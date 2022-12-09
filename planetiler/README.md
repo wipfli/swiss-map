@@ -6,12 +6,15 @@ Swiss Map is experimenting with [QRank](https://qrank.wmcloud.org, which measure
 
 Steps on Ubuntu are the following:
 
-Get the QRank file:
+Get the QRank file and wikipedia -> wikidata files:
 
 ```
 cd src/main/java/com/onthegomap/planetiler/examples
 wget https://qrank.wmcloud.org/download/qrank.csv.gz
 gzip -d qrank.csv.gz
+wget https://qrank-storage.wmcloud.org/qsitelinks/qsitelinks.mdb.zst
+zstd -d qsitelinks.mdb.zst
+mv qsitelinks.mdb data.mdb
 ```
 
 Build Planetiler (Requires Java, see [Planetiler->Contributing](https://github.com/onthegomap/planetiler/blob/main/CONTRIBUTING.md):

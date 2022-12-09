@@ -12,14 +12,40 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
 
+import static java.nio.ByteBuffer.allocateDirect;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.lmdbjava.Env.create;
+
+import java.io.File;
+import java.nio.ByteBuffer;
+
+import org.lmdbjava.Dbi;
+import org.lmdbjava.Env;
+import org.lmdbjava.Txn;
+
 public class QRank implements Profile {
   static HashMap<String, String> qranks;
+  static Env<ByteBuffer> env;
+  static Dbi<ByteBuffer> db;
+  static Txn<ByteBuffer> txn;
 
   public static void main(String[] args) throws Exception {
     run(Arguments.fromArgsOrConfigFile(args));
   }
 
   static void run(Arguments inArgs) throws Exception {
+
+    env = create()
+      .setMapSize(110_000_000_000L)
+      .setMaxDbs(1)
+      .open(new File("./src/main/java/com/onthegomap/planetiler/examples/"));
+    db = env.openDbi("qsitelinks");
+    txn = env.txnRead();
+
+    System.out.println(getQ("zu:zoula"));
+
+    System.out.println("lmdb ready.");
+
     qranks = new HashMap<String, String>();
 
     System.out.println("Start reading qrank.csv...");
@@ -57,6 +83,20 @@ public class QRank implements Profile {
     else {
       return Integer.parseInt(qrank);
     }
+  }
+
+  static String getQ(String wikipedia) {
+    final ByteBuffer key = allocateDirect(env.getMaxKeySize());
+    key.put(wikipedia.getBytes(UTF_8)).flip();
+    final ByteBuffer found = db.get(txn, key);
+   
+    if (found == null) {
+      return "";
+    }
+
+    final ByteBuffer fetchedVal = txn.val();
+
+    return UTF_8.decode(fetchedVal).toString();
   }
 
   @Override

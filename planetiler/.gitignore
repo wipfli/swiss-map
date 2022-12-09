@@ -1,3 +1,6 @@
 src/main/java/com/onthegomap/planetiler/examples/qrank.csv
+src/main/java/com/onthegomap/planetiler/examples/data.mdb
+src/main/java/com/onthegomap/planetiler/examples/data.mdb-lock
+src/main/java/com/onthegomap/planetiler/examples/lock.mdb
 target/
 data/
