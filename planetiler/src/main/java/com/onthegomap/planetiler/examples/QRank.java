@@ -40,8 +40,9 @@ public class QRank implements Profile {
     env = create()
       .setMapSize(110_000_000_000L)
       .setMaxDbs(1)
-      .open(new File("./src/main/java/com/onthegomap/planetiler/examples/data.mdb"), MDB_NOSUBDIR.getMask() | MDB_RDONLY_ENV.getMask());
-    db = env.openDbi("qsitelinks");
+      .open(new File("./src/main/java/com/onthegomap/planetiler/examples/"), MDB_NOSUBDIR.getMask() | MDB_RDONLY_ENV.getMask());
+    String databaseName = null;
+    db = env.openDbi(databaseName);
     txn = env.txnRead();
 
     System.out.println(getQ("zu:zoula"));
