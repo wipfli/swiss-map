@@ -16,6 +16,7 @@ import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.lmdbjava.Env.create;
 import static org.lmdbjava.EnvFlags.MDB_NOSUBDIR;
+import static org.lmdbjava.EnvFlags.MDB_RDONLY_ENV;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -39,7 +40,7 @@ public class QRank implements Profile {
     env = create()
       .setMapSize(110_000_000_000L)
       .setMaxDbs(1)
-      .open(new File("./src/main/java/com/onthegomap/planetiler/examples/data.mdb"), MDB_NOSUBDIR);
+      .open(new File("./src/main/java/com/onthegomap/planetiler/examples/data.mdb"), MDB_NOSUBDIR.getMask() | MDB_RDONLY_ENV.getMask());
     db = env.openDbi("qsitelinks");
     txn = env.txnRead();
 
