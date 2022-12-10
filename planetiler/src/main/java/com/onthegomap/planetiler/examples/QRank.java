@@ -39,7 +39,7 @@ public class QRank implements Profile {
     env = create()
       .setMapSize(110_000_000_000L)
       .setMaxDbs(1)
-      .open(new File("./src/main/java/com/onthegomap/planetiler/examples/"), MDB_NOSUBDIR);
+      .open(new File("./src/main/java/com/onthegomap/planetiler/examples/data.mdb"), MDB_NOSUBDIR);
     db = env.openDbi("qsitelinks");
     txn = env.txnRead();
 
