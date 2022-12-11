@@ -106,10 +106,10 @@ public class QRankAll implements Profile {
   public void processFeature(SourceFeature sourceFeature, FeatureCollector features) {
     if (sourceFeature.hasTag("wikidata") && sourceFeature.hasTag("name")) {
       Feature feature = null;
-      if (sourceFeature.isPoint() && (sourceFeature.hasTag("place") || sourceFeature.hasTag("natural") || sourceFeature.hasTag("waterway", "waterfall"))) {
+      if (sourceFeature.isPoint()) {
         feature = features.point("qrank");
       }
-      if (sourceFeature.canBePolygon() && (sourceFeature.hasTag("natural") || sourceFeature.hasTag("place", "island"))) {
+      if (sourceFeature.canBePolygon()) {
         feature = features.centroidIfConvex("qrank");
       }
       if (feature != null) {
