@@ -89,7 +89,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": "#ceead6"
+        "fill-color": "rgb(206,232,202)"
       }
     },
     {
@@ -1185,7 +1185,8 @@
           "kind",
           "footway",
           "steps",
-          "pedestrian"
+          "pedestrian",
+          "cycleway"
         ]
       ],
       "minzoom": 15,
@@ -2330,7 +2331,7 @@
         "symbol-sort-key": ["-", ["to-number", ["get", "@qrank"]]]
       },
       "paint": {
-        "text-color": ["case", ["==", ["get", "natural"], "water"], "#0c7ac3", ["has", "place"], "black", "darkgreen"],
+        "text-color": ["case", ["==", ["get", "natural"], "water"], "#0c7ac3", ["has", "place"], "black", "gray"],
         "text-halo-blur": 0,
         "text-halo-color": "white",
         "text-halo-width": ["case", ["==", ["get", "natural"], "water"], 0.0, 1.5]
