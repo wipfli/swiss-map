@@ -3,4 +3,8 @@ src/main/java/com/onthegomap/planetiler/examples/data.mdb
 src/main/java/com/onthegomap/planetiler/examples/data.mdb-lock
 src/main/java/com/onthegomap/planetiler/examples/lock.mdb
 target/
-data/
+data/*.pmtiles
+data/*.mbtiles
+data/sources
+data/tmp
+
