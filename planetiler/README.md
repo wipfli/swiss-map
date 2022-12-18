@@ -26,7 +26,7 @@ Build Planetiler (Requires Java, see [Planetiler->Contributing](https://github.c
 Run Planetiler in the background:
 
 ```
-screen -d -m "./runworld.sh"
+screen -d -m "./qrank-runworld.sh"
 ```
 
 Watch the logs:
@@ -43,9 +43,15 @@ docker run --rm -it -v "$(pwd)/data":/data -p 8080:8080 maptiler/tileserver-gl -
 
 ### Update an existing planet.osm.pbf
 
+To bring the latest OpenStreetMap data to an existing planet.osm.pbf file, install first osmium with:
 ```
 pip install osmium
-pyosmium-up-to-date --size 20000 -v planet.osm.pbf
+```
+
+Then run the planet update script:
+
+```
+screen -d -m "./update-planet.sh"
 ```
 
 Takes roughly 30 min.
