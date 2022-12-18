@@ -6,7 +6,7 @@ examples: shortbread.spec.yml
 args:
   area:
     description: Geofabrik area to download
-    default: massachusetts
+    default: planet
   osm_url:
     description: OSM URL to download
     default: '${ "geofabrik:" + args.area }'
