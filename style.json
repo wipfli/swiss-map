@@ -168,18 +168,6 @@
       }
     },
     {
-      "id": "streets",
-      "type": "line",
-      "source": "shortbread",
-      "source-layer": "streets",
-      "layout": {
-        "visibility": "none"
-      },
-      "paint": {
-        "line-color": "black"
-      }
-    },
-    {
       "id": "streets_minor_tunnel_casing",
       "type": "line",
       "source": "shortbread",
