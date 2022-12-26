@@ -71,6 +71,21 @@ public class Streets implements Profile {
         .setMinPixelSize(0)
         .setMinZoom(0);
     }
+
+    // waterway layer
+    if (sourceFeature.canBeLine() && (
+      sourceFeature.hasTag("waterway",
+        "canal",
+        "river",
+        "stream",
+        "ditch"
+      ) &&
+      !sourceFeature.hasTag("tunnel")
+    )) {
+      features.line("waterway")
+        .setMinPixelSize(0)
+        .setMinZoom(sourceFeature.hasTag("waterway", "river", "canal") ? 9 : 14);
+    }
   }
 
   @Override
@@ -96,6 +111,14 @@ public class Streets implements Profile {
     }
 
     if ("boundary".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("waterway".equals(layer)) {
       return FeatureMerge.mergeLineStrings(items,
         0.5,
         0.5,
