@@ -22,52 +22,23 @@ public class Streets implements Profile {
 
   @Override
   public List<OsmRelationInfo> preprocessOsmRelation(OsmElement.Relation relation) {
-    if (relation.hasTag("type", "route")) {
-      if (relation.hasTag("route", "mtb", "bicycle")) {
-        return List.of(new RouteRelationInfo(
-          relation.id(),
-          relation.getString("name"),
-          relation.getString("ref"),
-          relation.getString("route"),
-          switch (relation.getString("network", "")) {
-          case "icn" -> "international";
-          case "ncn" -> "national";
-          case "rcn" -> "regional";
-          case "lcn" -> "local";
-          default -> "other";
-          }
-        ));
-      }
-    }
-
     return null;
   }
 
   @Override
   public void processFeature(SourceFeature sourceFeature, FeatureCollector features) {
-    if (sourceFeature.canBeLine()) {
 
-      for (var routeInfo : sourceFeature.relationInfo(RouteRelationInfo.class)) {
-        RouteRelationInfo relation = routeInfo.relation();
-        String layerName = relation.route + "-route-" + relation.network;
-        features.line(layerName)
-          .setAttr("name", relation.name)
-          .setAttr("ref", relation.ref)
-          .setZoomRange(0, 14)
-          .setMinPixelSize(0);
-      }
+    // buildings layer
+    if (sourceFeature.canBePolygon() && sourceFeature.hasTag("building") && !sourceFeature.hasTag("building", "no")) {
+      features.polygon("buildings")
+        .setMinZoom(14);
     }
   }
 
   @Override
   public List<VectorTile.Feature> postProcessLayerFeatures(String layer, int zoom,
     List<VectorTile.Feature> items) {
-    return FeatureMerge.mergeLineStrings(items,
-      0.5,
-      0.5,
-      4,
-      true
-    );
+    return null;
   }
 
   @Override
