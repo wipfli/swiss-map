@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 
-public class Streets implements Profile {
+public class SwissMap implements Profile {
 
   private record RouteRelationInfo(
     @Override long id,
@@ -680,7 +680,7 @@ public class Streets implements Profile {
   static void run(Arguments args) throws Exception {
     String area = args.getString("area", "geofabrik area to download", "monaco");
     Planetiler.create(args)
-      .setProfile(new Streets())
+      .setProfile(new SwissMap())
       .addOsmSource("osm", Path.of("data", "sources", area + ".osm.pbf"), "geofabrik:" + area)
       .addShapefileSource("ocean", Path.of("data", "sources", "water-polygons-split-3857.zip"),
         "https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip")
