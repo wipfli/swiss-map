@@ -86,6 +86,29 @@ public class Streets implements Profile {
         .setMinPixelSize(0)
         .setMinZoom(sourceFeature.hasTag("waterway", "river", "canal") ? 9 : 14);
     }
+
+    // water layer
+    if (sourceFeature.canBePolygon() && (
+      sourceFeature.hasTag("natural", "water") ||
+      sourceFeature.hasTag("waterway", 
+        "riverbank",
+        "dock",
+        "canal"
+      ) ||
+      sourceFeature.hasTag("landuse",
+        "reservoir",
+        "basin"
+      )
+    )) {
+      features.polygon("water")
+        .setMinZoom(sourceFeature.hasTag("waterway", "dock", "canal") ? 10 : 4);
+    }
+
+    // glacier layer
+    if (sourceFeature.canBePolygon() && sourceFeature.hasTag("natural", "glacier")) {
+      features.polygon("glacier")
+        .setMinZoom(4);
+    }
   }
 
   @Override
@@ -124,6 +147,24 @@ public class Streets implements Profile {
         0.5,
         4
       );
+    }
+
+    if ("water".equals(layer)) {
+      try {
+        return FeatureMerge.mergeOverlappingPolygons(items, 4);
+      }
+      catch (GeometryException e) {
+        return null;
+      }
+    }
+
+    if ("glacier".equals(layer)) {
+      try {
+        return FeatureMerge.mergeOverlappingPolygons(items, 4);
+      }
+      catch (GeometryException e) {
+        return null;
+      }
     }
 
     return null;
