@@ -135,68 +135,46 @@ public class SwissMap implements Profile {
         .setMinZoom(4);
     }
 
-    // highway-tunnel-motorway layer
-    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "motorway", "motorway_link")) {
-      features.line("highway-tunnel-motorway")
+    // highway-tunnel-unclassified layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && isUnclassified(sourceFeature)) {
+      features.line("highway-tunnel-unclassified")
+        .setMinPixelSize(0)
+        .setMinZoom(12);
+    }
+
+    // highway-ground-unclassified layer
+    if (sourceFeature.canBeLine() && isUnclassified(sourceFeature)) {
+      features.line("highway-ground-unclassified")
+        .setMinPixelSize(0)
+        .setMinZoom(12)
+        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 12);
+    }
+
+    // highway-bridge-unclassified layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && isUnclassified(sourceFeature)) {
+      features.line("highway-bridge-unclassified")
+        .setMinPixelSize(0)
+        .setMinZoom(12);
+    }
+
+    // highway-tunnel-tertiary layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "tertiary", "tertiary_link")) {
+      features.line("highway-tunnel-tertiary")
         .setMinPixelSize(0)
         .setMinZoom(11);
     }
 
-    // highway-ground-motorway layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "motorway", "motorway_link")) {
-      features.line("highway-ground-motorway")
+    // highway-ground-tertiary layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "tertiary", "tertiary_link")) {
+      features.line("highway-ground-tertiary")
         .setMinPixelSize(0)
-        .setMinZoom(5)
+        .setMinZoom(10)
         .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11);
     }
 
-    // highway-bridge-motorway layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "motorway", "motorway_link")) {
-      features.line("highway-bridge-motorway")
-        .setMinPixelSize(0)
-        .setMinZoom(11);
-    }
-
-    // highway-tunnel-trunk layer
-    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "trunk", "trunk_link")) {
-      features.line("highway-tunnel-trunk")
-        .setMinPixelSize(0)
-        .setMinZoom(11);
-    }
-
-    // highway-ground-trunk layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "trunk", "trunk_link")) {
-      features.line("highway-ground-trunk")
-        .setMinPixelSize(0)
-        .setMinZoom(6)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11);
-    }
-
-    // highway-bridge-trunk layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "trunk", "trunk_link")) {
-      features.line("highway-bridge-trunk")
-        .setMinPixelSize(0)
-        .setMinZoom(11);
-    }
-
-    // highway-tunnel-primary layer
-    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "primary", "primary_link")) {
-      features.line("highway-tunnel-primary")
-        .setMinPixelSize(0)
-        .setMinZoom(11);
-    }
-
-    // highway-ground-primary layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "primary", "primary_link")) {
-      features.line("highway-ground-primary")
-        .setMinPixelSize(0)
-        .setMinZoom(8)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11);
-    }
-
-    // highway-bridge-primary layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "primary", "primary_link")) {
-      features.line("highway-bridge-primary")
+    // highway-bridge-tertiary layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "tertiary", "tertiary_link")) {
+      features.line("highway-bridge-tertiary")
         .setMinPixelSize(0)
         .setMinZoom(11);
     }
@@ -223,48 +201,70 @@ public class SwissMap implements Profile {
         .setMinZoom(11);
     }
 
-    // highway-tunnel-tertiary layer
-    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "tertiary", "tertiary_link")) {
-      features.line("highway-tunnel-tertiary")
+    // highway-tunnel-primary layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "primary", "primary_link")) {
+      features.line("highway-tunnel-primary")
         .setMinPixelSize(0)
         .setMinZoom(11);
     }
 
-    // highway-ground-tertiary layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "tertiary", "tertiary_link")) {
-      features.line("highway-ground-tertiary")
+    // highway-ground-primary layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "primary", "primary_link")) {
+      features.line("highway-ground-primary")
         .setMinPixelSize(0)
-        .setMinZoom(10)
+        .setMinZoom(8)
         .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11);
     }
 
-    // highway-bridge-tertiary layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "tertiary", "tertiary_link")) {
-      features.line("highway-bridge-tertiary")
+    // highway-bridge-primary layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "primary", "primary_link")) {
+      features.line("highway-bridge-primary")
         .setMinPixelSize(0)
         .setMinZoom(11);
     }
 
-    // highway-tunnel-unclassified layer
-    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && isUnclassified(sourceFeature)) {
-      features.line("highway-tunnel-unclassified")
+    // highway-tunnel-trunk layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "trunk", "trunk_link")) {
+      features.line("highway-tunnel-trunk")
         .setMinPixelSize(0)
-        .setMinZoom(12);
+        .setMinZoom(11);
     }
 
-    // highway-ground-unclassified layer
-    if (sourceFeature.canBeLine() && isUnclassified(sourceFeature)) {
-      features.line("highway-ground-unclassified")
+    // highway-ground-trunk layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "trunk", "trunk_link")) {
+      features.line("highway-ground-trunk")
         .setMinPixelSize(0)
-        .setMinZoom(12)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 12);
+        .setMinZoom(6)
+        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11);
     }
 
-    // highway-bridge-unclassified layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && isUnclassified(sourceFeature)) {
-      features.line("highway-bridge-unclassified")
+    // highway-bridge-trunk layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "trunk", "trunk_link")) {
+      features.line("highway-bridge-trunk")
         .setMinPixelSize(0)
-        .setMinZoom(12);
+        .setMinZoom(11);
+    }
+
+    // highway-tunnel-motorway layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "motorway", "motorway_link")) {
+      features.line("highway-tunnel-motorway")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
+    }
+
+    // highway-ground-motorway layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "motorway", "motorway_link")) {
+      features.line("highway-ground-motorway")
+        .setMinPixelSize(0)
+        .setMinZoom(5)
+        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11);
+    }
+
+    // highway-bridge-motorway layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "motorway", "motorway_link")) {
+      features.line("highway-bridge-motorway")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
     }
 
     // highway-tunnel-tracktype-2 layer
@@ -356,7 +356,6 @@ public class SwissMap implements Profile {
         .setMinPixelSize(0)
         .setMinZoom(14);
     }
-    
   }
 
   @Override
@@ -655,6 +654,14 @@ public class SwissMap implements Profile {
       );
     }
 
+    if ("highway".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
     return null;
   }
 
@@ -684,7 +691,7 @@ public class SwissMap implements Profile {
       .addOsmSource("osm", Path.of("data", "sources", area + ".osm.pbf"), "geofabrik:" + area)
       .addShapefileSource("ocean", Path.of("data", "sources", "water-polygons-split-3857.zip"),
         "https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip")
-      .overwriteOutput("mbtiles", Path.of("data", "streets.mbtiles"))
+      .overwriteOutput("mbtiles", Path.of("data", "swissmap.mbtiles"))
       .run();
   }
 }
