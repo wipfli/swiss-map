@@ -38,9 +38,27 @@ public class Streets implements Profile {
         .setMinZoom(7);
     }
 
-    // buildings layer
+    // residential layer
+    if (sourceFeature.canBePolygon() && (
+      sourceFeature.hasTag("amenity",
+      "grave_yard") ||
+      sourceFeature.hasTag("landuse",
+        "cemetery",
+        "commercial",
+        "farmyard",
+        "industrial",
+        "residential",
+        "retail") ||
+      sourceFeature.hasTag("leisure", 
+      "park")
+    )) {
+      features.polygon("residential")
+        .setMinZoom(10);
+    }
+
+    // building layer
     if (sourceFeature.canBePolygon() && sourceFeature.hasTag("building") && !sourceFeature.hasTag("building", "no")) {
-      features.polygon("buildings")
+      features.polygon("building")
         .setMinZoom(14);
     }
   }
@@ -50,6 +68,15 @@ public class Streets implements Profile {
     List<VectorTile.Feature> items) {
 
     if ("wood".equals(layer)) {
+      try {
+        return FeatureMerge.mergeOverlappingPolygons(items, 4);
+      }
+      catch (GeometryException e) {
+        return null;
+      }
+    }
+
+    if ("residential".equals(layer)) {
       try {
         return FeatureMerge.mergeOverlappingPolygons(items, 4);
       }
