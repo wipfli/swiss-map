@@ -61,6 +61,16 @@ public class Streets implements Profile {
       features.polygon("building")
         .setMinZoom(14);
     }
+
+    // boundary layer
+    if (sourceFeature.canBeLine() && (
+      sourceFeature.hasTag("boundary", "administrative") &&
+      sourceFeature.hasTag("admin_level", "2")
+    )) {
+      features.line("boundary")
+        .setMinPixelSize(0)
+        .setMinZoom(0);
+    }
   }
 
   @Override
@@ -83,6 +93,14 @@ public class Streets implements Profile {
       catch (GeometryException e) {
         return null;
       }
+    }
+
+    if ("boundary".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
     }
 
     return null;
