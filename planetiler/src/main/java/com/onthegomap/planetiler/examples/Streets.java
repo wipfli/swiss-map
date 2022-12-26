@@ -313,6 +313,28 @@ public class Streets implements Profile {
         .setMinPixelSize(0)
         .setMinZoom(13);
     }
+
+    // highway-tunnel-path layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "path")) {
+      features.line("highway-tunnel-path")
+        .setMinPixelSize(0)
+        .setMinZoom(12);
+    }
+
+    // highway-ground-path layer
+    if (sourceFeature.canBeLine() && isNotTunnelOrBridge(sourceFeature) && sourceFeature.hasTag("highway", "path")) {
+      features.line("highway-ground-path")
+        .setMinPixelSize(0)
+        .setMinZoom(12);
+    }
+
+    // highway-bridge-path layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "path")) {
+      features.line("highway-bridge-path")
+        .setMinPixelSize(0)
+        .setMinZoom(12);
+    }
+    
   }
 
   @Override
@@ -556,6 +578,30 @@ public class Streets implements Profile {
     }
 
     if ("highway-bridge-tracktype-3-4-5".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-tunnel-path".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-ground-path".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-bridge-path".equals(layer)) {
       return FeatureMerge.mergeLineStrings(items,
         0.5,
         0.5,
