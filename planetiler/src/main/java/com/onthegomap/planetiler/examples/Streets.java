@@ -21,6 +21,24 @@ public class Streets implements Profile {
     String name, String ref, String route, String network
   ) implements OsmRelationInfo {}
 
+  private boolean isTunnel(SourceFeature sourceFeature) {
+    return sourceFeature.hasTag("tunnel", "yes", "building_passage") || sourceFeature.hasTag("covered", "yes");
+  }
+
+  private boolean isNotTunnelOrBridge(SourceFeature sourceFeature) {
+    return !(isTunnel(sourceFeature) || sourceFeature.hasTag("bridge", "yes"));
+  }
+
+  private boolean isUnclassified(SourceFeature sourceFeature) {
+    return sourceFeature.hasTag("highway",
+        "service",
+        "residential",
+        "unclassified",
+        "living_street",
+        "pedestrian"
+      ) || sourceFeature.hasTag("tracktype", "grade1");
+  }
+
   @Override
   public List<OsmRelationInfo> preprocessOsmRelation(OsmElement.Relation relation) {
     return null;
@@ -109,6 +127,138 @@ public class Streets implements Profile {
       features.polygon("glacier")
         .setMinZoom(4);
     }
+
+    // highway-tunnel-motorway layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "motorway")) {
+      features.line("highway-tunnel-motorway")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
+    }
+
+    // highway-ground-motorway layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "motorway")) {
+      features.line("highway-ground-motorway")
+        .setMinPixelSize(0)
+        .setMinZoom(5)
+        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11);
+    }
+
+    // highway-bridge-motorway layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "motorway")) {
+      features.line("highway-bridge-motorway")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
+    }
+
+    // highway-tunnel-trunk layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "trunk")) {
+      features.line("highway-tunnel-trunk")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
+    }
+
+    // highway-ground-trunk layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "trunk")) {
+      features.line("highway-ground-trunk")
+        .setMinPixelSize(0)
+        .setMinZoom(6)
+        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11);
+    }
+
+    // highway-bridge-trunk layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "trunk")) {
+      features.line("highway-bridge-trunk")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
+    }
+
+    // highway-tunnel-primary layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "primary")) {
+      features.line("highway-tunnel-primary")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
+    }
+
+    // highway-ground-primary layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "primary")) {
+      features.line("highway-ground-primary")
+        .setMinPixelSize(0)
+        .setMinZoom(8)
+        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11);
+    }
+
+    // highway-bridge-primary layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "primary")) {
+      features.line("highway-bridge-primary")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
+    }
+
+    // highway-tunnel-secondary layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "secondary")) {
+      features.line("highway-tunnel-secondary")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
+    }
+
+    // highway-ground-secondary layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "secondary")) {
+      features.line("highway-ground-secondary")
+        .setMinPixelSize(0)
+        .setMinZoom(9)
+        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11);
+    }
+
+    // highway-bridge-secondary layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "secondary")) {
+      features.line("highway-bridge-secondary")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
+    }
+
+    // highway-tunnel-tertiary layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "tertiary")) {
+      features.line("highway-tunnel-tertiary")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
+    }
+
+    // highway-ground-tertiary layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "tertiary")) {
+      features.line("highway-ground-tertiary")
+        .setMinPixelSize(0)
+        .setMinZoom(10)
+        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11);
+    }
+
+    // highway-bridge-tertiary layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "tertiary")) {
+      features.line("highway-bridge-tertiary")
+        .setMinPixelSize(0)
+        .setMinZoom(11);
+    }
+
+    // highway-tunnel-unclassified layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && isUnclassified(sourceFeature)) {
+      features.line("highway-tunnel-unclassified")
+        .setMinPixelSize(0)
+        .setMinZoom(12);
+    }
+
+    // highway-ground-unclassified layer
+    if (sourceFeature.canBeLine() && isUnclassified(sourceFeature)) {
+      features.line("highway-ground-unclassified")
+        .setMinPixelSize(0)
+        .setMinZoom(12)
+        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 12);
+    }
+
+    // highway-bridge-unclassified layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && isUnclassified(sourceFeature)) {
+      features.line("highway-bridge-unclassified")
+        .setMinPixelSize(0)
+        .setMinZoom(12);
+    }
   }
 
   @Override
@@ -165,6 +315,150 @@ public class Streets implements Profile {
       catch (GeometryException e) {
         return null;
       }
+    }
+
+    if ("highway-tunnel-motorway".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-ground-motorway".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-bridge-motorway".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-tunnel-trunk".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-ground-trunk".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-bridge-trunk".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-tunnel-primary".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-ground-primary".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-bridge-primary".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-tunnel-secondary".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-ground-secondary".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-bridge-secondary".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-tunnel-tertiary".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-ground-tertiary".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-bridge-tertiary".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-tunnel-unclassified".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-ground-unclassified".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-bridge-unclassified".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
     }
 
     return null;
