@@ -30,13 +30,19 @@ public class Streets implements Profile {
   }
 
   private boolean isUnclassified(SourceFeature sourceFeature) {
-    return sourceFeature.hasTag("highway",
+    return !sourceFeature.hasTag("tracktype", "grade2", "grade3", "grade4", "grade5") &&
+    (
+      sourceFeature.hasTag("highway",
         "service",
         "residential",
         "unclassified",
         "living_street",
         "pedestrian"
-      ) || sourceFeature.hasTag("tracktype", "grade1");
+      ) || 
+      sourceFeature.hasTag("tracktype", 
+        "grade1"
+      )
+    );
   }
 
   @Override
@@ -259,6 +265,54 @@ public class Streets implements Profile {
         .setMinPixelSize(0)
         .setMinZoom(12);
     }
+
+    // highway-tunnel-tracktype-2 layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("tracktype", "grade2")) {
+      features.line("highway-tunnel-tracktype-2")
+        .setMinPixelSize(0)
+        .setMinZoom(13);
+    }
+
+    // highway-ground-tracktype-2 layer
+    if (sourceFeature.canBeLine() && isNotTunnelOrBridge(sourceFeature) && sourceFeature.hasTag("tracktype", "grade2")) {
+      features.line("highway-ground-tracktype-2")
+        .setMinPixelSize(0)
+        .setMinZoom(13);
+    }
+
+    // highway-bridge-tracktype-2 layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("tracktype", "grade2")) {
+      features.line("highway-bridge-tracktype-2")
+        .setMinPixelSize(0)
+        .setMinZoom(13);
+    }
+
+    // highway-tunnel-tracktype-3-4-5 layer
+    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && 
+      sourceFeature.hasTag("tracktype", "grade3", "grade4", "grade5")
+    ) {
+      features.line("highway-tunnel-tracktype-3-4-5")
+        .setMinPixelSize(0)
+        .setMinZoom(13);
+    }
+
+    // highway-ground-tracktype-3-4-5 layer
+    if (sourceFeature.canBeLine() && isNotTunnelOrBridge(sourceFeature) && 
+      sourceFeature.hasTag("tracktype", "grade3", "grade4", "grade5")
+    ) {
+      features.line("highway-ground-tracktype-3-4-5")
+        .setMinPixelSize(0)
+        .setMinZoom(13);
+    }
+
+    // highway-bridge-tracktype-3-4-5 layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && 
+      sourceFeature.hasTag("tracktype", "grade3", "grade4", "grade5")
+    ) {
+      features.line("highway-bridge-tracktype-3-4-5")
+        .setMinPixelSize(0)
+        .setMinZoom(13);
+    }
   }
 
   @Override
@@ -454,6 +508,54 @@ public class Streets implements Profile {
     }
 
     if ("highway-bridge-unclassified".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-tunnel-tracktype-2".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-ground-tracktype-2".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-bridge-tracktype-2".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-tunnel-tracktype-3-4-5".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-ground-tracktype-3-4-5".equals(layer)) {
+      return FeatureMerge.mergeLineStrings(items,
+        0.5,
+        0.5,
+        4
+      );
+    }
+
+    if ("highway-bridge-tracktype-3-4-5".equals(layer)) {
       return FeatureMerge.mergeLineStrings(items,
         0.5,
         0.5,
