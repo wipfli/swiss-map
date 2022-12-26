@@ -5,6 +5,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.Planetiler;
 import com.onthegomap.planetiler.Profile;
 import com.onthegomap.planetiler.VectorTile;
+import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.config.Arguments;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import com.onthegomap.planetiler.reader.osm.OsmElement;
@@ -28,6 +29,15 @@ public class Streets implements Profile {
   @Override
   public void processFeature(SourceFeature sourceFeature, FeatureCollector features) {
 
+    // wood layer
+    if (sourceFeature.canBePolygon() && (
+        sourceFeature.hasTag("landuse", "forest") ||
+        sourceFeature.hasTag("natural", "wood")
+    )) {
+      features.polygon("wood")
+        .setMinZoom(7);
+    }
+
     // buildings layer
     if (sourceFeature.canBePolygon() && sourceFeature.hasTag("building") && !sourceFeature.hasTag("building", "no")) {
       features.polygon("buildings")
@@ -38,6 +48,16 @@ public class Streets implements Profile {
   @Override
   public List<VectorTile.Feature> postProcessLayerFeatures(String layer, int zoom,
     List<VectorTile.Feature> items) {
+
+    if ("wood".equals(layer)) {
+      try {
+        return FeatureMerge.mergeOverlappingPolygons(items, 4);
+      }
+      catch (GeometryException e) {
+        return null;
+      }
+    }
+
     return null;
   }
 
