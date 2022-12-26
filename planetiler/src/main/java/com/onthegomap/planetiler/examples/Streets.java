@@ -122,7 +122,8 @@ public class Streets implements Profile {
       sourceFeature.hasTag("landuse",
         "reservoir",
         "basin"
-      )
+      ) ||
+      "ocean".equals(sourceFeature.getSource())
     )) {
       features.polygon("water")
         .setMinZoom(sourceFeature.hasTag("waterway", "dock", "canal") ? 10 : 4);
@@ -668,33 +669,21 @@ public class Streets implements Profile {
   }
 
   @Override
-  public boolean isOverlay() {
-    return true;
-  }
-
-  @Override
   public String attribution() {
-    return """
-      <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>
-      """.trim();
+    return "<a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>";
   }
 
-  /*
-   * Main entrypoint for this example program
-   */
   public static void main(String[] args) throws Exception {
     run(Arguments.fromArgsOrConfigFile(args));
   }
 
   static void run(Arguments args) throws Exception {
     String area = args.getString("area", "geofabrik area to download", "monaco");
-    // Planetiler is a convenience wrapper around the lower-level API for the most common use-cases.
-    // See ToiletsOverlayLowLevelApi for an example using the lower-level API
     Planetiler.create(args)
       .setProfile(new Streets())
-      // override this default with osm_path="path/to/data.osm.pbf"
       .addOsmSource("osm", Path.of("data", "sources", area + ".osm.pbf"), "geofabrik:" + area)
-      // override this default with mbtiles="path/to/output.mbtiles"
+      .addShapefileSource("ocean", Path.of("data", "sources", "water-polygons-split-3857.zip"),
+        "https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip")
       .overwriteOutput("mbtiles", Path.of("data", "streets.mbtiles"))
       .run();
   }
