@@ -1012,7 +1012,7 @@ public class SwissMap implements Profile {
     String area = args.getString("area", "geofabrik area to download", "monaco");
     Planetiler.create(args)
       .setProfile(new SwissMap())
-      .addOsmSource("osm", Path.of("data", "sources", area + ".osm.pbf"), "geofabrik:" + area)
+      .addOsmSource("osm", Path.of("data", "sources", area + ".osm.pbf"), "planet".equals(area) ? "aws:latest" : ("geofabrik:" + area))
       .addShapefileSource("ocean", Path.of("data", "sources", "water-polygons-split-3857.zip"),
         "https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip")
       .overwriteOutput("mbtiles", Path.of("data", "swissmap.mbtiles"))
