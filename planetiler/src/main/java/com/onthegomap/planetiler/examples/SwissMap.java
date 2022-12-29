@@ -307,7 +307,18 @@ public class SwissMap implements Profile {
       boolean isLink = false;
       boolean isTunnel = isTunnel(sourceFeature);
       boolean isBridge = isBridge(sourceFeature);
-      int minZoom = sourceFeature.hasTag("highway", "unclassified") ? 12 : 14;
+      
+      int minZoom = 0;
+      if (sourceFeature.hasTag("highway", "unclassified")) {
+        minZoom = 12;
+      }
+      else if (sourceFeature.hasTag("highway", "service")) {
+        minZoom = 14;
+      }
+      else {
+        minZoom = 13;
+      }
+
       int maxZoom = globalMaxZoom;
       Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
 
