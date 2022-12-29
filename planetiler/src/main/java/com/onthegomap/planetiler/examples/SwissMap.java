@@ -10,11 +10,26 @@ import com.onthegomap.planetiler.config.Arguments;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import com.onthegomap.planetiler.reader.osm.OsmElement;
 import com.onthegomap.planetiler.reader.osm.OsmRelationInfo;
+import com.onthegomap.planetiler.util.ZoomFunction;
+
 import java.nio.file.Path;
 import java.util.List;
 
-
 public class SwissMap implements Profile {
+
+  private String[] highwayCategories = {
+    "railway",
+    "unclassified",
+    "tertiary",
+    "secondary",
+    "primary",
+    "trunk",
+    "motorway",
+  };
+
+  int tunnelAndBridgeMinZoom = 14;
+  int linkMinZoom = 11;
+  int globalMaxZoom = 14;
 
   private record RouteRelationInfo(
     @Override long id,
@@ -25,8 +40,12 @@ public class SwissMap implements Profile {
     return sourceFeature.hasTag("tunnel", "yes", "building_passage") || sourceFeature.hasTag("covered", "yes");
   }
 
+  private boolean isBridge(SourceFeature sourceFeature) {
+    return sourceFeature.hasTag("bridge", "yes");
+  }
+
   private boolean isNotTunnelOrBridge(SourceFeature sourceFeature) {
-    return !(isTunnel(sourceFeature) || sourceFeature.hasTag("bridge", "yes"));
+    return !(isTunnel(sourceFeature) || isBridge(sourceFeature));
   }
 
   private boolean isUnclassified(SourceFeature sourceFeature) {
@@ -48,6 +67,94 @@ public class SwissMap implements Profile {
   @Override
   public List<OsmRelationInfo> preprocessOsmRelation(OsmElement.Relation relation) {
     return null;
+  }
+
+  class LineWidth implements ZoomFunction<Number> {
+    boolean isCasing;
+    boolean isLink;
+    double[] levels;
+
+    public LineWidth(boolean isCasing, boolean isLink, double[] levels) {
+      this.isCasing = isCasing;
+      this.isLink = isLink;
+      this.levels = levels;
+    }
+    @Override
+    public Number apply(int value) {
+      double width = levels[value];
+      if (isCasing) {
+        width += 2.0;
+      }
+      if (isLink) {
+        width -= 1.5;
+      }
+      return width;
+    }
+  }
+
+  class LineSortKey implements ZoomFunction<Number> {
+    int categoryIndex;
+    boolean isLink;
+    boolean isBridge;
+    boolean isTunnel;
+    Integer layer;
+    boolean isCasing;
+
+    public LineSortKey(int categoryIndex, boolean isLink, boolean isBridge, boolean isTunnel, Integer layer, boolean isCasing) {
+      this.categoryIndex = categoryIndex; 
+      this.isLink = isLink; 
+      this.isBridge = isBridge; 
+      this.isTunnel = isTunnel; 
+      this.layer = layer;
+      this.isCasing = isCasing;
+    }
+    @Override
+    public Number apply(int value) {
+      int result = 0;
+      if (value < 14) {
+        result += 2 * categoryIndex + (isCasing ? 0 : 1) + (isLink ? 0 : 2 * highwayCategories.length);
+      }
+      else {
+        result += categoryIndex + (isCasing ? 0 : 1) * 2 * highwayCategories.length + (isLink ? 0 : highwayCategories.length);
+      }
+
+      if (14 <= value) {
+        if (isBridge) {
+          result += (layer == null ? 1 : layer) * 4 * highwayCategories.length;
+        }
+        if (isTunnel) {
+          result += (layer == null ? -1 : layer) * 4 * highwayCategories.length;
+        }
+      }
+      return result;
+    }
+  }
+
+  class LineColor implements ZoomFunction<String> {
+    boolean isTunnel;
+    boolean isCasing;
+    String[] levels;
+
+    public LineColor(boolean isTunnel, boolean isCasing, String[] levels) {
+      this.isTunnel = isTunnel;
+      this.isCasing = isCasing;
+      this.levels = levels;
+    }
+
+    @Override
+    public String apply(int value) {
+      if (value < 14) {
+        return levels[value];
+      }
+      else {
+        if (isTunnel) {
+          return isCasing ? "#C5C5C5" : "#e4e4e4";
+        }
+        else {
+          return levels[value];
+        }
+      }
+    }
   }
 
   @Override
@@ -138,733 +245,565 @@ public class SwissMap implements Profile {
 
 
 
-    int numberOfHighwayLayers = 6;
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("railway", "rail", "narrow_gauge")) {
 
-    // highway-tunnel-unclassified layer
-    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && isUnclassified(sourceFeature)) {
+      int categoryIndex = 0;
+      boolean isLink = false;
+      boolean isTunnel = isTunnel(sourceFeature);
+      boolean isBridge = isBridge(sourceFeature);
+      int minZoom = sourceFeature.hasTag("service") ? 13 : 11;
+      int maxZoom = globalMaxZoom;
+      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
 
-      int layerGroupIndex = 0;
-      int indexWithinGroup = 0;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
+      double[] lineWidthLevels = {
+        0.0, // z0
+        0.0, // z1
+        0.0, // z2
+        0.0, // z3
+        0.0, // z4
+        0.0, // z5
+        0.0, // z6
+        0.0, // z7
+        -1.0, // z8
+        -1.0, // z9
+        -1.0, // z10
+        -1.0, // z11
+        -1.0, // z12
+        -1.0, // z13
+        -1.0, // z14
+      };
 
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(12)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-unclassified-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#7f8c8d")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "0")
-        .setAttr("line-width-z14", "4")
-        .setAttr("line-width-z20", "12");
+      String[] casingLineColorLevels = {
+        "", // z0
+        "", // z1
+        "", // z2
+        "", // z3
+        "", // z4
+        "", // z5
+        "", // z6
+        "", // z7
+        "lightgray", // z8
+        "lightgray", // z9
+        "lightgray", // z10
+        "lightgray", // z11
+        "lightgray", // z12
+        "lightgray", // z13
+        "lightgray", // z14
+      };
       
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(12)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-unclassified")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#E5E5E5")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "0")
-        .setAttr("line-width-z14", "3.5")
-        .setAttr("line-width-z20", "10");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
+        .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5);
     }
 
-    // highway-ground-unclassified layer
     if (sourceFeature.canBeLine() && isUnclassified(sourceFeature)) {
 
-      int layerGroupIndex = 1;
-      int indexWithinGroup = 0;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
+      int categoryIndex = 1;
+      boolean isLink = false;
+      boolean isTunnel = isTunnel(sourceFeature);
+      boolean isBridge = isBridge(sourceFeature);
+      int minZoom = sourceFeature.hasTag("highway", "unclassified") ? 12 : 14;
+      int maxZoom = globalMaxZoom;
+      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+
+      double[] lineWidthLevels = {
+        0.0, // z0
+        0.0, // z1
+        0.0, // z2
+        0.0, // z3
+        0.0, // z4
+        0.0, // z5
+        0.0, // z6
+        0.0, // z7
+        0.0, // z8
+        0.0, // z9
+        0.0, // z10
+        0.0, // z11
+        1.0, // z12
+        1.5, // z13
+        2.0, // z14
+      };
+
+      String[] casingLineColorLevels = {
+        "", // z0
+        "", // z1
+        "", // z2
+        "", // z3
+        "", // z4
+        "", // z5
+        "", // z6
+        "", // z7
+        "", // z8
+        "", // z9
+        "", // z10
+        "", // z11
+        "#ccc", // z12
+        "#ccc", // z13
+        sourceFeature.hasTag("highway", "unclassified") ? "#bbb" : "#ccc", // z14
+      };
+
+      String[] lineColorLevels = {
+        "", // z0
+        "", // z1
+        "", // z2
+        "", // z3
+        "", // z4
+        "", // z5
+        "", // z6
+        "", // z7
+        "", // z8
+        "", // z9
+        "", // z10
+        "", // z11
+        "white", // z12
+        "white", // z13
+        "white", // z14
+      };
 
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(12)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 12)
-        .setAttr("category", "highway-ground-unclassified-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#C5C5C5")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "0")
-        .setAttr("line-width-z14", "4")
-        .setAttr("line-width-z20", "12");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
+        .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(12)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 12)
-        .setAttr("category", "highway-ground-unclassified")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "white")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "0")
-        .setAttr("line-width-z14", "3.5")
-        .setAttr("line-width-z20", "10");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
+        .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
 
-    // highway-bridge-unclassified layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && isUnclassified(sourceFeature)) {
-
-      int layerGroupIndex = 2;
-      int indexWithinGroup = 0;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
-
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(12)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-unclassified-casing")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#C5C5C5")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "0")
-        .setAttr("line-width-z14", "4")
-        .setAttr("line-width-z20", "12");
-      
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(12)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-unclassified")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "white")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "0")
-        .setAttr("line-width-z14", "3.5")
-        .setAttr("line-width-z20", "10");
-    }
-
-    // highway-tunnel-tertiary layer
-    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "tertiary", "tertiary_link")) {
- 
-      int layerGroupIndex = 0;
-      int indexWithinGroup = 1;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
-
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-tertiary-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#7f8c8d")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "4")
-        .setAttr("line-width-z14", "6")
-        .setAttr("line-width-z20", "16");
-      
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-tertiary")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#E5E5E5")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "3.5")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
-    }
-
-    // highway-ground-tertiary layer
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "tertiary", "tertiary_link")) {
 
-      int layerGroupIndex = 1;
-      int indexWithinGroup = 1;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
+      int categoryIndex = 2;
+      boolean isLink = sourceFeature.getTag("highway").toString().endsWith("_link");
+      boolean isTunnel = isTunnel(sourceFeature);
+      boolean isBridge = isBridge(sourceFeature);
+      int minZoom = isLink ? 14 : 10;
+      int maxZoom = globalMaxZoom;
+      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+
+      double[] lineWidthLevels = {
+        0.0, // z0
+        0.0, // z1
+        0.0, // z2
+        0.0, // z3
+        0.0, // z4
+        0.0, // z5
+        0.0, // z6
+        0.0, // z7
+        0.0, // z8
+        0.0, // z9
+        1.0, // z10
+        1.0, // z11
+        2.0, // z12
+        2.5, // z13
+        3.0, // z14
+      };
+
+      String[] casingLineColorLevels = {
+        "", // z0
+        "", // z1
+        "", // z2
+        "", // z3
+        "", // z4
+        "", // z5
+        "", // z6
+        "", // z7
+        "", // z8
+        "", // z9
+        "#ccc", // z10
+        "#ccc", // z11
+        "#bbb", // z12
+        "#bbb", // z13
+        "#bbb", // z14
+      };
+
+      String[] lineColorLevels = {
+        "", // z0
+        "", // z1
+        "", // z2
+        "", // z3
+        "", // z4
+        "", // z5
+        "", // z6
+        "", // z7
+        "", // z8
+        "", // z9
+        "white", // z10
+        "white", // z11
+        "white", // z12
+        "white", // z13
+        "white", // z14
+      };
 
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(10)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11)
-        .setAttr("category", "highway-ground-tertiary-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#C5C5C5")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "4")
-        .setAttr("line-width-z14", "6")
-        .setAttr("line-width-z20", "16");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
+        .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(10)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11)
-        .setAttr("category", "highway-ground-tertiary")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "white")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "3.5")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
+        .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
 
-    // highway-bridge-tertiary layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "tertiary", "tertiary_link")) {
-
-      int layerGroupIndex = 2;
-      int indexWithinGroup = 1;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
-
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-tertiary-casing")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#C5C5C5")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "4")
-        .setAttr("line-width-z14", "6")
-        .setAttr("line-width-z20", "16");
-      
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-tertiary")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "white")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "3.5")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
-    }
-
-    // highway-tunnel-secondary layer
-    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "secondary", "secondary_link")) {
- 
-      int layerGroupIndex = 0;
-      int indexWithinGroup = 2;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
-
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-secondary-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#F9BD11")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "4")
-        .setAttr("line-width-z14", "6")
-        .setAttr("line-width-z20", "16");
-      
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-secondary")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#FFFBE0")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "1")
-        .setAttr("line-width-z12", "3.5")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
-    }
-
-    // highway-ground-secondary layer
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "secondary", "secondary_link")) {
 
-      int layerGroupIndex = 1;
-      int indexWithinGroup = 2;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
+      int categoryIndex = 3;
+      boolean isLink = sourceFeature.getTag("highway").toString().endsWith("_link");
+      boolean isTunnel = isTunnel(sourceFeature);
+      boolean isBridge = isBridge(sourceFeature);
+      int minZoom = isLink ? linkMinZoom : 9;
+      int maxZoom = globalMaxZoom;
+      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+
+      double[] lineWidthLevels = {
+        0.0, // z0
+        0.0, // z1
+        0.0, // z2
+        0.0, // z3
+        0.0, // z4
+        0.0, // z5
+        0.0, // z6
+        0.0, // z7
+        0.0, // z8
+        1.0, // z9
+        1.0, // z10
+        2.0, // z11
+        2.5, // z12
+        3.0, // z13
+        3.5, // z14
+      };
+
+      String[] casingLineColorLevels = {
+        "", // z0
+        "", // z1
+        "", // z2
+        "", // z3
+        "", // z4
+        "", // z5
+        "", // z6
+        "", // z7
+        "", // z8
+        "#bbb", // z9
+        "#bbb", // z10
+        "#bbb", // z11
+        "#bbb", // z12
+        "#bbb", // z13
+        "#bbb", // z14
+      };
+
+      String[] lineColorLevels = {
+        "", // z0
+        "", // z1
+        "", // z2
+        "", // z3
+        "", // z4
+        "", // z5
+        "", // z6
+        "", // z7
+        "", // z8
+        "white", // z9
+        "white", // z10
+        "white", // z11
+        "white", // z12
+        "white", // z13
+        "white", // z14
+      };
 
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(9)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11)
-        .setAttr("category", "highway-ground-secondary-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#F9BD11")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "4")
-        .setAttr("line-width-z14", "6")
-        .setAttr("line-width-z20", "16");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
+        .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(9)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11)
-        .setAttr("category", "highway-ground-secondary")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#FDEE93")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "1")
-        .setAttr("line-width-z12", "3.5")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
+        .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
 
-    // highway-bridge-secondary layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "secondary", "secondary_link")) {
-  
-      int layerGroupIndex = 2;
-      int indexWithinGroup = 2;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
-
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-secondary-casing")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#F9BD11")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "0")
-        .setAttr("line-width-z12", "4")
-        .setAttr("line-width-z14", "6")
-        .setAttr("line-width-z20", "16");
-      
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-secondary")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#FDEE93")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0")
-        .setAttr("line-width-z10", "1")
-        .setAttr("line-width-z12", "3.5")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
-    }
-
-    // highway-tunnel-primary layer
-    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "primary", "primary_link")) {
-      
-      int layerGroupIndex = 0;
-      int indexWithinGroup = 3;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
-
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-primary-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#f9b011")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "1.125")
-        .setAttr("line-width-z10", "2.25")
-        .setAttr("line-width-z12", "4.5")
-        .setAttr("line-width-z14", "6.5")
-        .setAttr("line-width-z20", "16.5");
-      
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-primary")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#FFF4D3")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0.875")
-        .setAttr("line-width-z10", "1.75")
-        .setAttr("line-width-z12", "3.5")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
-    }
-
-    // highway-ground-primary layer
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "primary", "primary_link")) {
 
-      int layerGroupIndex = 1;
-      int indexWithinGroup = 3;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
+      int categoryIndex = 4;
+      boolean isLink = sourceFeature.getTag("highway").toString().endsWith("_link");
+      boolean isTunnel = isTunnel(sourceFeature);
+      boolean isBridge = isBridge(sourceFeature);
+      int minZoom = isLink ? linkMinZoom : 8;
+      int maxZoom = globalMaxZoom;
+      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+
+      double[] lineWidthLevels = {
+        0.0, // z0
+        0.0, // z1
+        0.0, // z2
+        0.0, // z3
+        0.0, // z4
+        0.0, // z5
+        0.0, // z6
+        0.0, // z7
+        1.0, // z8
+        1.0, // z9
+        1.0, // z10
+        2.0, // z11
+        2.5, // z12
+        3.0, // z13
+        3.5, // z14
+      };
+
+      String[] casingLineColorLevels = {
+        "", // z0
+        "", // z1
+        "", // z2
+        "", // z3
+        "", // z4
+        "", // z5
+        "", // z6
+        "", // z7
+        "#FCD374", // z8
+        "#FCD374", // z9
+        "#FCD374", // z10
+        "#FCD374", // z11
+        "#fab724", // z12
+        "#fab724", // z13
+        "#fab724", // z14
+      };
+
+      String[] lineColorLevels = {
+        "", // z0
+        "", // z1
+        "", // z2
+        "", // z3
+        "", // z4
+        "", // z5
+        "", // z6
+        "", // z7
+        "#feefc3", // z8
+        "#feefc3", // z9
+        "#feefc3", // z10
+        "#feefc3", // z11
+        "#feefc3", // z12
+        "#feefc3", // z13
+        "#feefc3", // z14
+      };
 
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(8)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11)
-        .setAttr("category", "highway-ground-primary-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#f9b011")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "1.125")
-        .setAttr("line-width-z10", "2.25")
-        .setAttr("line-width-z12", "4.5")
-        .setAttr("line-width-z14", "6.5")
-        .setAttr("line-width-z20", "16.5");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
+        .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(8)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11)
-        .setAttr("category", "highway-ground-primary")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#fde293")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0.875")
-        .setAttr("line-width-z10", "1.75")
-        .setAttr("line-width-z12", "3.5")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
+        .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
 
-    // highway-bridge-primary layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "primary", "primary_link")) {
-
-      int layerGroupIndex = 2;
-      int indexWithinGroup = 3;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
-
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-primary-casing")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#f9b011")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "1.125")
-        .setAttr("line-width-z10", "2.25")
-        .setAttr("line-width-z12", "4.5")
-        .setAttr("line-width-z14", "6.5")
-        .setAttr("line-width-z20", "16.5");
-      
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-primary")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#fde293")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "0")
-        .setAttr("line-width-z9", "0.875")
-        .setAttr("line-width-z10", "1.75")
-        .setAttr("line-width-z12", "3.5")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
-    }
-
-    // highway-tunnel-trunk layer
-    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "trunk", "trunk_link")) {
- 
-      int layerGroupIndex = 0;
-      int indexWithinGroup = 4;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
-
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-trunk-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#FCD277")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.5")
-        .setAttr("line-width-z9", "4")
-        .setAttr("line-width-z10", "4.8")
-        .setAttr("line-width-z12", "6.5")
-        .setAttr("line-width-z14", "9")
-        .setAttr("line-width-z20", "16.5");
-      
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-trunk")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#FFF4D3")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.33")
-        .setAttr("line-width-z9", "2")
-        .setAttr("line-width-z10", "2")
-        .setAttr("line-width-z12", "2")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
-    }
-
-    // highway-ground-trunk layer
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "trunk", "trunk_link")) {
 
-      int layerGroupIndex = 1;
-      int indexWithinGroup = 4;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
+      int categoryIndex = 5;
+      boolean isLink = sourceFeature.getTag("highway").toString().endsWith("_link");
+      boolean isTunnel = isTunnel(sourceFeature);
+      boolean isBridge = isBridge(sourceFeature);
+      int minZoom = isLink ? linkMinZoom : 7;
+      int maxZoom = globalMaxZoom;
+      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+
+      double[] lineWidthLevels = {
+        0.0, // z0
+        0.0, // z1
+        0.0, // z2
+        0.0, // z3
+        0.0, // z4
+        0.0, // z5
+        0.0, // z6
+        1.0, // z7
+        1.5, // z8
+        2.0, // z9
+        2.5, // z10
+        3.0, // z11
+        3.5, // z12
+        4.0, // z13
+        4.5, // z14
+      };
+
+      String[] casingLineColorLevels = {
+        "#fab724", // z0
+        "#fab724", // z1
+        "#fab724", // z2
+        "#fab724", // z3
+        "#fab724", // z4
+        "#fab724", // z5
+        "#fab724", // z6
+        "#fab724", // z7
+        "#fab724", // z8
+        "#fab724", // z9
+        "#fab724", // z10
+        "#fab724", // z11
+        "#fab724", // z12
+        "#fab724", // z13
+        "#fab724", // z14
+      };
+
+      String[] lineColorLevels = {
+        "#feefc3", // z0
+        "#feefc3", // z1
+        "#feefc3", // z2
+        "#feefc3", // z3
+        "#feefc3", // z4
+        "#feefc3", // z5
+        "#feefc3", // z6
+        "#feefc3", // z7
+        "#feefc3", // z8
+        "#feefc3", // z9
+        "#feefc3", // z10
+        "#feefc3", // z11
+        "#feefc3", // z12
+        "#feefc3", // z13
+        "#feefc3", // z14
+      };
 
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(6)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11)
-        .setAttr("category", "highway-ground-trunk-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#fab724")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.5")
-        .setAttr("line-width-z9", "4")
-        .setAttr("line-width-z10", "4.8")
-        .setAttr("line-width-z12", "6.5")
-        .setAttr("line-width-z14", "9")
-        .setAttr("line-width-z20", "16.5");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
+        .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(6)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11)
-        .setAttr("category", "highway-ground-trunk")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#feefc3")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.33")
-        .setAttr("line-width-z9", "2")
-        .setAttr("line-width-z10", "2")
-        .setAttr("line-width-z12", "2")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
+        .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
 
-    // highway-bridge-trunk layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "trunk", "trunk_link")) {
-
-      int layerGroupIndex = 2;
-      int indexWithinGroup = 4;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
-
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-trunk-casing")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#fab724")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.5")
-        .setAttr("line-width-z9", "4")
-        .setAttr("line-width-z10", "4.8")
-        .setAttr("line-width-z12", "6.5")
-        .setAttr("line-width-z14", "9")
-        .setAttr("line-width-z20", "16.5");
-      
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-trunk")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#feefc3")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.33")
-        .setAttr("line-width-z9", "2")
-        .setAttr("line-width-z10", "2")
-        .setAttr("line-width-z12", "2")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
-    }
-
-    // highway-tunnel-motorway layer
-    if (sourceFeature.canBeLine() && isTunnel(sourceFeature) && sourceFeature.hasTag("highway", "motorway", "motorway_link")) {
- 
-      int layerGroupIndex = 0;
-      int indexWithinGroup = 5;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
-
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-motorway-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#FCD277")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.5")
-        .setAttr("line-width-z9", "4")
-        .setAttr("line-width-z10", "4.8")
-        .setAttr("line-width-z12", "6.5")
-        .setAttr("line-width-z14", "9")
-        .setAttr("line-width-z20", "16.5");
-      
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-tunnel-motorway")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#FFF4D3")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.33")
-        .setAttr("line-width-z9", "2")
-        .setAttr("line-width-z10", "2")
-        .setAttr("line-width-z12", "2")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
-    }
-
-    // highway-ground-motorway layer
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "motorway", "motorway_link")) {
 
-      int layerGroupIndex = 1;
-      int indexWithinGroup = 5;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
+      int categoryIndex = 6;
+      boolean isLink = sourceFeature.getTag("highway").toString().endsWith("_link");
+      boolean isTunnel = isTunnel(sourceFeature);
+      boolean isBridge = isBridge(sourceFeature);
+      int minZoom = isLink ? linkMinZoom : 6;
+      int maxZoom = globalMaxZoom;
+      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+
+      double[] lineWidthLevels = {
+        0.0, // z0
+        0.0, // z1
+        0.0, // z2
+        0.0, // z3
+        0.0, // z4
+        0.0, // z5
+        1.0, // z6
+        1.5, // z7
+        2.0, // z8
+        2.5, // z9
+        3.0, // z10
+        3.5, // z11
+        4.0, // z12
+        4.5, // z13
+        5.0, // z14
+      };
+
+      String[] casingLineColorLevels = {
+        "#fab724", // z0
+        "#fab724", // z1
+        "#fab724", // z2
+        "#fab724", // z3
+        "#fab724", // z4
+        "#fab724", // z5
+        "#fab724", // z6
+        "#fab724", // z7
+        "#fab724", // z8
+        "#fab724", // z9
+        "#fab724", // z10
+        "#fab724", // z11
+        "#fab724", // z12
+        "#fab724", // z13
+        "#fab724", // z14
+      };
+
+      String[] lineColorLevels = {
+        "#feefc3", // z0
+        "#feefc3", // z1
+        "#feefc3", // z2
+        "#feefc3", // z3
+        "#feefc3", // z4
+        "#feefc3", // z5
+        "#feefc3", // z6
+        "#feefc3", // z7
+        "#feefc3", // z8
+        "#feefc3", // z9
+        "#feefc3", // z10
+        "#feefc3", // z11
+        "#feefc3", // z12
+        "#feefc3", // z13
+        "#feefc3", // z14
+      };
 
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(6)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11)
-        .setAttr("category", "highway-ground-motorway-casing")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#fab724")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.5")
-        .setAttr("line-width-z9", "4")
-        .setAttr("line-width-z10", "4.8")
-        .setAttr("line-width-z12", "6.5")
-        .setAttr("line-width-z14", "9")
-        .setAttr("line-width-z20", "16.5");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
+        .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
       features.line("highway")
         .setMinPixelSize(0)
-        .setMinZoom(6)
-        .setMaxZoom(isNotTunnelOrBridge(sourceFeature) ? 14 : 11)
-        .setAttr("category", "highway-ground-motorway")
-        .setAttr("line-cap", "round")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#feefc3")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.33")
-        .setAttr("line-width-z9", "2")
-        .setAttr("line-width-z10", "2")
-        .setAttr("line-width-z12", "2")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
-    }
-
-    // highway-bridge-motorway layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("bridge", "yes") && sourceFeature.hasTag("highway", "motorway", "motorway_link")) {
-
-      int layerGroupIndex = 2;
-      int indexWithinGroup = 5;
-      int lineSortKey = layerGroupIndex * 2 * numberOfHighwayLayers + indexWithinGroup;
-
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-motorway-casing")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey)
-        .setAttr("line-color", "#fab724")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.5")
-        .setAttr("line-width-z9", "4")
-        .setAttr("line-width-z10", "4.8")
-        .setAttr("line-width-z12", "6.5")
-        .setAttr("line-width-z14", "9")
-        .setAttr("line-width-z20", "16.5");
-      
-      features.line("highway")
-        .setMinPixelSize(0)
-        .setMinZoom(11)
-        .setMaxZoom(14)
-        .setAttr("category", "highway-bridge-motorway")
-        .setAttr("line-cap", "butt")
-        .setAttr("line-sort-key", lineSortKey + numberOfHighwayLayers)
-        .setAttr("line-color", "#feefc3")
-        .setAttr("line-width-z6", "0")
-        .setAttr("line-width-z8", "1.33")
-        .setAttr("line-width-z9", "2")
-        .setAttr("line-width-z10", "2")
-        .setAttr("line-width-z12", "2")
-        .setAttr("line-width-z14", "5")
-        .setAttr("line-width-z20", "14");
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
+        .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
+        .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
 
     // highway-tracktype-2 layer
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("tracktype", "grade2")) {
       features.line("highway-tracktype-2")
         .setMinPixelSize(0)
-        .setMinZoom(13);
+        .setMinZoom(14);
     }
 
     // highway-tracktype-3-4-5 layer
@@ -872,7 +811,7 @@ public class SwissMap implements Profile {
     ) {
       features.line("highway-tracktype-3-4-5")
         .setMinPixelSize(0)
-        .setMinZoom(13);
+        .setMinZoom(14);
     }
 
     // highway-path layer
