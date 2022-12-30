@@ -41,7 +41,7 @@ public class SwissMap implements Profile {
   }
 
   private boolean isBridge(SourceFeature sourceFeature) {
-    return sourceFeature.hasTag("bridge", "yes");
+    return sourceFeature.hasTag("bridge");
   }
 
   private boolean isNotTunnelOrBridge(SourceFeature sourceFeature) {
