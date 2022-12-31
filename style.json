@@ -64,20 +64,20 @@
       "type": "fill",
       "source": "swissmap",
       "source-layer": "residential",
+      "maxzoom": 15,
       "layout": {
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": "#e8eaed",
-        "fill-opacity": {
+        "fill-color": {
           "stops": [
             [
-              13.5,
-              1.0
+              14,
+              "#e8eaed"
             ],
             [
-              16,
-              0.0
+              14,
+              "#F1F2F4"
             ]
           ]
         }
