@@ -831,7 +831,12 @@ public class SwissMap implements Profile {
     }
 
     // highway-tracktype-3-4-5 layer
-    if (sourceFeature.canBeLine() && sourceFeature.hasTag("tracktype", "grade3", "grade4", "grade5")
+    if (sourceFeature.canBeLine() && (
+        sourceFeature.hasTag("tracktype", "grade3", "grade4", "grade5") || (
+          sourceFeature.hasTag("highway", "track") &&
+          !sourceFeature.hasTag("tracktype")
+        )
+      )
     ) {
       features.line("highway-tracktype-3-4-5")
         .setMinPixelSize(0)
