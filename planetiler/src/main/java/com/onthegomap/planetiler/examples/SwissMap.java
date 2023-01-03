@@ -196,7 +196,8 @@ public class SwissMap implements Profile {
     // boundary layer
     if (sourceFeature.canBeLine() && (
       sourceFeature.hasTag("boundary", "administrative") &&
-      sourceFeature.hasTag("admin_level", "2")
+      sourceFeature.hasTag("admin_level", "2") &&
+      !sourceFeature.hasTag("maritime", "yes")
     )) {
       features.line("boundary")
         .setMinPixelSize(0)
