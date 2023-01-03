@@ -233,8 +233,20 @@ public class SwissMap implements Profile {
       ) ||
       "ocean".equals(sourceFeature.getSource())
     )) {
+      int minZoom = 0;
+      if ("ocean".equals(sourceFeature.getSource())) {
+        minZoom = 0;
+      }
+      else {
+        if (sourceFeature.hasTag("waterway", "dock", "canal")) {
+          minZoom = 10;
+        }
+        else {
+          minZoom = 4;
+        }
+      }
       features.polygon("water")
-        .setMinZoom(sourceFeature.hasTag("waterway", "dock", "canal") ? 10 : 4);
+        .setMinZoom(minZoom);
     }
 
     // glacier layer
