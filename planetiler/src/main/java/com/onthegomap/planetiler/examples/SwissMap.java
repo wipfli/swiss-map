@@ -333,7 +333,15 @@ public class SwissMap implements Profile {
       }
 
       int maxZoom = globalMaxZoom;
-      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+      Integer layer = null;
+      if (sourceFeature.hasTag("layer")) {
+        try {
+          layer = Integer.parseInt(sourceFeature.getTag("layer").toString());
+        }
+        catch (NumberFormatException e) {
+          layer = null;
+        }
+      }
 
       double[] lineWidthLevels = {
         0.0, // z0
