@@ -36,6 +36,8 @@
             zoom: 8, // starting zoom
             hash: "map",
         });
+        // map.showTileBoundaries = true;
+        // map.showCollisionBoxes = true;
         var nav = new maplibregl.NavigationControl();
         map.addControl(nav, 'top-right');
         const inspectUrlTag = '&inspect';
