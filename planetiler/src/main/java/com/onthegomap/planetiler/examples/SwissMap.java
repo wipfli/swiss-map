@@ -166,7 +166,7 @@ public class SwissMap implements Profile {
         sourceFeature.hasTag("natural", "wood")
     )) {
       features.polygon("wood")
-        .setMinZoom(7);
+        .setMinZoom(0);
     }
 
     // residential layer
