@@ -48,6 +48,20 @@ public class SwissMap implements Profile {
     return !(isTunnel(sourceFeature) || isBridge(sourceFeature));
   }
 
+  private Integer getLayer(SourceFeature sourceFeature) {
+    if (sourceFeature.hasTag("layer")) {
+      try {
+        return Integer.parseInt(sourceFeature.getTag("layer").toString());
+      }
+      catch (NumberFormatException e) {
+        return null;
+      }
+    }
+    else {
+      return null;
+    }
+  }
+
   private boolean isUnclassified(SourceFeature sourceFeature) {
     return !sourceFeature.hasTag("tracktype", "grade2", "grade3", "grade4", "grade5") &&
     (
@@ -266,7 +280,7 @@ public class SwissMap implements Profile {
       boolean isBridge = isBridge(sourceFeature);
       int minZoom = sourceFeature.hasTag("service") ? 13 : 11;
       int maxZoom = globalMaxZoom;
-      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+      Integer layer = getLayer(sourceFeature);
 
       double[] lineWidthLevels = {
         0.0, // z0
@@ -333,15 +347,7 @@ public class SwissMap implements Profile {
       }
 
       int maxZoom = globalMaxZoom;
-      Integer layer = null;
-      if (sourceFeature.hasTag("layer")) {
-        try {
-          layer = Integer.parseInt(sourceFeature.getTag("layer").toString());
-        }
-        catch (NumberFormatException e) {
-          layer = null;
-        }
-      }
+      Integer layer = getLayer(sourceFeature);
 
       double[] lineWidthLevels = {
         0.0, // z0
@@ -424,7 +430,7 @@ public class SwissMap implements Profile {
       boolean isBridge = isBridge(sourceFeature);
       int minZoom = isLink ? 14 : 10;
       int maxZoom = globalMaxZoom;
-      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+      Integer layer = getLayer(sourceFeature);
 
       double[] lineWidthLevels = {
         0.0, // z0
@@ -507,7 +513,7 @@ public class SwissMap implements Profile {
       boolean isBridge = isBridge(sourceFeature);
       int minZoom = isLink ? linkMinZoom : 9;
       int maxZoom = globalMaxZoom;
-      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+      Integer layer = getLayer(sourceFeature);
 
       double[] lineWidthLevels = {
         0.0, // z0
@@ -590,7 +596,7 @@ public class SwissMap implements Profile {
       boolean isBridge = isBridge(sourceFeature);
       int minZoom = isLink ? linkMinZoom : 8;
       int maxZoom = globalMaxZoom;
-      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+      Integer layer = getLayer(sourceFeature);
 
       double[] lineWidthLevels = {
         0.0, // z0
@@ -673,7 +679,7 @@ public class SwissMap implements Profile {
       boolean isBridge = isBridge(sourceFeature);
       int minZoom = isLink ? linkMinZoom : 7;
       int maxZoom = globalMaxZoom;
-      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+      Integer layer = getLayer(sourceFeature);
 
       double[] lineWidthLevels = {
         0.0, // z0
@@ -756,7 +762,7 @@ public class SwissMap implements Profile {
       boolean isBridge = isBridge(sourceFeature);
       int minZoom = isLink ? linkMinZoom : 6;
       int maxZoom = globalMaxZoom;
-      Integer layer = sourceFeature.hasTag("layer") ? Integer.parseInt(sourceFeature.getTag("layer").toString()) : null;
+      Integer layer = getLayer(sourceFeature);
 
       double[] lineWidthLevels = {
         0.0, // z0
