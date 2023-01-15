@@ -295,6 +295,7 @@
           "case", 
           ["==", ["get", "place"], "country"], ["get", "name:en"], 
           ["==", ["get", "place"], "sea"], ["get", "name:en"], 
+          ["==", ["get", "place"], "ocean"], ["get", "name:en"],
           ["get", "name"]
         ],
         "text-size": [
@@ -334,10 +335,26 @@
         "symbol-sort-key": ["-", ["to-number", ["get", "@qrank"]]]
       },
       "paint": {
-        "text-color": ["case", ["==", ["get", "natural"], "water"], "#0c7ac3", ["==", ["get", "place"], "state"], "purple", ["has", "place"], "black", "gray"],
+        "text-color": [
+          "case", 
+          ["==", ["get", "natural"], "water"], "#0c7ac3",
+          ["==", ["get", "natural"], "bay"], "#0c7ac3",
+          ["==", ["get", "place"], "sea"], "#0c7ac3",
+          ["==", ["get", "place"], "ocean"], "#0c7ac3", 
+          ["==", ["get", "place"], "state"], "purple", 
+          ["has", "place"], "black", 
+          "gray"
+        ],
         "text-halo-blur": 0,
         "text-halo-color": "white",
-        "text-halo-width": ["case", ["==", ["get", "natural"], "water"], 0.0, 1.5]
+        "text-halo-width": [
+          "case", 
+          ["==", ["get", "natural"], "water"], 0.0, 
+          ["==", ["get", "natural"], "bay"], 0.0, 
+          ["==", ["get", "place"], "sea"], 0.0, 
+          ["==", ["get", "place"], "ocean"], 0.0, 
+          1.5
+        ]
       }
     }
   ],
