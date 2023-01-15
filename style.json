@@ -291,7 +291,12 @@
       "source": "qrank",
       "source-layer": "qrank",
       "layout": {
-        "text-field": ["case", ["==", ["get", "place"], "country"], ["get", "name:en"], ["get", "name"]],
+        "text-field": [
+          "case", 
+          ["==", ["get", "place"], "country"], ["get", "name:en"], 
+          ["==", ["get", "place"], "sea"], ["get", "name:en"], 
+          ["get", "name"]
+        ],
         "text-size": [
           "interpolate",
           ["linear"],
