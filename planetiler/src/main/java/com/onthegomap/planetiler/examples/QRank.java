@@ -135,17 +135,33 @@ public class QRank implements Profile {
         "village",
         "suburb",
         "hamlet")) {
+          int rank = 0;
+          if (sourceFeature.hasTag("place", "hamlet")) {
+            rank = 0;
+          }
+          if (sourceFeature.hasTag("place", "suburb")) {
+            rank = 1;
+          }
+          if (sourceFeature.hasTag("place", "village")) {
+            rank = 2;
+          }
+          if (sourceFeature.hasTag("place", "town")) {
+            rank = 3;
+          }
+          if (sourceFeature.hasTag("place", "city")) {
+            rank = 4;
+          }
           Feature feature = features.point("qrank");
           feature
           .setZoomRange(0, 14)
-          .setSortKey(0)
+          .setSortKey(-rank)
           .setPointLabelGridSizeAndLimit(
             12, // only limit at z_ and below
             128, // break the tile up into _x_ px squares
             10 // any only keep the _ nodes with lowest sort-key in each _px square
           )
           .setBufferPixelOverrides(ZoomFunction.maxZoom(12, 128))
-          .setAttr("@qrank", 0);
+          .setAttr("@qrank", rank);
         for (var entry : sourceFeature.tags().entrySet()) {
           feature.setAttr(entry.getKey(), entry.getValue());
         }
