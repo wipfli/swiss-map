@@ -104,25 +104,51 @@ public class QRank implements Profile {
 
   @Override
   public void processFeature(SourceFeature sourceFeature, FeatureCollector features) {
-    if (sourceFeature.hasTag("wikidata") && sourceFeature.hasTag("name")) {
-      Feature feature = null;
-      if (sourceFeature.isPoint() && (sourceFeature.hasTag("place") || sourceFeature.hasTag("natural") || sourceFeature.hasTag("waterway", "waterfall"))) {
-        feature = features.point("qrank");
+    if (sourceFeature.hasTag("name")) {
+      if (sourceFeature.hasTag("wikidata")) {
+        Feature feature = null;
+        if (sourceFeature.isPoint() && (sourceFeature.hasTag("place") || sourceFeature.hasTag("natural") || sourceFeature.hasTag("waterway", "waterfall"))) {
+          feature = features.point("qrank");
+        }
+        if (sourceFeature.canBePolygon() && (sourceFeature.hasTag("natural") || sourceFeature.hasTag("place", "island"))) {
+          feature = features.centroidIfConvex("qrank");
+        }
+        if (feature != null) {
+          feature
+            .setZoomRange(0, 14)
+            .setSortKey(-getQRank(sourceFeature.getTag("wikidata")) / 100)
+            .setPointLabelGridSizeAndLimit(
+              12, // only limit at z_ and below
+              128, // break the tile up into _x_ px squares
+              10 // any only keep the _ nodes with lowest sort-key in each _px square
+            )
+            .setBufferPixelOverrides(ZoomFunction.maxZoom(12, 128))
+            .setAttr("@qrank", getQRank(sourceFeature.getTag("wikidata")));
+          for (var entry : sourceFeature.tags().entrySet()) {
+            feature.setAttr(entry.getKey(), entry.getValue());
+          }
+        }
       }
-      if (sourceFeature.canBePolygon() && (sourceFeature.hasTag("natural") || sourceFeature.hasTag("place", "island"))) {
-        feature = features.centroidIfConvex("qrank");
-      }
-      if (feature != null) {
-        feature
+      else if (sourceFeature.isPoint() && sourceFeature.hasTag("place",  
+        "city",
+        "town",
+        "village",
+        "suburb",
+        "quarter",
+        "neighbourhood",
+        "hamlet",
+        "isolated_dwelling")) {
+          Feature feature = features.point("qrank");
+          feature
           .setZoomRange(0, 14)
-          .setSortKey(-getQRank(sourceFeature.getTag("wikidata")) / 100)
+          .setSortKey(0)
           .setPointLabelGridSizeAndLimit(
             12, // only limit at z_ and below
             128, // break the tile up into _x_ px squares
             10 // any only keep the _ nodes with lowest sort-key in each _px square
           )
           .setBufferPixelOverrides(ZoomFunction.maxZoom(12, 128))
-          .setAttr("@qrank", getQRank(sourceFeature.getTag("wikidata")));
+          .setAttr("@qrank", 0);
         for (var entry : sourceFeature.tags().entrySet()) {
           feature.setAttr(entry.getKey(), entry.getValue());
         }
