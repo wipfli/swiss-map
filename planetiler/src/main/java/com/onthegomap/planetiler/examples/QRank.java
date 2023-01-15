@@ -119,7 +119,7 @@ public class QRank implements Profile {
           .setPointLabelGridSizeAndLimit(
             12, // only limit at z_ and below
             128, // break the tile up into _x_ px squares
-            5 // any only keep the _ nodes with lowest sort-key in each _px square
+            10 // any only keep the _ nodes with lowest sort-key in each _px square
           )
           .setBufferPixelOverrides(ZoomFunction.maxZoom(12, 128))
           .setAttr("@qrank", getQRank(sourceFeature.getTag("wikidata")));
