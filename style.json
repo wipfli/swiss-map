@@ -291,7 +291,7 @@
       "source": "qrank",
       "source-layer": "qrank",
       "layout": {
-        "text-field": "{name}",
+        "text-field": ["case", ["==", ["get", "place"], "country"], ["get", "name:en"], ["get", "name"]],
         "text-size": [
           "interpolate",
           ["linear"],
