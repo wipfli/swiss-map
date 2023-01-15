@@ -134,10 +134,7 @@ public class QRank implements Profile {
         "town",
         "village",
         "suburb",
-        "quarter",
-        "neighbourhood",
-        "hamlet",
-        "isolated_dwelling")) {
+        "hamlet")) {
           Feature feature = features.point("qrank");
           feature
           .setZoomRange(0, 14)
