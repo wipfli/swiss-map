@@ -48,8 +48,8 @@
                 var result = '';
                 for (const feature of features) {
                     result += `<h3>${feature.source}: ${feature.sourceLayer}</h3>`
-                    for (const [key, value] of Object.entries(feature.properties)) {
-                        result += `<p>${key}: <i>${value}</i></p>`;
+                    for (const key of Object.keys(feature.properties).sort().reverse()) {
+                        result += `<p>${key}: <i>${feature.properties[key]}</i></p>`;
                     }
                 }
                 return result;
