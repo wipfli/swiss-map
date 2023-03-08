@@ -228,7 +228,7 @@
       "source": "swissmap",
       "source-layer": "highway",
       "layout": {
-        "line-cap": "butt",
+        "line-cap": "round",
         "line-join": "round",
         "visibility": "visible",
         "line-sort-key": ["to-number", ["get", "line-sort-key"]]

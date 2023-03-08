@@ -25,6 +25,7 @@ public class SwissMap implements Profile {
     "primary",
     "trunk",
     "motorway",
+    "aeroway"
   };
 
   int tunnelAndBridgeMinZoom = 14;
@@ -74,6 +75,9 @@ public class SwissMap implements Profile {
       ) || 
       sourceFeature.hasTag("tracktype", 
         "grade1"
+      ) ||
+      sourceFeature.hasTag("aeroway",
+        "taxiway"
       )
     );
   }
@@ -195,7 +199,9 @@ public class SwissMap implements Profile {
         "residential",
         "retail") ||
       sourceFeature.hasTag("leisure", 
-      "park")
+      "park") ||
+      sourceFeature.hasTag("aeroway", 
+      "aerodrome")
     )) {
       features.polygon("residential")
         .setMinZoom(10);
@@ -835,6 +841,87 @@ public class SwissMap implements Profile {
         .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
+    }
+
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("aeroway", "runway")) {
+
+      int categoryIndex = 7;
+      int minZoom = 10;
+      int maxZoom = globalMaxZoom;
+      Integer layer = getLayer(sourceFeature);
+
+      double[] lineWidthLevels = {
+        0.0, // z0
+        0.0, // z1
+        0.0, // z2
+        0.0, // z3
+        0.0, // z4
+        0.0, // z5
+        0.0, // z6
+        0.0, // z7
+        0.0, // z8
+        0.0, // z9
+        3.5, // z10
+        4.0, // z11
+        4.5, // z12
+        5.0, // z13
+        5.5, // z14
+      };
+
+      String[] casingLineColorLevels = {
+        "", // z0
+        "", // z1
+        "", // z2
+        "", // z3
+        "", // z4
+        "", // z5
+        "", // z6
+        "", // z7
+        "", // z8
+        "", // z9
+        "#aaa", // z10
+        "#aaa", // z11
+        "#aaa", // z12
+        "#aaa", // z13
+        "#aaa", // z14
+      };
+
+      String[] lineColorLevels = {
+        "", // z0
+        "", // z1
+        "", // z2
+        "", // z3
+        "", // z4
+        "", // z5
+        "", // z6
+        "", // z7
+        "", // z8
+        "", // z9
+        "white", // z10
+        "white", // z11
+        "white", // z12
+        "white", // z13
+        "white", // z14
+      };
+
+      int z20LineWidth = 40;
+      features.line("highway")
+        .setMinPixelSize(0)
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, false, false, false, layer, true))
+        .setAttr("line-color", new LineColor(false, true, casingLineColorLevels))
+        .setAttr("line-width", new LineWidth(true, false, lineWidthLevels))
+        .setAttr("line-width-z20", z20LineWidth);
+      
+      features.line("highway")
+        .setMinPixelSize(0)
+        .setMinZoom(minZoom)
+        .setMaxZoom(maxZoom)
+        .setAttr("line-sort-key", new LineSortKey(categoryIndex, false, false, false, layer, false))
+        .setAttr("line-color", new LineColor(false, false, lineColorLevels))
+        .setAttr("line-width", new LineWidth(false, false, lineWidthLevels))
+        .setAttr("line-width-z20", z20LineWidth);
     }
 
     // highway-tracktype-2 layer
