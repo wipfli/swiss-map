@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Swiss Map</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css" rel="stylesheet" />
+    <script
+        src='https://github.com/acalcutt/maplibre-gl-inspect/releases/download/v1.4.5/maplibre-gl-inspect.min.js'></script>
+    <link href='https://github.com/acalcutt/maplibre-gl-inspect/releases/download/v1.4.5/maplibre-gl-inspect.css'
+        rel='stylesheet' />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        var map = new maplibregl.Map({
+            container: 'map', // container id
+            style: 'style-hillshade.json', // style URL
+            center: [7.9739, 46.5388], // starting position [lng, lat]
+            zoom: 9, // starting zoom
+            hash: "map",
+        });
+        // map.showTileBoundaries = true;
+        // map.showCollisionBoxes = true;
+        var nav = new maplibregl.NavigationControl();
+        map.addControl(nav, 'top-right');
+        const inspectUrlTag = '&inspect';
+        map.addControl(new MaplibreInspect({
+            backgroundColor: '#fff',
+            showInspectMapPopupOnHover: false,
+            renderPopup: function (features) {
+                var result = '';
+                for (const feature of features) {
+                    result += `<h3>${feature.source}: ${feature.sourceLayer}</h3>`
+                    for (const key of Object.keys(feature.properties).sort().reverse()) {
+                        result += `<p>${key}: <i>${feature.properties[key]}</i></p>`;
+                    }
+                }
+                return result;
+            },
+            showInspectMap: window.location.hash.includes(inspectUrlTag),
+            toggleCallback: function (showInspectMap) {
+                if (showInspectMap) {
+                    window.location.hash += inspectUrlTag;
+                }
+                else {
+                    window.location.hash = window.location.hash.replace(inspectUrlTag, '');
+                }
+            }
+        }));
+        map.addControl(new maplibregl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }));
+        map.addControl(new maplibregl.AttributionControl({
+            customAttribution: "<a href=\"https://geo.admin.ch\" target=\"_blank\">&copy; swisstopo</a> | <a href=\"https://www.maptiler.com/\" target=\"_blank\">&copy; MapTiler</a>"
+        }));
+
+    </script>
+
+</body>
+
+</html>
