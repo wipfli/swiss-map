@@ -1,0 +1,91 @@
+{
+    "tiles": [
+        "https://tiles.swiss-map.cc/swisstopo-vector-hillshade/{z}/{x}/{y}.pbf"
+    ],
+    "name": "data/swisstopo-vector-hillshade.mbtiles",
+    "format": "pbf",
+    "basename": "swisstopo-vector-hillshade.mbtiles",
+    "id": "swisstopo-vector-hillshade",
+    "description": "data/swisstopo-vector-hillshade.mbtiles",
+    "version": "2",
+    "minzoom": 10,
+    "maxzoom": 10,
+    "center": [
+        9.316406,
+        46.67946,
+        10
+    ],
+    "bounds": [
+        5.848117,
+        45.690873,
+        10.550827,
+        47.868469
+    ],
+    "antimeridian_adjusted_bounds": "5.848117,45.690873,10.550827,47.868469",
+    "type": "overlay",
+    "generator": "tippecanoe v2.24.0",
+    "generator_options": "tippecanoe -Z 10 -z 10 -o data/swisstopo-vector-hillshade.mbtiles reli.geojson gton.geojson -f",
+    "strategies": "[{},{},{},{},{},{},{},{},{},{},{\"detail_reduced\":2,\"tiny_polygons\":301705,\"tile_size_desired\":576657}]",
+    "vector_layers": [
+        {
+            "id": "gton",
+            "description": "",
+            "minzoom": 10,
+            "maxzoom": 10,
+            "fields": {
+                "DN": "Number"
+            }
+        },
+        {
+            "id": "reli",
+            "description": "",
+            "minzoom": 10,
+            "maxzoom": 10,
+            "fields": {
+                "DN": "Number"
+            }
+        }
+    ],
+    "tilestats": {
+        "layerCount": 2,
+        "layers": [
+            {
+                "layer": "gton",
+                "count": 330336,
+                "geometry": "Polygon",
+                "attributeCount": 1,
+                "attributes": [
+                    {
+                        "attribute": "DN",
+                        "count": 1,
+                        "type": "number",
+                        "values": [
+                            0
+                        ],
+                        "min": 0,
+                        "max": 0
+                    }
+                ]
+            },
+            {
+                "layer": "reli",
+                "count": 486157,
+                "geometry": "Polygon",
+                "attributeCount": 1,
+                "attributes": [
+                    {
+                        "attribute": "DN",
+                        "count": 1,
+                        "type": "number",
+                        "values": [
+                            0
+                        ],
+                        "min": 0,
+                        "max": 0
+                    }
+                ]
+            }
+        ]
+    },
+    "tilejson": "2.0.0"
+}
