@@ -2,45 +2,45 @@
     "tiles": [
         "https://tiles.swiss-map.cc/swisstopo-vector-hillshade/{z}/{x}/{y}.pbf"
     ],
-    "name": "data/swisstopo-vector-hillshade.mbtiles",
+    "name": "layers/SMR1000-RELI.mbtiles + layers/SMR1000-GTON.mbtiles + layers/SMR500-GTON.mbtiles + layers/SMR500-RELI.mbtiles + layers/SMR200-GTON.mbtiles + layers/SMR200-RELI.mbtiles + layers/SMR100-RELI.mbtiles + layers/SMR100-GTON.mbtiles",
     "format": "pbf",
-    "basename": "swisstopo-vector-hillshade.mbtiles",
-    "id": "swisstopo-vector-hillshade",
-    "description": "data/swisstopo-vector-hillshade.mbtiles",
+    "basename": "SMR.mbtiles",
+    "id": "SMR",
+    "description": "layers/SMR25-GTON.mbtiles",
     "version": "2",
-    "minzoom": 10,
-    "maxzoom": 10,
+    "minzoom": 6,
+    "maxzoom": 14,
     "center": [
-        9.316406,
-        46.67946,
-        10
+        9.459229,
+        46.807579,
+        14
     ],
     "bounds": [
-        5.848117,
-        45.690873,
-        10.550827,
-        47.868469
+        3.586624,
+        44.256905,
+        13.650793,
+        48.866378
     ],
-    "antimeridian_adjusted_bounds": "5.848117,45.690873,10.550827,47.868469",
+    "antimeridian_adjusted_bounds": "5.866699,45.798170,10.700684,47.872144",
     "type": "overlay",
-    "generator": "tippecanoe v2.24.0",
-    "generator_options": "tippecanoe -Z 10 -z 10 -o data/swisstopo-vector-hillshade.mbtiles reli.geojson gton.geojson -f",
-    "strategies": "[{},{},{},{},{},{},{},{},{},{},{\"detail_reduced\":2,\"tiny_polygons\":301705,\"tile_size_desired\":576657}]",
+    "generator": "tile-join v2.24.0",
+    "generator_options": "tippecanoe -Z 6 -z 9 -o layers/SMR1000-RELI.mbtiles -l RELI RELI-1000.geojson; tippecanoe -Z 6 -z 9 -o layers/SMR1000-GTON.mbtiles -l GTON GTON-1000.geojson; tippecanoe -Z 10 -z 10 -o layers/SMR500-GTON.mbtiles -l GTON GTON-500.geojson; tippecanoe -Z 10 -z 10 -o layers/SMR500-RELI.mbtiles -l RELI RELI-500.geojson; tippecanoe -Z 11 -z 11 -o layers/SMR200-GTON.mbtiles -l GTON GTON-200.geojson; tippecanoe -Z 11 -z 11 -o layers/SMR200-RELI.mbtiles -l RELI RELI-200.geojson; tippecanoe -Z 12 -z 12 -o layers/SMR100-RELI.mbtiles -l RELI RELI-100.geojson; tippecanoe -Z 12 -z 12 -o layers/SMR100-GTON.mbtiles -l GTON GTON-100.geojson; tippecanoe -Z 13 -z 13 -o layers/SMR50-RELI.mbtiles -l RELI RELI-50.geojson; tippecanoe -Z 13 -z 13 -o layers/SMR50-GTON.mbtiles -l GTON GTON-50.geojson; tippecanoe -Z 14 -z 14 -o layers/SMR25-RELI.mbtiles -l RELI RELI-25.geojson; tippecanoe -Z 14 -z 14 -o layers/SMR25-GTON.mbtiles -l GTON GTON-25.geojson; tile-join -o data/SMR.mbtiles layers/SMR100-GTON.mbtiles layers/SMR100-RELI.mbtiles layers/SMR1000-GTON.mbtiles layers/SMR1000-RELI.mbtiles layers/SMR200-GTON.mbtiles layers/SMR200-RELI.mbtiles layers/SMR25-GTON.mbtiles layers/SMR25-RELI.mbtiles layers/SMR50-GTON.mbtiles layers/SMR50-RELI.mbtiles layers/SMR500-GTON.mbtiles layers/SMR500-RELI.mbtiles -f",
+    "strategies": "[{},{},{},{},{},{},{\"detail_reduced\":1,\"tiny_polygons\":12517,\"tile_size_desired\":630684},{\"tiny_polygons\":6229},{\"tiny_polygons\":2441},{\"tiny_polygons\":243},{\"tiny_polygons\":463},{\"tiny_polygons\":2064},{\"tiny_polygons\":4266},{\"tiny_polygons\":17061},{\"tiny_polygons\":48194}]",
     "vector_layers": [
         {
-            "id": "gton",
+            "id": "GTON",
             "description": "",
-            "minzoom": 10,
-            "maxzoom": 10,
+            "minzoom": 6,
+            "maxzoom": 14,
             "fields": {
                 "DN": "Number"
             }
         },
         {
-            "id": "reli",
+            "id": "RELI",
             "description": "",
-            "minzoom": 10,
-            "maxzoom": 10,
+            "minzoom": 6,
+            "maxzoom": 14,
             "fields": {
                 "DN": "Number"
             }
@@ -50,8 +50,8 @@
         "layerCount": 2,
         "layers": [
             {
-                "layer": "gton",
-                "count": 330336,
+                "layer": "GTON",
+                "count": 9571958,
                 "geometry": "Polygon",
                 "attributeCount": 1,
                 "attributes": [
@@ -68,8 +68,8 @@
                 ]
             },
             {
-                "layer": "reli",
-                "count": 486157,
+                "layer": "RELI",
+                "count": 12859710,
                 "geometry": "Polygon",
                 "attributeCount": 1,
                 "attributes": [
