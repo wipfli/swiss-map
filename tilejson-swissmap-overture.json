@@ -1,0 +1,112 @@
+{
+    "tiles": [
+        "https://tiles.swiss-map.cc/swissmap-overture/{z}/{x}/{y}.pbf"
+    ],
+    "name": "Streets",
+    "format": "pbf",
+    "basename": "swissmap.mbtiles",
+    "id": "swissmap",
+    "description": "Streets from OpenStreetMap",
+    "attribution": "<a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a> | <a href=\"https://github.com/microsoft/GlobalMLBuildingFootprints\" target=\"_blank\">Microsoft</a> | <a href=\"https://www.usgs.gov/3d-elevation-program\" target=\"_blank\">USGS</a>",
+    "type": "baselayer",
+    "bounds": [
+        -180,
+        -85.05113,
+        180,
+        85.05113
+    ],
+    "center": [
+        0,
+        0,
+        0
+    ],
+    "minzoom": 0,
+    "maxzoom": 14,
+    "vector_layers": [
+        {
+            "id": "boundary",
+            "fields": {},
+            "minzoom": 0,
+            "maxzoom": 14
+        },
+        {
+            "id": "building",
+            "fields": {},
+            "minzoom": 14,
+            "maxzoom": 14
+        },
+        {
+            "id": "glacier",
+            "fields": {},
+            "minzoom": 4,
+            "maxzoom": 14
+        },
+        {
+            "id": "highway",
+            "fields": {
+                "line-width-z8": "String",
+                "line-width-z9": "String",
+                "line-width-z6": "String",
+                "line-width-z12": "String",
+                "line-width-z10": "String",
+                "line-width-z20": "String",
+                "line-sort-key": "Number",
+                "category": "String",
+                "line-width-z14": "String",
+                "line-cap": "String",
+                "line-color": "String"
+            },
+            "minzoom": 6,
+            "maxzoom": 14
+        },
+        {
+            "id": "highway-footway",
+            "fields": {},
+            "minzoom": 14,
+            "maxzoom": 14
+        },
+        {
+            "id": "highway-path",
+            "fields": {},
+            "minzoom": 12,
+            "maxzoom": 14
+        },
+        {
+            "id": "highway-tracktype-2",
+            "fields": {},
+            "minzoom": 13,
+            "maxzoom": 14
+        },
+        {
+            "id": "highway-tracktype-3-4-5",
+            "fields": {},
+            "minzoom": 13,
+            "maxzoom": 14
+        },
+        {
+            "id": "residential",
+            "fields": {},
+            "minzoom": 10,
+            "maxzoom": 14
+        },
+        {
+            "id": "water",
+            "fields": {},
+            "minzoom": 4,
+            "maxzoom": 14
+        },
+        {
+            "id": "waterway",
+            "fields": {},
+            "minzoom": 9,
+            "maxzoom": 14
+        },
+        {
+            "id": "wood",
+            "fields": {},
+            "minzoom": 7,
+            "maxzoom": 14
+        }
+    ],
+    "tilejson": "2.0.0"
+}
