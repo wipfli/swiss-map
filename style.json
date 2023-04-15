@@ -107,7 +107,7 @@
       "source": "swissmap",
       "source-layer": "highway-path",
       "layout": {
-        "line-cap": "round",
+        "line-cap": "butt",
         "line-join": "round",
         "visibility": "visible"
       },
@@ -142,7 +142,7 @@
       "source-layer": "highway-footway",
       "minzoom": 15,
       "layout": {
-        "line-cap": "round",
+        "line-cap": "butt",
         "line-join": "round",
         "visibility": "visible"
       },
@@ -228,7 +228,7 @@
       "source": "swissmap",
       "source-layer": "highway",
       "layout": {
-        "line-cap": "round",
+        "line-cap": "butt",
         "line-join": "round",
         "visibility": "visible",
         "line-sort-key": ["to-number", ["get", "line-sort-key"]]
