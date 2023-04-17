@@ -415,6 +415,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
         .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("kind", "unclassified")
+        .setAttr("is-casing", "yes")
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
@@ -424,6 +426,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
         .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("kind", "unclassified")
+        .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
@@ -498,6 +502,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
         .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("kind", "tertiary")
+        .setAttr("is-casing", "yes")
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
@@ -507,6 +513,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
         .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("kind", "tertiary")
+        .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
@@ -581,6 +589,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
         .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("kind", "secondary")
+        .setAttr("is-casing", "yes")
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
@@ -590,6 +600,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
         .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("kind", "secondary")
+        .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
@@ -664,6 +676,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
         .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("kind", "primary")
+        .setAttr("is-casing", "yes")
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
@@ -673,6 +687,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
         .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("kind", "primary")
+        .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
@@ -747,6 +763,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
         .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("kind", "trunk")
+        .setAttr("is-casing", "yes")
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
@@ -756,6 +774,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
         .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("kind", "trunk")
+        .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
@@ -830,6 +850,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, true))
         .setAttr("line-color", new LineColor(isTunnel, true, casingLineColorLevels))
+        .setAttr("kind", "motorway")
+        .setAttr("is-casing", "yes")
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
@@ -839,6 +861,8 @@ public class SwissMap implements Profile {
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, isLink, isBridge, isTunnel, layer, false))
         .setAttr("line-color", new LineColor(isTunnel, false, lineColorLevels))
+        .setAttr("kind", "motorway")
+        .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
     }
