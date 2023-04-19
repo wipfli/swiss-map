@@ -7,7 +7,7 @@
     "basename": "swissmap.mbtiles",
     "id": "swissmap",
     "description": "Streets from OpenStreetMap",
-    "attribution": "<a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+    "attribution": "<a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a> | <a href=\"https://overturemaps.org/download/overture-april-alpha-release-notes/\" target=\"_blank\">Overture</a>",
     "type": "baselayer",
     "bounds": [
         -180,
