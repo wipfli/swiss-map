@@ -1,0 +1,39 @@
+{
+    "tiles": [
+        "https://tiles.swiss-map.cc/h3-landcover/{z}/{x}/{y}.pbf"
+    ],
+    "name": "H3 Landcover",
+    "format": "pbf",
+    "basename": "output.mbtiles",
+    "id": "output",
+    "center": [
+        0,
+        0,
+        0
+    ],
+    "bounds": [
+        -180,
+        -85.05113,
+        180,
+        85.05113
+    ],
+    "vector_layers": [
+        {
+            "id": "landcover",
+            "fields": {
+                "kind": "String"
+            },
+            "minzoom": 1,
+            "maxzoom": 9
+        }
+    ],
+    "description": "H3 Landcover",
+    "attribution": "<a href=\"https://doi.org/10.5281/zenodo.3939038\" target=\"_blank\">&copy; Copernicus</a>",
+    "type": "baselayer",
+    "minzoom": 0,
+    "maxzoom": 9,
+    "planetiler:version": "0.6-SNAPSHOT",
+    "planetiler:githash": "fba875f9680c58c3eb6943b2fabce4c4ce3e5bb5",
+    "planetiler:buildtime": "2023-04-20T12:15:02.813Z",
+    "tilejson": "2.0.0"
+}
