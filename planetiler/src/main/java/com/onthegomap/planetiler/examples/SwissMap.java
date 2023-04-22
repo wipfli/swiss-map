@@ -210,7 +210,9 @@ public class SwissMap implements Profile {
     // building layer
     if (sourceFeature.canBePolygon() && sourceFeature.hasTag("building") && !sourceFeature.hasTag("building", "no")) {
       features.polygon("building")
-        .setMinZoom(14);
+        .setMinZoom(14)
+        .setAttr("est_height", sourceFeature.getTag("est_height"))
+        .setAttr("height", sourceFeature.getTag("height"));
     }
 
     // boundary layer
