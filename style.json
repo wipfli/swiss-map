@@ -15,6 +15,9 @@
       "url": "https://wipfli.github.io/swiss-map/tilejson-h3-landcover.json"
     }
   },
+  "light": {
+    "intensity": 0.1
+  },
   "glyphs": "https://wipfli.github.io/swiss-map/font/{fontstack}/{range}.pbf",
   "layers": [
     {
@@ -532,7 +535,24 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#dee0e4"
+        "line-color": "#dee0e4",
+        "line-width": 1
+      }
+    },
+    {
+      "id": "building-extrusion",
+      "type": "fill-extrusion",
+      "source": "swissmap",
+      "minzoom": 15,
+      "source-layer": "building",
+      "filter": ["has", "est_height"],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-extrusion-color": "#e6e7e9",
+        "fill-extrusion-height": ["to-number", ["get", "est_height"]],
+        "fill-extrusion-opacity": 1.0
       }
     },
     {
