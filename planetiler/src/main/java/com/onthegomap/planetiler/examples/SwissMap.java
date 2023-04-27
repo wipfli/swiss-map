@@ -14,6 +14,7 @@ import com.onthegomap.planetiler.util.ZoomFunction;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 public class SwissMap implements Profile {
 
@@ -80,6 +81,19 @@ public class SwissMap implements Profile {
         "taxiway"
       )
     );
+  }
+
+  // copied from https://github.com/protomaps/basemaps/blob/30ba3afe0078d39322936eaa4850843534ea9095/tiles/src/main/java/com/protomaps/basemap/names/OsmNames.java
+  public static FeatureCollector.Feature setOsmNames(FeatureCollector.Feature feature, SourceFeature source,
+    int minzoom) {
+    for (Map.Entry<String, Object> tag : source.tags().entrySet()) {
+      var key = tag.getKey();
+      if (key.equals("name") || key.startsWith("name:")) {
+        feature.setAttrWithMinzoom(key, source.getTag(key), minzoom);
+      }
+    }
+
+    return feature;
   }
 
   @Override
@@ -422,7 +436,7 @@ public class SwissMap implements Profile {
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
-      features.line("highway")
+      var feat = features.line("highway")
         .setMinPixelSize(0)
         .setMinZoom(minZoom)
         .setMaxZoom(maxZoom)
@@ -432,6 +446,8 @@ public class SwissMap implements Profile {
         .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
+      
+      setOsmNames(feat, sourceFeature, 14);
     }
 
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "tertiary", "tertiary_link")) {
@@ -509,7 +525,7 @@ public class SwissMap implements Profile {
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
-      features.line("highway")
+      var feat = features.line("highway")
         .setMinPixelSize(0)
         .setMinZoom(minZoom)
         .setMaxZoom(maxZoom)
@@ -519,6 +535,8 @@ public class SwissMap implements Profile {
         .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
+
+      setOsmNames(feat, sourceFeature, 14);
     }
 
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "secondary", "secondary_link")) {
@@ -596,7 +614,7 @@ public class SwissMap implements Profile {
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
-      features.line("highway")
+      var feat = features.line("highway")
         .setMinPixelSize(0)
         .setMinZoom(minZoom)
         .setMaxZoom(maxZoom)
@@ -606,6 +624,8 @@ public class SwissMap implements Profile {
         .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
+      
+      setOsmNames(feat, sourceFeature, 14);
     }
 
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "primary", "primary_link")) {
@@ -683,7 +703,7 @@ public class SwissMap implements Profile {
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
-      features.line("highway")
+      var feat = features.line("highway")
         .setMinPixelSize(0)
         .setMinZoom(minZoom)
         .setMaxZoom(maxZoom)
@@ -693,6 +713,8 @@ public class SwissMap implements Profile {
         .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
+
+      setOsmNames(feat, sourceFeature, 14);
     }
 
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "trunk", "trunk_link")) {
@@ -770,7 +792,7 @@ public class SwissMap implements Profile {
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
-      features.line("highway")
+      var feat = features.line("highway")
         .setMinPixelSize(0)
         .setMinZoom(minZoom)
         .setMaxZoom(maxZoom)
@@ -780,6 +802,8 @@ public class SwissMap implements Profile {
         .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
+
+      setOsmNames(feat, sourceFeature, 14);
     }
 
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "motorway", "motorway_link")) {
@@ -857,7 +881,7 @@ public class SwissMap implements Profile {
         .setAttr("line-width", new LineWidth(true, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)) + 2);
       
-      features.line("highway")
+      var feat = features.line("highway")
         .setMinPixelSize(0)
         .setMinZoom(minZoom)
         .setMaxZoom(maxZoom)
@@ -867,6 +891,8 @@ public class SwissMap implements Profile {
         .setAttr("is-casing", "no")
         .setAttr("line-width", new LineWidth(false, isLink, lineWidthLevels))
         .setAttr("line-width-z20", 5 * (lineWidthLevels[14] - (isLink ? 1.5 : 0)));
+      
+      setOsmNames(feat, sourceFeature, 14);
     }
 
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("aeroway", "runway")) {
