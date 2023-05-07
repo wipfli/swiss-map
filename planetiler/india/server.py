@@ -20,7 +20,10 @@ async def root():
 async def get_language(lat: float, lon: float):
     for i in range(len(data['features'])):
         if geometries[i].contains(Point(lon, lat)):
-            return data['features'][i]['properties']['language']
+            if 'language' in data['features'][i]['properties']:
+                return data['features'][i]['properties']['language']
+            else:
+                return 'hi'
     return ''
 
 if __name__ == "__main__":

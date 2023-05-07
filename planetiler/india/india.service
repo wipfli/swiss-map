@@ -1,0 +1,12 @@
+[Unit]
+Description=Python server to query the Indic language of a point
+
+[Service]
+WorkingDirectory=/root/swiss-map/planetiler/india
+ExecStart=python3 server.py > /dev/null
+Restart=always
+TimeoutStopSec=30
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

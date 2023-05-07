@@ -1,0 +1,12 @@
+[Unit]
+Description=Nodejs server to cluster strings
+
+[Service]
+WorkingDirectory=/root/swiss-map/planetiler/cluster
+ExecStart=/root/.nvm/versions/node/v18.13.0/bin/node index.js
+Restart=always
+TimeoutStopSec=30
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
