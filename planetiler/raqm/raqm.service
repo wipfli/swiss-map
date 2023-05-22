@@ -1,0 +1,12 @@
+[Unit]
+Description=Python server to segment strings with Raqm
+
+[Service]
+WorkingDirectory=/root/swiss-map/planetiler/raqm
+ExecStart=python3 server.py > /dev/null
+Restart=always
+TimeoutStopSec=30
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
