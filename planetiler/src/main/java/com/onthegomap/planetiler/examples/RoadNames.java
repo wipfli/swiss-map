@@ -41,14 +41,14 @@ public class RoadNames implements Profile {
             var key = tag.getKey();
             if (key.equals("name") || key.startsWith("name:")) {
                 String markedString = "DEFAULT";
-                if (source.getTag(key).toString().matches("[\\p{ASCII}]+")) {
+                if (source.getTag(key).toString().matches("[\\p{ASCII}\s\\p{IsLatin}\\p{InCyrillic}\\p{InCyrillic_Supplementary}\\p{InGreek}\\p{InGreek_Extended}\\p{InCJK_Unified_Ideographs}\\p{IsHangul}+\\-*/$%^&()\\[\\]{}|\\\\:;<>,.!@#'\"~`?_=]+")) {
                     markedString = source.getTag(key).toString();
                 } else {
                     // The string contains non-Latin characters.
                     try {
                         String encodedString = URLEncoder.encode(source.getTag(key).toString(),
                                 StandardCharsets.UTF_8.toString());
-                        String urlString = String.format("http://localhost:3000/get_marked_string/%s", encodedString);
+                        String urlString = String.format("http://localhost:3000/segment?text=%s", encodedString);
                         // System.out.println(entry.getKey().toString());
                         // System.out.println(urlString);
                         URL url = new URL(urlString);
@@ -66,10 +66,6 @@ public class RoadNames implements Profile {
                         reader.close();
 
                         String markedStringEncoded = response.toString();
-                        markedStringEncoded = markedStringEncoded.substring(1, markedStringEncoded.length() - 1); // remove
-                                                                                                                  // ""
-                                                                                                                  // around
-                                                                                                                  // string
                         markedString = URLDecoder.decode(markedStringEncoded, StandardCharsets.UTF_8.toString());
                         // System.out.println(markedString);
 

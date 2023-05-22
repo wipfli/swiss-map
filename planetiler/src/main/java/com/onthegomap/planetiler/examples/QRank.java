@@ -235,11 +235,11 @@ public class QRank implements Profile {
         for (var entry : sourceFeature.tags().entrySet()) {
           if (entry.getKey().toString().startsWith("name")) {
             String markedString = "DEFAULT";
-            if (!entry.getValue().toString().matches("[\\p{ASCII}]+")) {
+            if (!entry.getValue().toString().matches("[\\p{ASCII}\s\\p{IsLatin}\\p{InCyrillic}\\p{InCyrillic_Supplementary}\\p{InGreek}\\p{InGreek_Extended}\\p{InCJK_Unified_Ideographs}\\p{IsHangul}+\\-*/$%^&()\\[\\]{}|\\\\:;<>,.!@#'\"~`?_=]+")) {
               // The string contains non-Latin characters.
               try {
                 String encodedString = URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8.toString());
-                String urlString = String.format("http://localhost:3000/get_marked_string/%s", encodedString);
+                String urlString = String.format("http://localhost:3000/segment?text=%s", encodedString);
                 // System.out.println(entry.getKey().toString());
                 // System.out.println(urlString);
                 URL url = new URL(urlString);
@@ -257,7 +257,7 @@ public class QRank implements Profile {
                 reader.close();
     
                 String markedStringEncoded = response.toString();
-                markedStringEncoded = markedStringEncoded.substring(1, markedStringEncoded.length() - 1); // remove "" around string
+                // markedStringEncoded = markedStringEncoded.substring(1, markedStringEncoded.length() - 1); // remove "" around string
                 markedString = URLDecoder.decode(markedStringEncoded, StandardCharsets.UTF_8.toString());
                 // System.out.println(markedString);
     
