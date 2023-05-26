@@ -17,3 +17,9 @@ pip3 install fonttools
 pip3 install fastapi # etc...
 ```
 
+```
+git clone git@github.com:ldo/pybidi.git
+cd pybidi
+pip3 install .
+```
+
