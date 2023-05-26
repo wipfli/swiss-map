@@ -18,6 +18,8 @@ import re
 import time
 import ctypes
 
+import fribidi
+
 lib = ctypes.CDLL('./run_raqm.so')
 
 lib.runRaqm.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_size_t]
@@ -216,20 +218,18 @@ def can_break_after(font_path, text, break_after):
 
 # print('can break after', break_after, can_break_after(font_path, text, break_after))
 
-def segment_word(font_path, text):
+def segment_word(font_path, text, direction):
     cursor = 0
     parts = []
-    rtl = is_rtl_language(text)
     for break_after in range(len(text)):
         if can_break_after(font_path, text, break_after):
-            if rtl:
+            if direction == 'rtl':
                 parts.insert(0, text[cursor:(break_after + 1)])
             else:
                 parts.append(text[cursor:(break_after + 1)])
             
             cursor = break_after + 1
     return parts
-
 
 def split_words(string):
     # Define the pattern to match special characters (+ or -)
@@ -241,44 +241,71 @@ def split_words(string):
     # Return the split strings
     return split_strings
 
+
+def split_embedding_levels(embedding_levels):
+    if len(embedding_levels) == 0:
+        return []
+    
+    result = [] # [[0, 1], [1, 3], ..] with [from (including), to (excluding)]
+    sublist = [0, 0] 
+    
+    for i in range(1, len(embedding_levels)):
+        if embedding_levels[i - 1] != embedding_levels[i]:
+            sublist[1] = i
+            result.append(list(sublist))
+            sublist = [i, i]
+    
+    sublist[1] = len(embedding_levels)
+    result.append(list(sublist))
+    return result
+
+def get_bidis(text):
+    bidi_types = fribidi.get_bidi_types(text)
+
+    _, embedding_levels = fribidi.get_par_embedding_levels(bidi_types, fribidi.FRIBIDI.PAR_LTR)[1:]
+        
+    sections = split_embedding_levels(embedding_levels)
+
+    bidis = [] # [{'text': 'oliver', 'direction': 'ltr'}, ...]
+    
+    for section in sections:
+        bidis.append({
+            'text': text[section[0]:section[1]],
+            'direction': 'ltr' if embedding_levels[section[0]] % 2 == 0 else 'rtl'
+        })
+
+    return bidis
+
 def segment_label(text):
-    words = split_words(text)
+
+    bidis = get_bidis(text)
 
     parts = []
+    for bidi in bidis:
 
-    directional_parts = []
+        words = split_words(bidi['text'])
 
-    if len(words) == 0:
-        return None
+        if len(words) == 0:
+            continue
 
-    previous_rtl = not is_rtl_language(words[0])
+        subparts = []
 
-    for word in words:
-        font_path = find_font(word)
-        word_parts = []
-        if font_path is None:
-            word_parts = [word]
-        else:
-            word_parts = segment_word(font_path, word)
-        
-        rtl = is_rtl_language(word)
-        if rtl == previous_rtl:
-            if rtl:
-                directional_parts = word_parts  + directional_parts
+        for word in words:
+            font_path = find_font(word)
+            word_parts = []
+            if font_path is None:
+                word_parts = [word]
             else:
-                directional_parts = directional_parts + word_parts
-        else:
-            parts += directional_parts
-            directional_parts = word_parts
-        
-        previous_rtl = rtl
+                word_parts = segment_word(font_path, word, bidi['direction'])
+            
+            if bidi['direction'] == 'ltr':
+                subparts = subparts + word_parts
+            else:
+                subparts = word_parts + subparts
 
-    parts += directional_parts
+        parts += subparts
 
     return parts
-
-
-
 
 
 #############################################
@@ -347,8 +374,10 @@ async def segment(text: str):
 #     segment_word(font_path, text)
 # print(time.time() - tic)
 
-text = 'મુંબઈ मुंबई دبي-بي Oliver'  # 'ᄀᄀᄀ각ᆨᆨ' # 'دبي' # 'મુંબઈ' # 'मुंबई' #'oliver' # 'モナコ'
-
+text = 'મુંબઈ मुंबई دبي-بي Oliver'  
+text = 'ᄀᄀᄀ각ᆨᆨ' # 'دبي' # 'મુંબઈ' # 'मुंबई' #'oliver' # 'モナコ'
+text = '456 תל־אבי  213ב-יפ Wip'
+text = 'جمهو What is going on here? رية مصر العربية'
 parts = segment_label(text)
 
 if parts is not None:
