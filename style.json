@@ -27,52 +27,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "background-color": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          10,
-          "#a8dab5",
-          11,
-          "#f8f9fa"
-        ]
-      }
-    },
-    {
-      "id": "Grass-Bare-Snow",
-      "type": "fill",
-      "source": "landcover",
-      "source-layer": "landcover",
-      "filter": [
-        "==",
-        [
-          "get",
-          "kind"
-        ],
-        "Grass-Bare-Snow"
-      ],
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": "#b6dcc1",
-        "fill-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          10,
-          1,
-          11,
-          0
-        ]
+        "background-color": "#f8f9fa"
       }
     },
     {
@@ -142,39 +97,6 @@
       }
     },
     {
-      "id": "Crops",
-      "type": "fill",
-      "source": "landcover",
-      "source-layer": "landcover",
-      "filter": [
-        "==",
-        [
-          "get",
-          "kind"
-        ],
-        "Crops"
-      ],
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": "#bbe2c6",
-        "fill-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          10,
-          1,
-          11,
-          0
-        ]
-      }
-    },
-    {
       "id": "Tree",
       "type": "fill",
       "source": "landcover",
@@ -188,7 +110,7 @@
         "Tree"
       ],
       "paint": {
-        "fill-color": "#94d2a5",
+        "fill-color": "#ceead6",
         "fill-opacity": [
           "interpolate",
           [
@@ -210,20 +132,7 @@
       "source": "swissmap",
       "source-layer": "wood",
       "paint": {
-        "fill-color": "#ceead6",
-        "fill-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          10,
-          0,
-          11,
-          1
-        ]
+        "fill-color": "#ceead6"
       }
     },
     {
@@ -290,7 +199,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#ABCDFB",
+        "line-color": "#abcdfb",
         "line-width": {
           "stops": [
             [
@@ -314,19 +223,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          10,
-          "#8ab4f8",
-          11,
-          "#ABCDFB"
-        ]
+        "fill-color": "#abcdfb"
       }
     },
     {
