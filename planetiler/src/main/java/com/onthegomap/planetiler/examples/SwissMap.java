@@ -957,30 +957,32 @@ public class SwissMap implements Profile {
       };
 
       int z20LineWidth = 40;
-      features.line("highway")
+      features.line("aeroway-runway")
         .setMinPixelSize(0)
         .setMinZoom(minZoom)
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, false, false, false, layer, true))
         .setAttr("line-color", new LineColor(false, true, casingLineColorLevels))
         .setAttr("line-width", new LineWidth(true, false, lineWidthLevels))
-        .setAttr("line-width-z20", z20LineWidth);
+        .setAttr("line-width-z20", z20LineWidth)
+        .setAttr("is-casing", "yes");
       
-      features.line("highway")
+      features.line("aeroway-runway")
         .setMinPixelSize(0)
         .setMinZoom(minZoom)
         .setMaxZoom(maxZoom)
         .setAttr("line-sort-key", new LineSortKey(categoryIndex, false, false, false, layer, false))
         .setAttr("line-color", new LineColor(false, false, lineColorLevels))
         .setAttr("line-width", new LineWidth(false, false, lineWidthLevels))
-        .setAttr("line-width-z20", z20LineWidth);
+        .setAttr("line-width-z20", z20LineWidth)
+        .setAttr("is-casing", "no");
     }
 
     // highway-tracktype-2 layer
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("tracktype", "grade2")) {
       features.line("highway-tracktype-2")
         .setMinPixelSize(0)
-        .setMinZoom(14);
+        .setMinZoom(12);
     }
 
     // highway-tracktype-3-4-5 layer
@@ -993,7 +995,7 @@ public class SwissMap implements Profile {
     ) {
       features.line("highway-tracktype-3-4-5")
         .setMinPixelSize(0)
-        .setMinZoom(14);
+        .setMinZoom(12);
     }
 
     // highway-path layer

@@ -131,6 +131,7 @@
       "type": "fill",
       "source": "swissmap",
       "source-layer": "wood",
+      "minzoom": 10,
       "paint": {
         "fill-color": "#ceead6"
       }
