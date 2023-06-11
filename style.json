@@ -365,8 +365,32 @@
       },
       "paint": {
         "line-color": [
-          "get",
-          "line-color"
+          "case",
+          [
+            "all",
+            ["==", ["get", "is-casing"], "yes"],
+            ["in", ["get", "kind"], ["literal", ["primary", "trunk", "motorway"]]]
+          ],
+          "#fab724",
+          [
+            "all",
+            ["==", ["get", "is-casing"], "no"],
+            ["in", ["get", "kind"], ["literal", ["primary", "trunk", "motorway"]]]
+          ],
+          "#feefc3",
+          [
+            "all",
+            ["==", ["get", "is-casing"], "yes"],
+            ["in", ["get", "kind"], ["literal", ["unclassified", "tertiary", "secondary"]]]
+          ],
+          "#aaa",
+          [
+            "all",
+            ["==", ["get", "is-casing"], "no"],
+            ["in", ["get", "kind"], ["literal", ["unclassified", "tertiary", "secondary"]]]
+          ],
+          "white",
+          "red"
         ],
         "line-width": [
           "interpolate",
