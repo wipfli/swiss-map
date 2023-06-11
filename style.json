@@ -237,7 +237,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#bdc3c7",
+        "line-color": "#7f8c8e",
         "line-dasharray": [
           0.0,
           2.0
@@ -265,14 +265,13 @@
       "type": "line",
       "source": "swissmap",
       "source-layer": "highway-footway",
-      "minzoom": 15,
       "layout": {
-        "line-cap": "butt",
+        "line-cap": "round",
         "line-join": "round",
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#bdc3c7",
+        "line-color": "#7f8c8e",
         "line-dasharray": [
           0.0,
           2.0
@@ -300,7 +299,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#bdc3c7",
+        "line-color": "#7f8c8e",
         "line-width": {
           "stops": [
             [
@@ -324,7 +323,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#bdc3c7",
+        "line-color": "#7f8c8e",
         "line-dasharray": [
           10.0,
           2.0
