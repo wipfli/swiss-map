@@ -233,7 +233,7 @@
       "source": "swissmap",
       "source-layer": "highway-path",
       "layout": {
-        "line-cap": "butt",
+        "line-cap": "round",
         "line-join": "round",
         "visibility": "visible"
       },
@@ -247,7 +247,7 @@
           "stops": [
             [
               12,
-              0
+              1
             ],
             [
               14,
