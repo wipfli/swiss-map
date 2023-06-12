@@ -606,6 +606,11 @@
             "name:en"
           ],
           [
+            "has",
+            "ele"
+          ],
+          ["format", ["get", "name"], {}, "\n", {}, ["get", "ele"], {"font-scale": 0.8}, "m", {"font-scale": 0.8}],
+          [
             "get",
             "name"
           ]
