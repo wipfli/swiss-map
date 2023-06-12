@@ -13,6 +13,11 @@
     "landcover": {
       "type": "vector",
       "url": "https://wipfli.github.io/swiss-map/tilejson-h3-landcover.json"
+    },
+    "swisstopo-vector-hillshade": {
+      "type": "vector",
+      "url": "https://wipfli.github.io/swiss-map/tilejson-swisstopo-vector-hillshade.json",
+      "attribution": "<a href=\"https://geo.admin.ch\">© swisstopo</a>"
     }
   },
   "light": {
@@ -109,8 +114,11 @@
         ],
         "Tree"
       ],
+      "layout": {
+        "visibility": "visible"
+      },
       "paint": {
-        "fill-color": "#ceead6",
+        "fill-color": "rgb(205, 230, 190)",
         "fill-opacity": [
           "interpolate",
           [
@@ -132,8 +140,11 @@
       "source": "swissmap",
       "source-layer": "wood",
       "minzoom": 10,
+      "layout": {
+        "visibility": "visible"
+      },
       "paint": {
-        "fill-color": "#ceead6"
+        "fill-color": "rgb(205, 230, 190)"
       }
     },
     {
@@ -171,8 +182,7 @@
       "type": "fill",
       "source": "swissmap",
       "source-layer": "residential",
-      "minzoom": 10,
-      "maxzoom": 15,
+      "minzoom": 11,
       "layout": {
         "visibility": "visible"
       },
@@ -190,6 +200,24 @@
           ]
         }
       }
+    },
+    {
+      "id": "GTON",
+      "type": "fill",
+      "source": "swisstopo-vector-hillshade",
+      "source-layer": "GTON",
+      "paint": {
+        "fill-color": "rgba(255, 255, 228, 0.125)"
+      }
+    },
+    {
+        "id": "RELI",
+        "type": "fill",
+        "source": "swisstopo-vector-hillshade",
+        "source-layer": "RELI",
+        "paint": {
+          "fill-color": "rgba(173, 188, 199, 0.125)"
+        }
     },
     {
       "id": "waterway",
@@ -305,7 +333,7 @@
           "stops": [
             [
               12,
-              0
+              1
             ],
             [
               14,
@@ -333,7 +361,7 @@
           "stops": [
             [
               12,
-              0
+              1
             ],
             [
               14,
@@ -353,7 +381,7 @@
       "source": "swissmap",
       "source-layer": "highway",
       "layout": {
-        "line-cap": "butt",
+        "line-cap": "round",
         "line-join": "round",
         "visibility": "visible",
         "line-sort-key": [
@@ -370,25 +398,49 @@
           [
             "all",
             ["==", ["get", "is-casing"], "yes"],
-            ["in", ["get", "kind"], ["literal", ["primary", "trunk", "motorway"]]]
+            ["in", ["get", "kind"], ["literal", ["trunk", "motorway"]]]
           ],
-          "#fab724",
+          "#555",
           [
             "all",
             ["==", ["get", "is-casing"], "no"],
-            ["in", ["get", "kind"], ["literal", ["primary", "trunk", "motorway"]]]
+            ["in", ["get", "kind"], ["literal", ["trunk", "motorway"]]]
           ],
-          "#feefc3",
+          "#fabe44",
           [
             "all",
             ["==", ["get", "is-casing"], "yes"],
-            ["in", ["get", "kind"], ["literal", ["unclassified", "tertiary", "secondary"]]]
+            ["in", ["get", "kind"], ["literal", ["primary"]]]
           ],
-          "#aaa",
+          "#555",
           [
             "all",
             ["==", ["get", "is-casing"], "no"],
-            ["in", ["get", "kind"], ["literal", ["unclassified", "tertiary", "secondary"]]]
+            ["in", ["get", "kind"], ["literal", ["primary"]]]
+          ],
+          "#f8c7c8",
+          [
+            "all",
+            ["==", ["get", "is-casing"], "yes"],
+            ["in", ["get", "kind"], ["literal", ["secondary"]]]
+          ],
+          "#555",
+          [
+            "all",
+            ["==", ["get", "is-casing"], "no"],
+            ["in", ["get", "kind"], ["literal", ["secondary"]]]
+          ],
+          "#fff481",
+          [
+            "all",
+            ["==", ["get", "is-casing"], "yes"],
+            ["in", ["get", "kind"], ["literal", ["unclassified", "tertiary"]]]
+          ],
+          "#888",
+          [
+            "all",
+            ["==", ["get", "is-casing"], "no"],
+            ["in", ["get", "kind"], ["literal", ["unclassified", "tertiary"]]]
           ],
           "white",
           "red"
@@ -403,10 +455,45 @@
           ],
           14,
           [
-            "to-number",
+            "case",
             [
-              "get",
-              "line-width"
+              "all",
+              [
+                "<",
+                [
+                  "to-number",
+                  [
+                    "get",
+                    "line-width"
+                  ]
+                ],
+                2
+              ],
+              ["==", ["get", "is-casing"], "no"]
+            ],
+            2,
+            [
+              "all",
+              [
+                "<",
+                [
+                  "to-number",
+                  [
+                    "get",
+                    "line-width"
+                  ]
+                ],
+                3
+              ],
+              ["==", ["get", "is-casing"], "yes"]
+            ],
+            3,
+            [
+              "to-number",
+              [
+                "get",
+                "line-width"
+              ]
             ]
           ],
           20,
@@ -437,13 +524,12 @@
       "id": "building",
       "type": "fill",
       "source": "swissmap",
-      "minzoom": 15,
       "source-layer": "building",
       "layout": {
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": "#f1f3f4"
+        "fill-color": "#000"
       }
     },
     {
@@ -451,12 +537,11 @@
       "type": "line",
       "source": "swissmap",
       "source-layer": "building",
-      "minzoom": 15,
       "layout": {
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#dee0e4",
+        "line-color": "#444",
         "line-width": 1
       }
     },
@@ -718,7 +803,7 @@
           "black",
           "gray"
         ],
-        "text-halo-blur": 0,
+        "text-halo-blur": 0.1,
         "text-halo-color": "white",
         "text-halo-width": [
           "case",
@@ -758,7 +843,7 @@
             "ocean"
           ],
           0.0,
-          1.5
+          2.0
         ]
       }
     }
