@@ -171,6 +171,9 @@
       "type": "fill",
       "source": "swisstopo-vector-hillshade",
       "source-layer": "GTON",
+      "layout": {
+        "visibility": "none"
+      },
       "paint": {
         "fill-color": "rgba(255, 255, 228, 0.125)"
       }
@@ -180,6 +183,9 @@
         "type": "fill",
         "source": "swisstopo-vector-hillshade",
         "source-layer": "RELI",
+        "layout": {
+          "visibility": "none"
+        },
         "paint": {
           "fill-color": "rgba(173, 188, 199, 0.125)"
         }
