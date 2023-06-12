@@ -117,21 +117,9 @@
       "layout": {
         "visibility": "visible"
       },
+      "maxzoom": 10,
       "paint": {
-        "fill-color": "rgb(205, 230, 190)",
-        "fill-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          10,
-          1,
-          11,
-          0
-        ]
+        "fill-color": "rgb(205, 230, 190)"
       }
     },
     {
@@ -160,21 +148,9 @@
         ],
         "BuiltUp"
       ],
+      "maxzoom": 10,
       "paint": {
-        "fill-color": "#e8eaed",
-        "fill-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          10,
-          1,
-          11,
-          0
-        ]
+        "fill-color": "#e8eaed"
       }
     },
     {
@@ -182,23 +158,12 @@
       "type": "fill",
       "source": "swissmap",
       "source-layer": "residential",
-      "minzoom": 11,
+      "minzoom": 10,
       "layout": {
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": {
-          "stops": [
-            [
-              12,
-              "#e8eaed"
-            ],
-            [
-              14,
-              "#F1F2F4"
-            ]
-          ]
-        }
+        "fill-color": "#e8eaed"
       }
     },
     {
