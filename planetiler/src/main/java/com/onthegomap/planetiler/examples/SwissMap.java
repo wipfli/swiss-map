@@ -1005,6 +1005,13 @@ public class SwissMap implements Profile {
         .setMinZoom(12);
     }
 
+    // highway-cycleway layer
+    if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "cycleway")) {
+      features.line("highway-cycleway")
+        .setMinPixelSize(0)
+        .setMinZoom(12);
+    }
+
     // highway-footway layer
     if (sourceFeature.canBeLine() && sourceFeature.hasTag("highway", "footway")) {
       features.line("highway-footway")
