@@ -93,9 +93,9 @@ public class BikeRouteOverlay implements Profile {
       for (var routeInfo : sourceFeature.relationInfo(RouteRelationInfo.class)) {
         // (routeInfo.role() also has the "role" of this relation member if needed)
         RouteRelationInfo relation = routeInfo.relation();
-        // Break the output into layers named: "{bicycle,route}-route-{international,national,regional,local,other}"
-        String layerName = relation.route + "-route-" + relation.network;
-        features.line(layerName)
+        features.line("bikeroutes")
+          .setAttr("route", relation.route)
+          .setAttr("network", relation.network)
           .setAttr("name", relation.name)
           .setAttr("ref", relation.ref)
           .setZoomRange(0, 14)
