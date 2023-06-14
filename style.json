@@ -18,6 +18,13 @@
       "type": "vector",
       "url": "https://wipfli.github.io/swiss-map/tilejson-swisstopo-vector-hillshade.json",
       "attribution": "<a href=\"https://geo.admin.ch\">© swisstopo</a>"
+    },
+    "bikeroutes": {
+      "type": "vector",
+      "tiles": [
+        "https://tiles.swiss-map.cc/bikeroutes/{z}/{x}/{y}.pbf"
+      ],
+      "maxzoom": 14
     }
   },
   "light": {
@@ -224,6 +231,25 @@
       },
       "paint": {
         "fill-color": "#abcdfb"
+      }
+    },
+    {
+      "id": "bikeroutes",
+      "type": "line",
+      "source": "bikeroutes",
+      "source-layer": "bikeroutes",
+      "minzoom": 6,
+      "paint": {
+        "line-color": "#61c455",
+        "line-opacity": 1.0,
+        "line-width": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          10, 4,
+          14, 12,
+          20, 30
+        ]
       }
     },
     {
