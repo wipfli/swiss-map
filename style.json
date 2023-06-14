@@ -239,6 +239,10 @@
       "source": "bikeroutes",
       "source-layer": "bikeroutes",
       "minzoom": 6,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
       "paint": {
         "line-color": "#61c455",
         "line-opacity": 1.0,
