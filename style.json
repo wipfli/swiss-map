@@ -25,12 +25,21 @@
         "https://tiles.swiss-map.cc/bikeroutes/{z}/{x}/{y}.pbf"
       ],
       "maxzoom": 14
+    },
+    "protomaps": {
+      "type": "vector",
+      "tiles": [
+        "https://tiles.swiss-map.cc/protomaps/{z}/{x}/{y}.pbf"
+      ],
+      "minzoom": 12,
+      "maxzoom": 15
     }
   },
   "light": {
     "intensity": 0.1
   },
   "glyphs": "https://wipfli.github.io/swiss-map/font/{fontstack}/{range}.pbf",
+  "sprite":"https://demotiles.maplibre.org/styles/osm-bright-gl-style/sprite",
   "layers": [
     {
       "id": "background",
@@ -562,6 +571,40 @@
         "fill-extrusion-height": ["to-number", ["get", "est_height"]],
         "fill-extrusion-opacity": 1.0
       }
+    },
+    {
+      "id": "pois-circle",
+      "type": "circle",
+      "source": "protomaps",
+      "source-layer": "pois",
+      "filter": ["in", ["get", "shop"], ["literal", ["convenience", "supermarket", "grocery"]]],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "circle-color": "white",
+        "circle-radius": 10
+      }
+    },
+    {
+      "id": "pois",
+      "type": "symbol",
+      "source": "protomaps",
+      "source-layer": "pois",
+      "filter": ["in", ["get", "shop"], ["literal", ["convenience", "supermarket", "grocery"]]],
+      "layout": {
+        "text-field": ["get", "name"],
+        "text-font": ["Fira Sans Regular"],
+        "text-anchor": "top",
+        "text-offset": [0, 0.6],
+        "icon-image": "grocery_11",
+        "icon-size": 1
+      },
+      "paint":{
+        "text-halo-blur": 0.5,
+        "text-halo-width": 2,
+        "text-halo-color": "#ffffff"
+     }
     },
     {
       "id": "labels",
