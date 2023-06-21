@@ -577,7 +577,11 @@
       "type": "circle",
       "source": "protomaps",
       "source-layer": "pois",
-      "filter": ["in", ["get", "shop"], ["literal", ["convenience", "supermarket", "grocery"]]],
+      "filter": [
+        "any",
+        ["in", ["get", "shop"], ["literal", ["convenience", "supermarket", "grocery"]]],
+        ["in", ["get", "tourism"], ["literal", ["camp_site"]]]
+      ],
       "layout": {
         "visibility": "visible"
       },
@@ -591,13 +595,22 @@
       "type": "symbol",
       "source": "protomaps",
       "source-layer": "pois",
-      "filter": ["in", ["get", "shop"], ["literal", ["convenience", "supermarket", "grocery"]]],
+      "filter": [
+        "any",
+        ["in", ["get", "shop"], ["literal", ["convenience", "supermarket", "grocery"]]],
+        ["in", ["get", "tourism"], ["literal", ["camp_site"]]]
+      ],
       "layout": {
         "text-field": ["get", "name"],
         "text-font": ["Fira Sans Regular"],
         "text-anchor": "top",
         "text-offset": [0, 0.6],
-        "icon-image": "grocery_11",
+        "icon-image": [
+          "case",
+          ["in", ["get", "shop"], ["literal", ["convenience", "supermarket", "grocery"]]],
+          "grocery_11",
+          "campsite_11"
+        ],
         "icon-size": 1
       },
       "paint":{
