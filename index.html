@@ -124,6 +124,8 @@
                 }
             }, 'GTON')
 
+            //   "glyphs": "https://vectortiles.geo.admin.ch/fonts/{fontstack}/{range}.pbf",
+
             map.addLayer({
                 id: "contour-lines",
                 type: "line",
@@ -152,7 +154,8 @@
                     "text-halo-color": "white",
                     "text-halo-width": 1,
                 },
-            });
+            },
+            "labels");
 
 
         });

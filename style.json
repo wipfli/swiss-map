@@ -238,8 +238,9 @@
       "type": "line",
       "source": "bikeroutes",
       "source-layer": "bikeroutes",
-      "minzoom": 6,
+      "minzoom": 10,
       "layout": {
+        "visibility": "visible",
         "line-cap": "round",
         "line-join": "round"
       },
@@ -812,45 +813,94 @@
         "text-halo-blur": 0.1,
         "text-halo-color": "white",
         "text-halo-width": [
-          "case",
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          13,
           [
-            "==",
+            "case",
             [
-              "get",
-              "natural"
+              "==",
+              [
+                "get",
+                "natural"
+              ],
+              "water"
             ],
-            "water"
+            0.0,
+            [
+              "==",
+              [
+                "get",
+                "natural"
+              ],
+              "bay"
+            ],
+            0.0,
+            [
+              "==",
+              [
+                "get",
+                "place"
+              ],
+              "sea"
+            ],
+            0.0,
+            [
+              "==",
+              [
+                "get",
+                "place"
+              ],
+              "ocean"
+            ],
+            0.0,
+            1.0
           ],
-          0.0,
+          14,
           [
-            "==",
+            "case",
             [
-              "get",
-              "natural"
+              "==",
+              [
+                "get",
+                "natural"
+              ],
+              "water"
             ],
-            "bay"
-          ],
-          0.0,
-          [
-            "==",
+            0.0,
             [
-              "get",
-              "place"
+              "==",
+              [
+                "get",
+                "natural"
+              ],
+              "bay"
             ],
-            "sea"
-          ],
-          0.0,
-          [
-            "==",
+            0.0,
             [
-              "get",
-              "place"
+              "==",
+              [
+                "get",
+                "place"
+              ],
+              "sea"
             ],
-            "ocean"
-          ],
-          0.0,
-          2.0
+            0.0,
+            [
+              "==",
+              [
+                "get",
+                "place"
+              ],
+              "ocean"
+            ],
+            0.0,
+            2.0
+          ]
         ]
+        
+        
       }
     }
   ],
