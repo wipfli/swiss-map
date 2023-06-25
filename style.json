@@ -39,7 +39,7 @@
     "intensity": 0.1
   },
   "glyphs": "https://wipfli.github.io/swiss-map/font/{fontstack}/{range}.pbf",
-  "sprite":"https://demotiles.maplibre.org/styles/osm-bright-gl-style/sprite",
+  "sprite":"https://maputnik.github.io/osm-liberty/sprites/osm-liberty",
   "layers": [
     {
       "id": "background",
@@ -586,8 +586,13 @@
         "visibility": "visible"
       },
       "paint": {
-        "circle-color": "white",
-        "circle-radius": 10
+        "circle-color": [
+          "case",
+          ["in", ["get", "shop"], ["literal", ["convenience", "supermarket", "grocery"]]],
+          "#5d60be",
+          "#7d675e"
+        ], 
+        "circle-radius": 5
       }
     },
     {
@@ -611,7 +616,8 @@
           "grocery_11",
           "campsite_11"
         ],
-        "icon-size": 1
+        "icon-size": 1.0,
+        "text-optional": true
       },
       "paint":{
         "text-halo-blur": 0.5,
