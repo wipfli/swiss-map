@@ -620,10 +620,17 @@
         "text-optional": true
       },
       "paint":{
-        "text-halo-blur": 0.5,
-        "text-halo-width": 2,
-        "text-halo-color": "#ffffff"
-     }
+        "text-halo-width": 1.5,
+        "text-halo-color": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          13,
+          "rgba(255, 255, 255, 0.7)",
+          14,
+          "rgba(255, 255, 255, 1.0)"
+        ]
+      }
     },
     {
       "id": "labels",
@@ -872,8 +879,15 @@
           "black",
           "gray"
         ],
-        "text-halo-blur": 0.1,
-        "text-halo-color": "white",
+        "text-halo-color": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          13,
+          "rgba(255, 255, 255, 0.7)",
+          14,
+          "rgba(255, 255, 255, 1.0)"
+        ],
         "text-halo-width": [
           "interpolate",
           ["linear"],
@@ -917,7 +931,7 @@
               "ocean"
             ],
             0.0,
-            1.0
+            1.5
           ],
           14,
           [
