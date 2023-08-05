@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Swiss Map Style Mittag</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css" rel="stylesheet" />
+    <script
+        src='https://github.com/acalcutt/maplibre-gl-inspect/releases/download/v1.4.5/maplibre-gl-inspect.min.js'></script>
+    <link href='https://github.com/acalcutt/maplibre-gl-inspect/releases/download/v1.4.5/maplibre-gl-inspect.css'
+        rel='stylesheet' />
+    <script src="https://unpkg.com/maplibre-contour@0.0.2/dist/index.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        var demSource = new mlcontour.DemSource({
+            url: "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/{z}/{x}/{y}.png",
+            encoding: "terrarium",
+            maxzoom: 13,
+            timeoutMs: 10_000, // timeout on fetch requests
+        });
+
+        // calls maplibregl.addProtocol for the shared cache and contour protocols
+        demSource.setupMaplibre(maplibregl);
+        var map = new maplibregl.Map({
+            container: 'map', // container id
+            style: 'mittag.json', // style URL
+            center: [3.1993, 39.4690], // starting position [lng, lat]
+            zoom: 8, // starting zoom
+            minZoom: 1,
+            hash: "map",
+        });
+        // map.showTileBoundaries = true;
+        // map.showCollisionBoxes = true;
+        var nav = new maplibregl.NavigationControl();
+        map.addControl(nav, 'top-right');
+        const inspectUrlTag = '&inspect';
+        map.addControl(new MaplibreInspect({
+            backgroundColor: '#fff',
+            showInspectMapPopupOnHover: false,
+            renderPopup: function (features) {
+                var result = '';
+                for (const feature of features) {
+                    result += `<h3>${feature.source}: ${feature.sourceLayer}</h3>`
+                    for (const key of Object.keys(feature.properties).sort().reverse()) {
+                        result += `<p>${key}: <i>${feature.properties[key]}</i></p>`;
+                    }
+                }
+                return result;
+            },
+            showInspectMap: window.location.hash.includes(inspectUrlTag),
+            toggleCallback: function (showInspectMap) {
+                if (showInspectMap) {
+                    window.location.hash += inspectUrlTag;
+                }
+                else {
+                    window.location.hash = window.location.hash.replace(inspectUrlTag, '');
+                }
+            }
+        }));
+        map.addControl(new maplibregl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }));
+        map.dragRotate.disable();
+        map.touchZoomRotate.disableRotation();
+
+        map.on('load', function () {
+            map.addSource("contour-source", {
+                type: "vector",
+                tiles: [
+                    demSource.contourProtocolUrl({
+                        thresholds: {
+                            // zoom: [minor, major]
+                            12: [100, 500],
+                            13: [20, 100]
+                        },
+                        // optional, override vector tile parameters:
+                        contourLayer: "contours",
+                        elevationKey: "ele",
+                        levelKey: "level",
+                        extent: 4096,
+                        buffer: 1,
+                    }),
+                ],
+                maxzoom: 15,
+            });
+            map.addSource("dem", {
+                type: "raster-dem",
+                encoding: "terrarium",
+                tiles: ['dem-shared://{z}/{x}/{y}'],
+                maxzoom: 13,
+                tileSize: 256,
+            });
+            // map.addLayer({
+            //     id: "hills",
+            //     type: "hillshade",
+            //     source: "dem",
+            //     paint: {
+            //         "hillshade-exaggeration": 0.5,
+            //         "hillshade-highlight-color": "rgb(255, 255, 228)",
+            //         "hillshade-shadow-color": "rgb(173, 188, 199)",
+            //         "hillshade-illumination-direction": 315
+            //     }
+            // }, 'GTON')
+
+            // //   "glyphs": "https://vectortiles.geo.admin.ch/fonts/{fontstack}/{range}.pbf",
+
+            // map.addLayer({
+            //     id: "contour-lines",
+            //     type: "line",
+            //     source: "contour-source",
+            //     "source-layer": "contours",
+            //     paint: {
+            //         "line-color": "rgb(215, 151, 060)",
+            //         // level = highest index in thresholds array the elevation is a multiple of
+            //         "line-width": ["match", ["get", "level"], 1, 1, 0.5],
+            //     },
+            // }, 'waterway');
+            // map.addLayer({
+            //     id: "contour-labels",
+            //     type: "symbol",
+            //     source: "contour-source",
+            //     "source-layer": "contours",
+            //     filter: [">", ["get", "level"], 0],
+            //     layout: {
+            //         "symbol-placement": "line",
+            //         "text-size": 14,
+            //         "text-field": ['concat', ["number-format", ["get", "ele"], {},], 'm'],
+            //         "text-font": ["Fira Sans Regular"],
+            //     },
+            //     paint: {
+            //         "text-color": "#000",
+            //         "text-halo-color": "white",
+            //         "text-halo-width": 1,
+            //     },
+            // },
+            // "labels");
+
+
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>
