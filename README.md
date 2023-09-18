@@ -9,7 +9,7 @@ Uses:
 
 ## tile hosting
 
-The tiles are hosted on the Cloudflare R2 storage service. A Cloudflare Worker extracts the data from a `shortbread-planet.pmtiles` file stored on R2 and serves tiles at a `{z}/{x}/{y}.pbf` endpoint. For instructions how to host PMTiles on Cloudflare, see https://protomaps.com/docs/cdn/cloudflare.
+The tiles are hosted on the Cloudflare R2 storage service. A Cloudflare Worker extracts the data from a `swiss-map.pmtiles` file stored on R2 and serves tiles at a `{z}/{x}/{y}.pbf` endpoint. For instructions how to host PMTiles on Cloudflare, see https://protomaps.com/docs/cdn/cloudflare.
 
 ## demo
 
