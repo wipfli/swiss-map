@@ -14,6 +14,10 @@
       "type": "vector",
       "url": "https://wipfli.github.io/swiss-map/tilejson-h3-landcover.json"
     },
+    "global-forest-polygons": {
+      "type": "vector",
+      "url": "https://tiles.swiss-map.cc/global-forest-polygons.json"
+    },
     "swisstopo-vector-hillshade": {
       "type": "vector",
       "url": "https://wipfli.github.io/swiss-map/tilejson-swisstopo-vector-hillshade.json",
@@ -135,7 +139,7 @@
         "Tree"
       ],
       "layout": {
-        "visibility": "visible"
+        "visibility": "none"
       },
       "maxzoom": 10,
       "paint": {
@@ -145,9 +149,8 @@
     {
       "id": "wood",
       "type": "fill",
-      "source": "swissmap",
-      "source-layer": "wood",
-      "minzoom": 10,
+      "source": "global-forest-polygons",
+      "source-layer": "forest",
       "layout": {
         "visibility": "visible"
       },
