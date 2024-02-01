@@ -38,9 +38,9 @@
       "minzoom": 12,
       "maxzoom": 15
     },
-    "morocco-google-buildings": {
+    "overture-buildings": {
       "type": "vector",
-      "url": "https://tiles.swiss-map.cc/morocco-google-buildings.json"
+      "url": "https://tiles.swiss-map.cc/overture-buildings.json"
     }
   },
   "light": {
@@ -539,10 +539,10 @@
       }
     },
     {
-      "id": "building-google",
+      "id": "overture_buildings",
       "type": "fill",
-      "source": "morocco-google-buildings",
-      "source-layer": "buildings",
+      "source": "overture-buildings",
+      "source-layer": "buildings/building",
       "layout": {
         "visibility": "visible"
       },
@@ -551,10 +551,10 @@
       }
     },
     {
-      "id": "building_outline-google",
+      "id": "overture_buildings_outline",
       "type": "line",
-      "source": "morocco-google-buildings",
-      "source-layer": "buildings",
+      "source": "overture-buildings",
+      "source-layer": "buildings/building",
       "layout": {
         "visibility": "visible"
       },
@@ -569,7 +569,7 @@
       "source": "swissmap",
       "source-layer": "building",
       "layout": {
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "fill-color": "#000"
@@ -581,7 +581,7 @@
       "source": "swissmap",
       "source-layer": "building",
       "layout": {
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "line-color": "#444",
@@ -596,7 +596,7 @@
       "source-layer": "building",
       "filter": ["has", "est_height"],
       "layout": {
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "fill-extrusion-color": "#e6e7e9",
