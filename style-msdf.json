@@ -652,7 +652,7 @@
           "text-optional": true
         },
         "paint":{
-          "text-halo-width": 1.5,
+          "text-halo-width": 0.0,
           "text-halo-color": [
             "interpolate",
             ["linear"],
@@ -786,7 +786,7 @@
             12,
             [
               "*",
-              4.0,
+              3.0,
               [
                 "case",
                 [
@@ -1007,8 +1007,6 @@
               0.2
             ]
           ]
-          
-          
         }
       }
     ],
