@@ -712,10 +712,23 @@
             "has",
             "ele"
           ],
-          ["format", ["get", "name"], {}, "\n", {}, ["get", "ele"], {"font-scale": 0.8}, "m", {"font-scale": 0.8}],
+          [
+            "format",
+            [
+              "case",
+              ["is-supported-script", ["get", "name"]],
+              ["get", "name"],
+              ["get", "name:en"]
+            ], {}, 
+            "\n", {}, 
+            ["get", "ele"], {"font-scale": 0.8}, 
+            "m", {"font-scale": 0.8}
+          ],
+          ["is-supported-script", ["get", "name"]],
+          ["get", "name"],
           [
             "get",
-            "name"
+            "name:en"
           ]
         ],
         "text-size": [
