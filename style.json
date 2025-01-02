@@ -256,7 +256,7 @@
       "source-layer": "bikeroutes",
       "minzoom": 10,
       "layout": {
-        "visibility": "visible",
+        "visibility": "none",
         "line-cap": "round",
         "line-join": "round"
       },
